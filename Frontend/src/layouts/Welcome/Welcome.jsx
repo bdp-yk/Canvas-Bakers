@@ -14,16 +14,18 @@ const items = [
     src: brandfull_1,
     altText: 'Se',
     header:' ',
-    caption: <i>Canvas Bakers</i>
+    caption: "Canvas Bakers"
   },
   {
     src: brandfull_2,
-    altText: 'Slide 2',
+    altText: 'brandfull_2',
+    header:' ',
     caption: 'Slide 2'
   },
   {
     src: brandfull_3,
-    altText: 'Slide 3',
+    altText: 'brandfull_3',
+    header:' ',
     caption: 'Slide 3'
   }
 ];

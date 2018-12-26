@@ -1,195 +1,145 @@
 import React from "react";
+import { Route, Switch } from "react-router-dom";
+// javascript plugin used to create scrollbars on windows
+import PerfectScrollbar from "perfect-scrollbar";
 
-// reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  CardText,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col
-} from "reactstrap";
+// core components
+import CanvasNavbar from "components/Navbars/CanvasNavbar.jsx";
+import Footer from "components/Footer/Footer.jsx";
+import Sidebar from "components/Sidebar/Sidebar.jsx";
+import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
-class CanvasLayout extends React.Component {
+import routes from "routes.js";
+
+import logo from "assets/img/brand-logo.png";
+
+var ps;
+
+class Canvas extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      backgroundColor: "blue",
+      sidebarOpened:
+        document.documentElement.className.indexOf("nav-open") !== -1
+    };
+  }
+  componentDidMount() {
+    if (navigator.platform.indexOf("Win") > -1) {
+      document.documentElement.className += " perfect-scrollbar-on";
+      document.documentElement.classList.remove("perfect-scrollbar-off");
+      ps = new PerfectScrollbar(this.refs.mainPanel, { suppressScrollX: true });
+      let tables = document.querySelectorAll(".table-responsive");
+      for (let i = 0; i < tables.length; i++) {
+        ps = new PerfectScrollbar(tables[i]);
+      }
+    }
+  }
+  componentWillUnmount() {
+    if (navigator.platform.indexOf("Win") > -1) {
+      ps.destroy();
+      document.documentElement.className += " perfect-scrollbar-off";
+      document.documentElement.classList.remove("perfect-scrollbar-on");
+    }
+  }
+  componentDidUpdate(e) {
+    if (e.history.action === "PUSH") {
+      if (navigator.platform.indexOf("Win") > -1) {
+        let tables = document.querySelectorAll(".table-responsive");
+        for (let i = 0; i < tables.length; i++) {
+          ps = new PerfectScrollbar(tables[i]);
+        }
+      }
+      document.documentElement.scrollTop = 0;
+      document.scrollingElement.scrollTop = 0;
+      this.refs.mainPanel.scrollTop = 0;
+    }
+  }
+  // this function opens and closes the sidebar on small devices
+  toggleSidebar = () => {
+    document.documentElement.classList.toggle("nav-open");
+    this.setState({ sidebarOpened: !this.state.sidebarOpened });
+  };
+  getRoutes = routes => {
+    return routes.map((prop, key) => {
+      if (prop.layout === "/canvas") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      } else {
+        console.log(prop);
+
+        return null;
+      }
+    });
+  };
+  handleBgClick = color => {
+    this.setState({ backgroundColor: color });
+  };
+  getBrandText = path => {
+    for (let i = 0; i < routes.length; i++) {
+      if (
+        this.props.location.pathname.indexOf(
+          routes[i].layout + routes[i].path
+        ) !== -1
+      ) {
+        return routes[i].name;
+      }
+    }
+    return "Brand";
+  };
+  getRoutesForSideBar = () => {
+    return routes.reduce((a,prop)=> {
+      if (prop.layout === "/canvas") {
+        return [...a,prop]
+      }
+      return a
+    },[])
+  }
   render() {
     return (
       <>
-        <div className="content">
-          <Row>
-            <Col md="8">
-              <Card>
-                <CardHeader>
-                  <h5 className="title">Edit Profile</h5>
-                </CardHeader>
-                <CardBody>
-                  <Form>
-                    <Row>
-                      <Col className="pr-md-1" md="5">
-                        <FormGroup>
-                          <label>Company (disabled)</label>
-                          <Input
-                            defaultValue="Creative Code Inc."
-                            disabled
-                            placeholder="Company"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="px-md-1" md="3">
-                        <FormGroup>
-                          <label>Username</label>
-                          <Input
-                            defaultValue="michael23"
-                            placeholder="Username"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-md-1" md="4">
-                        <FormGroup>
-                          <label htmlFor="exampleInputEmail1">
-                            Email address
-                          </label>
-                          <Input placeholder="mike@email.com" type="email" />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="pr-md-1" md="6">
-                        <FormGroup>
-                          <label>First Name</label>
-                          <Input
-                            defaultValue="Mike"
-                            placeholder="Company"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-md-1" md="6">
-                        <FormGroup>
-                          <label>Last Name</label>
-                          <Input
-                            defaultValue="Andrew"
-                            placeholder="Last Name"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label>Address</label>
-                          <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            placeholder="Home Address"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="pr-md-1" md="4">
-                        <FormGroup>
-                          <label>City</label>
-                          <Input
-                            defaultValue="Mike"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="px-md-1" md="4">
-                        <FormGroup>
-                          <label>Country</label>
-                          <Input
-                            defaultValue="Andrew"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-md-1" md="4">
-                        <FormGroup>
-                          <label>Postal Code</label>
-                          <Input placeholder="ZIP Code" type="number" />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="8">
-                        <FormGroup>
-                          <label>About Me</label>
-                          <Input
-                            cols="80"
-                            defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                            that two seat Lambo."
-                            placeholder="Here can be your description"
-                            rows="4"
-                            type="textarea"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </Form>
-                </CardBody>
-                <CardFooter>
-                  <Button className="btn-fill" color="primary" type="submit">
-                    Save
-                  </Button>
-                </CardFooter>
-              </Card>
-            </Col>
-            <Col md="4">
-              <Card className="card-user">
-                <CardBody>
-                  <CardText />
-                  <div className="author">
-                    <div className="block block-one" />
-                    <div className="block block-two" />
-                    <div className="block block-three" />
-                    <div className="block block-four" />
-                    <a href="#pablo" onClick={e => e.preventDefault()}>
-                      <img
-                        alt="..."
-                        className="avatar"
-                        src={require("assets/img/emilyz.jpg")}
-                      />
-                      <h5 className="title">Mike Andrew</h5>
-                    </a>
-                    <p className="description">Ceo/Co-Founder</p>
-                  </div>
-                  <div className="card-description">
-                    Do not be scared of the truth because we need to restart the
-                    human foundation in truth And I love you like Kanye loves
-                    Kanye I love Rick Owens’ bed design but the back is...
-                  </div>
-                </CardBody>
-                <CardFooter>
-                  <div className="button-container">
-                    <Button className="btn-icon btn-round" color="facebook">
-                      <i className="fab fa-facebook" />
-                    </Button>
-                    <Button className="btn-icon btn-round" color="twitter">
-                      <i className="fab fa-twitter" />
-                    </Button>
-                    <Button className="btn-icon btn-round" color="google">
-                      <i className="fab fa-google-plus" />
-                    </Button>
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
-          </Row>
+        <div className="wrapper">
+          <Sidebar
+            {...this.props}
+            routes={this.getRoutesForSideBar()}
+            bgColor={this.state.backgroundColor}
+            logo={{
+              outterLink: "#",
+              text: "Canvas Bakers",
+              imgSrc: logo
+            }}
+            toggleSidebar={this.toggleSidebar}
+          />
+          <div
+            className="main-panel"
+            ref="mainPanel"
+            data={this.state.backgroundColor}
+          >
+            <CanvasNavbar
+              {...this.props}
+              brandText={this.getBrandText(this.props.location.pathname)}
+              toggleSidebar={this.toggleSidebar}
+              sidebarOpened={this.state.sidebarOpened}
+            />
+            <Switch>{this.getRoutes(routes)}</Switch>
+            {// we don't want the Footer to be rendered on map page
+              this.props.location.pathname.indexOf("maps") !== -1 ? null : (
+                <Footer fluid />
+              )}
+          </div>
         </div>
+        <FixedPlugin
+          bgColor={this.state.backgroundColor}
+          handleBgClick={this.handleBgClick}
+        />
       </>
     );
   }
 }
 
-export default CanvasLayout;
+export default Canvas;

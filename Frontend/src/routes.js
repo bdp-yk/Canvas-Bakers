@@ -1,10 +1,12 @@
+// admin routes
 import Dashboard from "views/admin/Dashboard.jsx";
-import Icons from "views/admin/Icons.jsx";
-import Map from "views/admin/Map.jsx";
-import Notifications from "views/admin/Notifications.jsx";
-import TableList from "views/admin/TableList.jsx";
-import Typography from "views/admin/Typography.jsx";
-import UserProfile from "views/admin/UserProfile.jsx";
+import AdminProfile from "views/admin/UserProfile.jsx";
+
+// canvas routes
+import Assets from "views/canvas/UserProfile.jsx";
+import UserProfile from "views/canvas/UserProfile.jsx";
+import Workshop from "views/canvas/UserProfile.jsx";
+
 
 var routes = [
   {
@@ -15,53 +17,32 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/icons",
-    name: "Icons",
-    icon: "tim-icons icon-atom",
-    component: Icons,
+    path: "/profile",
+    name: "Admin Profile",
+    icon: "tim-icons icon-single-02",
+    component: AdminProfile,
     layout: "/admin"
   },
   {
-    path: "/map",
-    name: "Map",
-    icon: "tim-icons icon-pin",
-    component: Map,
-    layout: "/admin"
+    path: "/workshop",
+    name: "WorkShop",
+    icon: "tim-icons icon-vector",
+    component: Workshop,
+    layout: "/canvas"
   },
   {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "tim-icons icon-bell-55",
-    component: Notifications,
-    layout: "/admin"
+    path: "/assets",
+    name: "Assets Work",
+    icon: "tim-icons icon-components",
+    component: Assets,
+    layout: "/canvas"
   },
   {
-    path: "/user-profile",
-    name: "User Profile",
+    path: "/userprofile",
+    name: "Profile",
     icon: "tim-icons icon-single-02",
     component: UserProfile,
-    layout: "/admin"
-  },
-  {
-    path: "/tables",
-    name: "Table List",
-    icon: "tim-icons icon-puzzle-10",
-    component: TableList,
-    layout: "/admin"
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    icon: "tim-icons icon-align-center",
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    path: "/welcome",
-    name: "Welcome",
-    icon: "fas fa-sign-in-alt",
-    component: Typography,
-    layout: "/welcome"
+    layout: "/canvas"
   }
 ];
 export default routes;

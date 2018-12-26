@@ -75,6 +75,14 @@ class Admin extends React.Component {
       }
     });
   };
+  getRoutesForSideBar = () => {
+    return routes.reduce((a,prop)=> {
+      if (prop.layout === "/admin") {
+        return [...a,prop]
+      }
+      return a
+    },[])
+  }
   handleBgClick = color => {
     this.setState({ backgroundColor: color });
   };
@@ -96,7 +104,7 @@ class Admin extends React.Component {
         <div className="wrapper">
           <Sidebar
             {...this.props}
-            routes={routes}
+            routes={this.getRoutesForSideBar()}
             bgColor={this.state.backgroundColor}
             logo={{
               outterLink: "#",

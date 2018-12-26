@@ -1,7 +1,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
-
+import {Link} from 'react-router-dom'
 // reactstrap components
 import {
   Collapse,
@@ -102,19 +102,19 @@ class WelcomeNavBar extends React.Component {
                     data-toggle="dropdown"
                     nav
                   >
-                    {/* <div className="notification d-none d-lg-block d-xl-block" /> */}
-                    <i className="tim-icons icon-sound-wave d-lg-none" />
-                    <p >Quick Start</p>
+          <Link to="admin">
+                  <p >Quick Start</p>
+          </Link>
                   </DropdownToggle>
                 </UncontrolledDropdown>
-                <UncontrolledDropdown nav>
+                <UncontrolledDropdown >
                   <DropdownToggle
                     caret
                     color="default"
                     data-toggle="dropdown"
                     nav
                   >
-                    <NavLink tag="li">
+                    <NavLink tag="li" href="/dashboar">
 
                       <p >Join the Application</p>
                     </NavLink>

@@ -10,6 +10,7 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
 import routes from "routes.js";
+import { connect } from 'react-redux';
 
 import logo from "assets/img/brand-logo.png";
 
@@ -76,12 +77,12 @@ class Admin extends React.Component {
     });
   };
   getRoutesForSideBar = () => {
-    return routes.reduce((a,prop)=> {
+    return routes.reduce((a, prop) => {
       if (prop.layout === "/admin") {
-        return [...a,prop]
+        return [...a, prop]
       }
       return a
-    },[])
+    }, [])
   }
   handleBgClick = color => {
     this.setState({ backgroundColor: color });
@@ -126,9 +127,9 @@ class Admin extends React.Component {
             />
             <Switch>{this.getRoutes(routes)}</Switch>
             {// we don't want the Footer to be rendered on map page
-            this.props.location.pathname.indexOf("maps") !== -1 ? null : (
-              <Footer fluid />
-            )}
+              this.props.location.pathname.indexOf("maps") !== -1 ? null : (
+                <Footer fluid />
+              )}
           </div>
         </div>
         <FixedPlugin
@@ -139,5 +140,12 @@ class Admin extends React.Component {
     );
   }
 }
+function mapStateToProps(state) {
+    const { alert } = state;
+    return {
+        alert
+    };
+}
 
-export default Admin;
+const connectedAdmin = connect(mapStateToProps)(Admin);
+export { connectedAdmin as AdminLayout }; 

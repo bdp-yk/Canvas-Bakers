@@ -1,7 +1,7 @@
 import React from "react";
+import { connect } from 'react-redux';
 // nodejs library that concatenates classes
 import classNames from "classnames";
-import {Link} from 'react-router-dom'
 // reactstrap components
 import {
   Collapse,
@@ -12,9 +12,11 @@ import {
   NavbarBrand,
   Navbar,
   NavLink,
+  NavItem,
   Nav,
   Container,
 } from "reactstrap";
+import { modalActions } from "../../redux/_actions/modal.actions";
 
 class WelcomeNavBar extends React.Component {
   constructor(props) {
@@ -69,7 +71,7 @@ class WelcomeNavBar extends React.Component {
       <>
         <Navbar
           className={classNames("navbar-absolute", this.state.color)}
-          expand="lg"
+          expand="md"
         >
           <Container fluid>
             <div className="navbar-wrapper">
@@ -94,53 +96,29 @@ class WelcomeNavBar extends React.Component {
             </div>
 
             <Collapse navbar isOpen={this.state.collapseOpen}>
-              <Nav className="ml-auto" navbar>
-                <UncontrolledDropdown nav>
-                  <DropdownToggle
-                    caret
-                    color="default"
-                    data-toggle="dropdown"
-                    nav
-                  >
-          <Link to="admin">
-                  <p >Quick Start</p>
-          </Link>
-                  </DropdownToggle>
-                </UncontrolledDropdown>
-                <UncontrolledDropdown >
-                  <DropdownToggle
-                    caret
-                    color="default"
-                    data-toggle="dropdown"
-                    nav
-                  >
-                    <NavLink tag="li" href="/dashboar">
 
-                      <p >Join the Application</p>
-                    </NavLink>
+              <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <NavLink href="/quickstart/">Quick Start</NavLink>
+                </NavItem>
+
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
+                    Join Canvas Bakers
                   </DropdownToggle>
-                  <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">
-                        Login
-                      </DropdownItem>
-                      <DropdownItem className="nav-item">
-                        Register
-                      </DropdownItem>
-                    </NavLink>
+                  <DropdownMenu right>
+                    <DropdownItem onClick={()=>this.props.dispatch(modalActions.toggleLoginModal())}>
+                      Sign-in
+                    </DropdownItem>
+                    <DropdownItem onClick={()=>this.props.dispatch(modalActions.toggleRegisterModal())}>
+                      Sign-up
+                    </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <UncontrolledDropdown nav>
-                  <DropdownToggle
-                    caret
-                    color="default"
-                    data-toggle="dropdown"
-                    nav
-                  >
-                    <p >How To Use</p>
-                  </DropdownToggle>
-                  
-                </UncontrolledDropdown>
+
+                <NavItem>
+                  <NavLink href="/documentation/">Documentation</NavLink>
+                </NavItem>
               </Nav>
             </Collapse>
           </Container>
@@ -149,5 +127,12 @@ class WelcomeNavBar extends React.Component {
     );
   }
 }
+function mapStateToProps(state) {
+  const { modal } = state;
+  return {
+    modal
+  };
+}
 
-export default WelcomeNavBar;
+const connectedWelcomeNavBar = connect(mapStateToProps)(WelcomeNavBar);
+export { connectedWelcomeNavBar as WelcomeNavBar };

@@ -42,10 +42,10 @@ class UserProfile extends React.Component {
                       </Col>
                       <Col className="px-md-1" md="3">
                         <FormGroup>
-                          <label>Username</label>
+                          <label>Email</label>
                           <Input
                             defaultValue="michael23"
-                            placeholder="Username"
+                            placeholder="Email"
                             type="text"
                           />
                         </FormGroup>

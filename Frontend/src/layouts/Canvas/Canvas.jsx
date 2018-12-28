@@ -142,4 +142,4 @@ class Canvas extends React.Component {
   }
 }
 
-export default Canvas;
+export const CanvasLayout = Canvas;

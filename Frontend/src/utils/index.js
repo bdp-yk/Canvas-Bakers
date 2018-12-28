@@ -1,6 +1,11 @@
 import isBefore from 'date-fns/is_before';
 import isAfter from 'date-fns/is_after';
 
+import { bindActionCreators } from 'redux';
+
+export const mapDispatchToProps = (actionCreators) => (dispatch) => {
+  return bindActionCreators(actionCreators, dispatch);
+}
 export const range = n =>
   Array(n)
     .fill()
@@ -28,7 +33,7 @@ export function throttle(fn, threshhold, scope) {
   threshhold || (threshhold = 250);
   var last, deferTimer;
 
-  return function() {
+  return function () {
     var context = scope || this;
 
     var now = +new Date(),
@@ -36,7 +41,7 @@ export function throttle(fn, threshhold, scope) {
     if (last && now < last + threshhold) {
       // hold on to it
       clearTimeout(deferTimer);
-      deferTimer = setTimeout(function() {
+      deferTimer = setTimeout(function () {
         last = now;
         fn.apply(context, args);
       }, threshhold);

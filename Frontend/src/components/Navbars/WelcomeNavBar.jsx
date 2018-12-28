@@ -11,12 +11,16 @@ import {
   UncontrolledDropdown,
   NavbarBrand,
   Navbar,
+  Modal,
+  Input,
+  Form,
   NavLink,
   NavItem,
   Nav,
   Container,
 } from "reactstrap";
 import { modalActions } from "../../redux/_actions/modal.actions";
+import { TesterSignInPage } from "../../views/welcome";
 
 class WelcomeNavBar extends React.Component {
   constructor(props) {
@@ -66,6 +70,11 @@ class WelcomeNavBar extends React.Component {
       modalSearch: !this.state.modalSearch
     });
   };
+  toggleModalSearch = () => {
+    this.setState({
+      modalSearch: !this.state.modalSearch
+    });
+  }
   render() {
     return (
       <>
@@ -98,19 +107,37 @@ class WelcomeNavBar extends React.Component {
             <Collapse navbar isOpen={this.state.collapseOpen}>
 
               <Nav className="ml-auto" navbar>
-                <NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
+                    Quick Start
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem
+                      data-target="#searchModal"
+                      data-toggle="modal"
+                      id="search-button"
+                      onClick={this.toggleModalSearch}
+                    >
+                      Quick Tester
+                    </DropdownItem>
+                    <DropdownItem href="/quickstart/">
+                      Quick Canvas
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                {/* <NavItem>
                   <NavLink href="/quickstart/">Quick Start</NavLink>
-                </NavItem>
+                </NavItem> */}
 
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Join Canvas Bakers
                   </DropdownToggle>
                   <DropdownMenu right>
-                    <DropdownItem onClick={()=>this.props.dispatch(modalActions.toggleLoginModal())}>
+                    <DropdownItem onClick={() => this.props.dispatch(modalActions.toggleLoginModal())}>
                       Sign-in
                     </DropdownItem>
-                    <DropdownItem onClick={()=>this.props.dispatch(modalActions.toggleRegisterModal())}>
+                    <DropdownItem onClick={() => this.props.dispatch(modalActions.toggleRegisterModal())}>
                       Sign-up
                     </DropdownItem>
                   </DropdownMenu>
@@ -123,6 +150,13 @@ class WelcomeNavBar extends React.Component {
             </Collapse>
           </Container>
         </Navbar>
+        <Modal
+          modalClassName="modal-search"
+          isOpen={this.state.modalSearch}
+          toggle={this.toggleModalSearch}
+        >
+          {<TesterSignInPage/>}
+        </Modal>
       </>
     );
   }

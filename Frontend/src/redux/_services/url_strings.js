@@ -12,6 +12,7 @@ export const USER_LOGOUT_URL = USER_AUTH_URL + "logout/"
 
 // tester in/out/up urls
 export const TESTER_AUTH_URL = API_URL + "tester/";
+export const CHECK_TEST_SEASON_URL = TESTER_AUTH_URL + "check_test_season/";
 export const TESTER_LOGIN_URL = TESTER_AUTH_URL + "login/";
 export const TESTER_GET_BY_ID_URL = TESTER_AUTH_URL + "get_by_id/";
 export const TESTER_REGISTER_URL = TESTER_AUTH_URL + "register/";

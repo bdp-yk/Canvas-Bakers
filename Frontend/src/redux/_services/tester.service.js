@@ -1,17 +1,37 @@
 // import config from 'config';
 import { authHeader } from '../_helpers';
-import { TESTER_LOGIN_URL, TESTER_LOGOUT_URL, GET_ALL_USERS, TESTER_REGISTER_URL, TESTER_DELETE_URL, TESTER_UPDATE_URL, TESTER_GET_BY_ID_URL } from './url_strings';
+import { TESTER_LOGIN_URL, TESTER_LOGOUT_URL, GET_ALL_USERS, TESTER_REGISTER_URL, TESTER_DELETE_URL, TESTER_UPDATE_URL, TESTER_GET_BY_ID_URL, CHECK_TEST_SEASON_URL } from './url_strings';
 
-export const userService = {
+export const testerServices = {
+    register_tester,
     login,
     logout,
     register,
     getAll,
     getById,
     update,
+    checktestseason,
     delete: _delete
 };
 
+function register_tester(testername, group) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ testername, group })
+    };
+
+    return fetch(TESTER_LOGIN_URL, requestOptions)
+        .then(handleResponse);
+}
+
+function checktestseason() {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+    return fetch(CHECK_TEST_SEASON_URL, requestOptions).then(handleResponse);
+}
 function login(email, password) {
     const requestOptions = {
         method: 'POST',
@@ -63,7 +83,7 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(TESTER_GET_BY_ID_URL+id, requestOptions).then(handleResponse);
+    return fetch(TESTER_GET_BY_ID_URL + id, requestOptions).then(handleResponse);
 }
 
 function register(user) {

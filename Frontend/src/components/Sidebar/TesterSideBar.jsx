@@ -13,14 +13,9 @@ import { Nav } from "reactstrap";
 
 var ps;
 
-class Sidebar extends React.Component {
+class TesterSideBar extends React.Component {
   constructor(props) {
     super(props);
-    this.activeRoute.bind(this);
-  }
-  // verifies if routeName is the one active (in browser input)
-  activeRoute(routeName) {
-    return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   }
   componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -98,28 +93,15 @@ class Sidebar extends React.Component {
             </div>
           ) : null}
           <Nav>
-            {routes.map((prop, key) => {
-              if (prop.redirect) return null;
-              return (
-                <li
-                  className={
-                    this.activeRoute(prop.path) +
-                    (prop.pro ? " active-pro" : "")
-                  }
-                  key={key}
-                >
-                  <NavLink
-                    to={prop.layout + prop.path}
-                    className="nav-link"
-                    activeClassName="active"
-                    onClick={this.props.toggleSidebar}
-                  >
-                    <i className={prop.icon} />
-                    <p>{prop.name}</p>
-                  </NavLink>
-                </li>
-              );
-            })}
+            <NavLink
+              to={"prop.layout + prop.path"}
+              className="btn-block"
+              activeClassName="active"
+              onClick={this.props.toggleSidebar}
+            >
+              <i className={"tim-icons icon-components"} />
+              <p>{"prop.name"}</p>
+            </NavLink>
           </Nav>
         </div>
       </div>
@@ -127,12 +109,12 @@ class Sidebar extends React.Component {
   }
 }
 
-Sidebar.defaultProps = {
+TesterSideBar.defaultProps = {
   bgColor: "primary",
   routes: [{}]
 };
 
-Sidebar.propTypes = {
+TesterSideBar.propTypes = {
   // insde the links of this component
   bgColor: PropTypes.oneOf(["primary", "blue", "green"]),
   routes: PropTypes.arrayOf(PropTypes.object),
@@ -153,11 +135,11 @@ Sidebar.propTypes = {
 function mapStateToProps(state) {
   const { tester } = state;
   return {
-      tester
+    tester
   };
 }
 
-const connectedSidebar = connect(mapStateToProps)(Sidebar);
-export { connectedSidebar as Sidebar }; 
+const connectedTesterSideBar = connect(mapStateToProps)(TesterSideBar);
+export { connectedTesterSideBar as TesterSideBar };
 
 

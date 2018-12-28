@@ -2,16 +2,17 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
+import { connect } from 'react-redux'
 
-// core components
+// core componentsr
 import CanvasNavbar from "components/Navbars/CanvasNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
-import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
 import routes from "routes.js";
 
 import logo from "assets/img/brand-logo.png";
+import { Sidebar } from "../../components/Sidebar";
 
 var ps;
 
@@ -141,5 +142,12 @@ class Canvas extends React.Component {
     );
   }
 }
+function mapStateToProps(state) {
+  const { canvas } = state;
+  return {
+      canvas
+  };
+}
 
-export const CanvasLayout = Canvas;
+const connectedCanvas = connect(mapStateToProps)(Canvas);
+export { connectedCanvas as CanvasLayout }; 

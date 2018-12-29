@@ -1,41 +1,37 @@
 import { testerConstants } from '../_constants';
 
-state = {
-  testing_season_request: false,
-  testing_season_ok: false,
-  testing_season_ko: false,
+// state = {
+//   testing_season_request: false,
+//   testing_season_ok: false,
 
-  tester_register_request: false,
-  tester_register_success: false,
-  tester_register_failure: false,
+//   tester_register_request: false,
+//   tester_register_success: false,
+//   tester_register_failure: false,
 
-  tester: {
-    testername: "",
-    group: ""
-  }
+//   tester: {
+//     testername: "",
+//     group: ""
+//   }
 
-}
+// }
 export function tester(state = {}, action) {
   switch (action.type) {
     case testerConstants.TESTING_SEASON_REQUEST:
       return {
         testing_season_request: true,
         testing_season_ok: false,
-        testing_season_ko: false,
 
       };
     case testerConstants.TESTING_SEASON_SUCCESS:
       return {
         testing_season_request: false,
         testing_season_ok: true,
-        testing_season_ko: false,
 
       };
     case testerConstants.TESTING_SEASON_FAILURE:
       return {
         testing_season_request: false,
         testing_season_ok: false,
-        testing_season_ko: true,
 
       };
 

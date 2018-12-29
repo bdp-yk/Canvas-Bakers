@@ -1,3 +1,3 @@
 export * from "./LoginPage"
 export * from "./RegisterPage"
-export * from "./TesterSignInPage"
+export * from "./TesterSignInView"

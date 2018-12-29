@@ -3,7 +3,7 @@ import { testerServices } from '../_services';
 import { alertActions } from './';
 import { history } from '../_helpers';
 
-export const userActions = {
+export const testerActions = {
     check_test_season,
     signin_as_tester,
     logout_tester
@@ -19,6 +19,8 @@ function check_test_season() {
                 else
                     dispatch({ type: testerConstants.TESTING_SEASON_FAILURE })
             }
+        ).catch(
+            error => dispatch({ type: testerConstants.TESTING_SEASON_FAILURE })
         )
     }
 }

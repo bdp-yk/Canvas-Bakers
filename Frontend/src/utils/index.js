@@ -1,10 +1,21 @@
 import isBefore from 'date-fns/is_before';
 import isAfter from 'date-fns/is_after';
+// import * as actionCreators from "../redux/_actions";
 
 import { bindActionCreators } from 'redux';
 
 export const mapDispatchToProps = (actionCreators) => (dispatch) => {
   return bindActionCreators(actionCreators, dispatch);
+}
+export const multipleActionsMapDispatchToProps = (actionCreators) => (dispatch) => {
+  let all_actions={}
+  actionCreators.forEach(element => {
+    all_actions={
+      ...all_actions,
+      ...element
+    }
+  });
+  return bindActionCreators(all_actions, dispatch);
 }
 export const range = n =>
   Array(n)

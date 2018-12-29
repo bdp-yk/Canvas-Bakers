@@ -1,7 +1,5 @@
 import React from "react";
 import { connect } from 'react-redux';
-// nodejs library that concatenates classes
-import classNames from "classnames";
 // reactstrap components
 import {
   Collapse,
@@ -12,93 +10,37 @@ import {
   NavbarBrand,
   Navbar,
   Modal,
-  Input,
-  Form,
   NavLink,
   NavItem,
   Nav,
   Container,
 } from "reactstrap";
 import { modalActions } from "../../redux/_actions/modal.actions";
-import { TesterSignInPage } from "../../views/welcome";
+import { TesterSignInView } from "../../views/welcome";
+import { multipleActionsMapDispatchToProps } from "../../utils";
+import { testerActions } from "../../redux/_actions";
 
 class WelcomeNavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapseOpen: false,
+      collapseOpen: true,
       modalSearch: false,
       color: "navbar-transparent"
     };
   }
   componentDidMount() {
-    window.addEventListener("resize", this.updateColor);
-  }
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateColor);
-  }
-  // function that adds color white/transparent to the navbar on resize (this is for the collapse)
-  updateColor = () => {
-    if (window.innerWidth < 993 && this.state.collapseOpen) {
-      this.setState({
-        color: "bg-white"
-      });
-    } else {
-      this.setState({
-        color: "navbar-transparent"
-      });
-    }
-  };
-  // this function opens and closes the collapse on small devices
-  toggleCollapse = () => {
-    if (this.state.collapseOpen) {
-      this.setState({
-        color: "navbar-transparent"
-      });
-    } else {
-      this.setState({
-        color: "bg-white"
-      });
-    }
-    this.setState({
-      collapseOpen: !this.state.collapseOpen
-    });
-  };
-  // this function is to open the Search modal
-  toggleModalSearch = () => {
-    this.setState({
-      modalSearch: !this.state.modalSearch
-    });
-  };
-  toggleModalSearch = () => {
-    this.setState({
-      modalSearch: !this.state.modalSearch
-    });
+    this.props.check_test_season()
   }
   render() {
     return (
       <>
         <Navbar
-          className={classNames("navbar-absolute", this.state.color)}
-          expand="md"
+          className="navbar-relative navbar-transparent"
+          expand="xs"
         >
           <Container fluid>
             <div className="navbar-wrapper">
-              <div
-                className={classNames("navbar-toggle d-inline", {
-                  toggled: this.props.sidebarOpened
-                })}
-              >
-                <button
-                  className="navbar-toggler"
-                  type="button"
-                  onClick={this.props.toggleSidebar}
-                >
-                  <span className="navbar-toggler-bar bar1" />
-                  <span className="navbar-toggler-bar bar2" />
-                  <span className="navbar-toggler-bar bar3" />
-                </button>
-              </div>
               <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
                 {this.props.brandText}
               </NavbarBrand>
@@ -107,37 +49,34 @@ class WelcomeNavBar extends React.Component {
             <Collapse navbar isOpen={this.state.collapseOpen}>
 
               <Nav className="ml-auto" navbar>
-                <UncontrolledDropdown nav inNavbar>
+                <UncontrolledDropdown nav >
                   <DropdownToggle nav caret>
                     Quick Start
                   </DropdownToggle>
-                  <DropdownMenu right>
+                  <DropdownMenu right className="bg-white">
                     <DropdownItem
                       data-target="#searchModal"
                       data-toggle="modal"
                       id="search-button"
                       onClick={this.toggleModalSearch}
+                      disabled={!this.props.tester.testing_season_ok}
                     >
-                      Quick Tester
+                      {this.props.tester.testing_season_ok ? "Quick Tester" : "Not a Testing Season"}
                     </DropdownItem>
-                    <DropdownItem href="/quickstart/">
+                    <DropdownItem >
                       Quick Canvas
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                {/* <NavItem>
-                  <NavLink href="/quickstart/">Quick Start</NavLink>
-                </NavItem> */}
-
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Join Canvas Bakers
                   </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem onClick={() => this.props.dispatch(modalActions.toggleLoginModal())}>
+                  <DropdownMenu right className="bg-white">
+                    <DropdownItem onClick={() => this.props.toggleLoginModal()}>
                       Sign-in
                     </DropdownItem>
-                    <DropdownItem onClick={() => this.props.dispatch(modalActions.toggleRegisterModal())}>
+                    <DropdownItem onClick={() => this.props.toggleRegisterModal()}>
                       Sign-up
                     </DropdownItem>
                   </DropdownMenu>
@@ -155,18 +94,19 @@ class WelcomeNavBar extends React.Component {
           isOpen={this.state.modalSearch}
           toggle={this.toggleModalSearch}
         >
-          {<TesterSignInPage/>}
+          {<TesterSignInView />}
         </Modal>
       </>
     );
   }
 }
 function mapStateToProps(state) {
-  const { modal } = state;
+  const { modal, tester } = state;
   return {
-    modal
+    modal,
+    tester
   };
 }
 
-const connectedWelcomeNavBar = connect(mapStateToProps)(WelcomeNavBar);
+const connectedWelcomeNavBar = connect(mapStateToProps, multipleActionsMapDispatchToProps([modalActions, testerActions]))(WelcomeNavBar);
 export { connectedWelcomeNavBar as WelcomeNavBar };

@@ -43,7 +43,7 @@ class App extends React.Component {
                     <Switch>
                         <PrivateRoute exact path="/" component={CanvasLayout} />
                         <PrivateRoute path="/admin" render={props => <AdminLayout {...props} />} />
-                        <Route path="/quickstart" component={TesterLayout} />
+                        <PrivateRoute path="/quickstart" component={TesterLayout} />
                         <Route path="/welcome" component={WelcomeLayout} />
                         <Redirect from="/*" to="/" />
                     </Switch>

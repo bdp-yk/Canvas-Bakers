@@ -13,6 +13,8 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 import routes from "routes.js";
 import { TesterNavBar } from "../../components/Navbars";
 import { TesterSideBar } from "../../components/Sidebar";
+import { mapDispatchToProps } from "../../utils";
+import { testerActions } from "../../redux/_actions";
 
 // import logo from "assets/img/brand-logo.png";
 
@@ -21,6 +23,7 @@ var ps;
 class Tester extends React.Component {
   constructor(props) {
     super(props);
+    props.assert_tester(JSON.parse(localStorage.getItem("tester")));
     this.state = {
       backgroundColor: "blue",
       sidebarOpened:
@@ -96,12 +99,12 @@ class Tester extends React.Component {
     return "Brand";
   };
   getRoutesForSideBar = () => {
-    return routes.reduce((a,prop)=> {
+    return routes.reduce((a, prop) => {
       if (prop.layout === "/tester") {
-        return [...a,prop]
+        return [...a, prop]
       }
       return a
-    },[])
+    }, [])
   }
   render() {
     return (
@@ -114,11 +117,11 @@ class Tester extends React.Component {
           >
             <TesterNavBar
               {...this.props}
-              brandText={this.getBrandText(this.props.location.pathname)}
+              brandText={this.props.tester.testername}
               toggleSidebar={this.toggleSidebar}
               sidebarOpened={this.state.sidebarOpened}
             />
-            <TesterSideBar/>
+            <TesterSideBar bgColor={this.state.backgroundColor} />
             {/* <Switch>{this.getRoutes(routes)}</Switch> */}
             {/* {// we don't want the Footer to be rendered on map page
               this.props.location.pathname.indexOf("maps") !== -1 ? null : (
@@ -137,9 +140,9 @@ class Tester extends React.Component {
 function mapStateToProps(state) {
   const { tester } = state;
   return {
-      tester
+    tester
   };
 }
 
-const connectedTester = connect(mapStateToProps)(Tester);
+const connectedTester = connect(mapStateToProps, mapDispatchToProps(testerActions))(Tester);
 export { connectedTester as TesterLayout }; 

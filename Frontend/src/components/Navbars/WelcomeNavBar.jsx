@@ -58,10 +58,10 @@ class WelcomeNavBar extends React.Component {
                       data-target="#searchModal"
                       data-toggle="modal"
                       id="search-button"
-                      onClick={this.toggleModalSearch}
+                      onClick={this.props.toggle_tester_register_modal}
                       disabled={!this.props.tester.testing_season_ok}
                     >
-                      {this.props.tester.testing_season_ok ? "Quick Tester" : "Not a Testing Season"}
+                      {this.props.tester.testing_season_ok ? "Quick App Test " : "Not a Testing Season"}
                     </DropdownItem>
                     <DropdownItem >
                       Quick Canvas
@@ -90,9 +90,9 @@ class WelcomeNavBar extends React.Component {
           </Container>
         </Navbar>
         <Modal
-          modalClassName="modal-search"
-          isOpen={this.state.modalSearch}
-          toggle={this.toggleModalSearch}
+          modalClassName="modal "
+          isOpen={this.props.tester.tester_register_request}
+          toggle={this.props.toggle_tester_register_modal}
         >
           {<TesterSignInView />}
         </Modal>

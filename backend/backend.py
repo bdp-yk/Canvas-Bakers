@@ -28,7 +28,7 @@ from modules.app.controllers import *   # pylint: disable=W0401,C0413
 
 
 if __name__ == '__main__':
-    LOG.info('running environment: %s', os.environ.get('ENV',"development"))
+    # LOG.info('running environment: %s', os.environ.get('ENV',"development"))
     app.config['DEBUG'] = "development"
     # app.run(host='0.0.0.0', port=int(PORT))
     app.run(host='127.0.0.1', port=int(PORT))

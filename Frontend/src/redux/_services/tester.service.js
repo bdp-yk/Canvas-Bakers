@@ -1,12 +1,10 @@
 // import config from 'config';
 import { authHeader } from '../_helpers';
-import { TESTER_LOGIN_URL, TESTER_LOGOUT_URL, GET_ALL_USERS, TESTER_REGISTER_URL, TESTER_DELETE_URL, TESTER_UPDATE_URL, TESTER_GET_BY_ID_URL, CHECK_TEST_SEASON_URL } from './url_strings';
+import { TESTER_LOGOUT_URL, GET_ALL_USERS, TESTER_REGISTER_URL, TESTER_DELETE_URL, TESTER_UPDATE_URL, TESTER_GET_BY_ID_URL, CHECK_TEST_SEASON_URL } from './url_strings';
 
 export const testerServices = {
     register_tester,
-    login,
     logout,
-    register,
     getAll,
     getById,
     update,
@@ -14,15 +12,17 @@ export const testerServices = {
     delete: _delete
 };
 
-function register_tester(testername, group) {
+function register_tester(tester) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ testername, group })
+        body: JSON.stringify(tester)
     };
 
-    return fetch(TESTER_LOGIN_URL, requestOptions)
-        .then(handleResponse);
+    return fetch(TESTER_REGISTER_URL, requestOptions)
+        .then(handleResponse).then(
+            response => localStorage.setItem('tester', JSON.stringify(tester))
+        );
 }
 
 function checktestseason() {
@@ -32,38 +32,19 @@ function checktestseason() {
     };
     return fetch(CHECK_TEST_SEASON_URL, requestOptions).then(handleResponse);
 }
-function login(email, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    };
-
-    return fetch(TESTER_LOGIN_URL, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // login successful if there's a jwt token in the response
-            if (user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-            }
-
-            return user;
-        });
-}
 
 function logout() {
 
     const requestOptions = {
-        method: 'GET',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(localStorage.getItem('user'))
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: localStorage.getItem('tester')
     };
     // remove user from local storage to log user out
-    return fetch(TESTER_LOGOUT_URL, requestOptions).then(handleResponse).then(localStorage.removeItem('user')).catch(
+    return fetch(TESTER_LOGOUT_URL, requestOptions).then(handleResponse).then(localStorage.removeItem('tester')).catch(
         (error) => {
             alert("Something bad happened, but we will log you out" + error);
-            localStorage.removeItem('user');
+            localStorage.removeItem('tester');
         }
     );
 }
@@ -86,15 +67,6 @@ function getById(id) {
     return fetch(TESTER_GET_BY_ID_URL + id, requestOptions).then(handleResponse);
 }
 
-function register(user) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    };
-
-    return fetch(TESTER_REGISTER_URL, requestOptions).then(handleResponse);
-}
 
 function update(user) {
     const requestOptions = {

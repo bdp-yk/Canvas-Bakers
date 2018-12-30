@@ -2,29 +2,28 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from jsonschema.exceptions import SchemaError
 
-user_schema = {
+tester_schema = {
     "type": "object",
     "properties": {
-        "name": {
+        "testername": {
             "type": "string",
         },
-        "email": {
+        "group": {
             "type": "string",
-            "format": "email"
+            "enum": ["A", "B", "C", "D"]
         },
-        "password": {
-            "type": "string",
-            "minLength": 5
+        "connected": {
+            "type": "boolean"
         }
     },
-    "required": ["email", "password"],
+    "required": ["testername", "group"],
     "additionalProperties": False
 }
 
 
-def validate_user(data):
+def validate_tester(data):
     try:
-        validate(data, user_schema)
+        validate(data, tester_schema)
     except ValidationError as e:
         return {'ok': False, 'message': e}
     except SchemaError as e:

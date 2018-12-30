@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
-import { Nav } from "reactstrap";
+import { Nav, UncontrolledCollapse, NavItem } from "reactstrap";
 
 var ps;
 
@@ -86,23 +86,56 @@ class TesterSideBar extends React.Component {
     return (
       <div className="sidebar" data={bgColor}>
         <div className="sidebar-wrapper" ref="sidebar">
-          {logoImg !== null || logoText !== null ? (
-            <div className="logo">
-              {logoImg}
-              {logoText}
-            </div>
-          ) : null}
+
           <Nav>
             <NavLink
-              to={"prop.layout + prop.path"}
-              className="btn-block"
+              to="#"
+              className="nav-link"
               activeClassName="active"
               onClick={this.props.toggleSidebar}
+              id="nav_link_toggler"
             >
               <i className={"tim-icons icon-components"} />
-              <p>{"prop.name"}</p>
+              <p>Team Members</p>
             </NavLink>
+            <UncontrolledCollapse toggler="#nav_link_toggler">
+              <NavItem
+                tag="a"
+                className="nav-link "
+                activeClassName="active"
+                onClick={this.props.toggleSidebar}
+              >
+                <i className={"tim-icons icon-single-02"} />
+                <p>Member_1</p>
+              </NavItem>
+            </UncontrolledCollapse>
           </Nav>
+          {
+            false ?
+              <Nav>
+                <NavLink
+                  to={"prop.layout + prop.path"}
+                  className="nav-link"
+                  activeClassName="active"
+                  onClick={this.props.toggleSidebar}
+                >
+                  <i className={"tim-icons icon-components"} />
+                  <p>Canvas History</p>
+                </NavLink>
+              </Nav> :
+              <Nav>
+                <NavItem
+                  to={"prop.layout + prop.path"}
+                  className="nav-link"
+                  activeClassName="active"
+                  onClick={this.props.toggleSidebar}
+                  disable={true}
+                >
+                  <i className={"tim-icons icon-settings"} />
+                  <p>No Canvas Selected</p>
+                </NavItem>
+              </Nav>
+          }
         </div>
       </div>
     );

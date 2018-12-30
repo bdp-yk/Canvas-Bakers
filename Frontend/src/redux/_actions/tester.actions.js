@@ -5,17 +5,32 @@ import { history } from '../_helpers';
 
 export const testerActions = {
     check_test_season,
-    signin_as_tester,
-    logout_tester
+    register_tester_action,
+    logout_tester,
+    toggle_tester_register_modal,
+    assert_tester
 };
+function toggle_tester_register_modal() {
+    return dispatch => dispatch({ type: testerConstants.TESTER_REGISTER_TOGGLE_MODAL })
 
+}
+
+function assert_tester(tester) {
+    return dispatch=>dispatch(success(tester));
+    function success(tester) { return { type: testerConstants.TESTER_REGISTER_SUCCESS, tester } }
+
+}
 function check_test_season() {
     return dispatch => {
         dispatch({ type: testerConstants.TESTING_SEASON_REQUEST })
         testerServices.checktestseason().then(
             response => {
-                if (response.ok)
-                    dispatch({ type: testerConstants.TESTER_REGISTER_SUCCESS })
+                console.log(response);
+
+                if (response.ok) {
+                    dispatch({ type: testerConstants.TESTING_SEASON_SUCCESS })
+                    // dispatch({ type: testerConstants.TESTER_REGISTER_TOGGLE_MODAL })
+                }
                 else
                     dispatch({ type: testerConstants.TESTING_SEASON_FAILURE })
             }
@@ -24,12 +39,12 @@ function check_test_season() {
         )
     }
 }
-function signin_as_tester(tester) {
+function register_tester_action(tester) {
     return dispatch => {
         dispatch(request(tester))
-        testerServices.register_tester().then(
+        testerServices.register_tester(tester).then(
             response => {
-                dispatch(success(response.tester));
+                dispatch(success(tester));
                 history.push('/quickstart/tester');
             }
 
@@ -46,5 +61,14 @@ function signin_as_tester(tester) {
     function failure() { return { type: testerConstants.TESTER_REGISTER_FAILURE } }
 }
 function logout_tester() {
-    return dispatch => dispatch({ type: testerConstants.TESTER_LOGOUT })
+
+    return dispatch => {
+        testerServices.logout().then(
+            r => {
+                dispatch({ type: testerConstants.TESTER_LOGOUT })
+                history.push('/');
+            }
+
+        )
+    }
 }

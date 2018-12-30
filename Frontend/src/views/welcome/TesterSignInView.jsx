@@ -7,6 +7,10 @@ import {
     DropdownMenu,
     DropdownItem,
     UncontrolledDropdown,
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter
 } from "reactstrap";
 
 import { mapDispatchToProps } from '../../utils';
@@ -43,52 +47,60 @@ class TesterSignInView extends React.Component {
     }
 
     handleSubmit(event) {
-        event.preventDefault(); 
+        event.preventDefault();
     }
     launchTest = (event) => {
         const { tester } = this.state;
+        tester.group = event.target.name
         this.setState({
-            tester: {
-                ...tester,
-                group: event.target.innerText
-            }
+            tester
         });
-        this.props.signin_as_tester(tester) 
+
+        this.props.register_tester_action(this.state.tester)
     }
 
     render() {
         const { tester } = this.state;
         return (
-            <>
-                <Form name="form" onSubmit={this.handleSubmit}>
+            <Form name="form" onSubmit={this.handleSubmit}>
+                <Card className="mb-0">
+                    {/* Bad request parameters: 'testername' is a required property Failed validating 'required' in schema: {'additionalProperties': False, 'properties': {'connected': {'type': 'boolean'}, 'group': {'enum': ['A', 'B', 'C', 'D'], 'type': 'string'}, 'testername': {'type': 'string'}}, 'required': ['testername', 'group'], 'type': 'object'} On instance: {} */}
+                    <CardHeader>
+                        Tester information
+                    </CardHeader>
+                    <CardBody>
+                        <Input name="testername" id="FormInputGroup" onChange={this.handleChange} value={tester.testername} placeholder="Tester Name" type="text" />
 
-                    <Input name="testername" id="FormInputGroup" value={tester.testername} placeholder="Tester Name" type="text" />
-                    <UncontrolledDropdown setActiveFromChild>
-                        <DropdownToggle tag="a" className="nav-link" caret>
-                            SetGroup
+                    </CardBody>
+                    <CardFooter>
+                        <UncontrolledDropdown setActiveFromChild
+                            className="text-center ml-0"  >
+                            <DropdownToggle tag="button" className="btn btn-block" caret>
+                                Set Group and Launch Test
                             </DropdownToggle>
-                        <DropdownMenu>
-                            {["A", "B", "C", "D"].map(
-                                (e, key) => {
-                                    return <DropdownItem key={key} onClick={this.launchTest}>
-                                        Group {e}
-                                    </DropdownItem>
-                                }
-                            )}
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
+                            <DropdownMenu right>
+                                {["A", "B", "C", "D"].map(
+                                    (e, key) => {
+                                        return <DropdownItem key={key} name={e} onClick={this.launchTest}>
+                                            Group {e}
+                                        </DropdownItem>
+                                    }
+                                )}
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                    </CardFooter>
 
-                </Form>
 
-            </>
+                </Card>
+            </Form>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const { registering } = state.registration;
+    const { tester } = state;
     return {
-        registering
+        tester
     };
 }
 

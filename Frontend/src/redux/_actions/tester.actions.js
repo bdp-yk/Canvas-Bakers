@@ -45,7 +45,7 @@ function register_tester_action(tester) {
         testerServices.register_tester(tester).then(
             response => {
                 dispatch(success(tester));
-                history.push('/quickstart/tester');
+                history.push('/quicktest');
             }
 
         ).catch(

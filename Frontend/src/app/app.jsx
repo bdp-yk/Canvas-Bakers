@@ -6,7 +6,7 @@ import NotificationAlert from "react-notification-alert";
 import { history } from '../redux/_helpers';
 import { alertActions } from '../redux/_actions';
 import { PrivateRoute } from '../_components';
-import { WelcomeLayout, CanvasLayout, AdminLayout, TesterLayout } from '../layouts';
+import { WelcomeLayout, CanvasDefaultLayout, AdminLayout, TesterLayout } from '../layouts';
 
 class App extends React.Component {
     constructor(props) {
@@ -41,11 +41,12 @@ class App extends React.Component {
                 </div>
                 <Router history={history}>
                     <Switch>
-                        <PrivateRoute exact path="/" component={CanvasLayout} />
-                        <PrivateRoute path="/admin" render={props => <AdminLayout {...props} />} />
-                        <PrivateRoute path="/quickstart" component={TesterLayout} />
+                        <PrivateRoute path="/user" component={AdminLayout} />
+                        <PrivateRoute path="/admin" component={AdminLayout} />
+                        <PrivateRoute path="/quicktest" component={TesterLayout} />
+                        <Route exact path="/quickstart" component={CanvasDefaultLayout} />
                         <Route path="/welcome" component={WelcomeLayout} />
-                        <Redirect from="/*" to="/" />
+                        <Redirect from="/*" to="/welcome" />
                     </Switch>
                 </Router>
             </>

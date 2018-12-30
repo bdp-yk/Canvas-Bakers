@@ -19,6 +19,7 @@ import { modalActions } from "../../redux/_actions/modal.actions";
 import { TesterSignInView } from "../../views/welcome";
 import { multipleActionsMapDispatchToProps } from "../../utils";
 import { testerActions } from "../../redux/_actions";
+import { history } from "../../redux/_helpers";
 
 class WelcomeNavBar extends React.Component {
   constructor(props) {
@@ -63,7 +64,7 @@ class WelcomeNavBar extends React.Component {
                     >
                       {this.props.tester.testing_season_ok ? "Quick App Test " : "Not a Testing Season"}
                     </DropdownItem>
-                    <DropdownItem >
+                    <DropdownItem onClick={() => history.push("/quickstart")}>
                       Quick Canvas
                     </DropdownItem>
                   </DropdownMenu>

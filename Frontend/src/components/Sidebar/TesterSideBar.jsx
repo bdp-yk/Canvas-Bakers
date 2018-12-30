@@ -86,12 +86,20 @@ class TesterSideBar extends React.Component {
     return (
       <div className="sidebar" data={bgColor}>
         <div className="sidebar-wrapper" ref="sidebar">
-
+          <Nav>
+            <NavLink
+              to={"/quicktest/make"}
+              className="nav-link"
+              tag="a"
+            >
+              <i className={"tim-icons icon-settings"} />
+              <p>Workshop</p>
+            </NavLink>
+          </Nav>
           <Nav>
             <NavLink
               to="#"
               className="nav-link"
-              activeClassName="active"
               onClick={this.props.toggleSidebar}
               id="nav_link_toggler"
             >
@@ -102,7 +110,6 @@ class TesterSideBar extends React.Component {
               <NavItem
                 tag="a"
                 className="nav-link "
-                activeClassName="active"
                 onClick={this.props.toggleSidebar}
               >
                 <i className={"tim-icons icon-single-02"} />
@@ -110,32 +117,30 @@ class TesterSideBar extends React.Component {
               </NavItem>
             </UncontrolledCollapse>
           </Nav>
-          {
-            false ?
-              <Nav>
-                <NavLink
-                  to={"prop.layout + prop.path"}
-                  className="nav-link"
-                  activeClassName="active"
-                  onClick={this.props.toggleSidebar}
-                >
-                  <i className={"tim-icons icon-components"} />
-                  <p>Canvas History</p>
-                </NavLink>
-              </Nav> :
-              <Nav>
-                <NavItem
-                  to={"prop.layout + prop.path"}
-                  className="nav-link"
-                  activeClassName="active"
-                  onClick={this.props.toggleSidebar}
-                  disable={true}
-                >
-                  <i className={"tim-icons icon-settings"} />
-                  <p>No Canvas Selected</p>
-                </NavItem>
-              </Nav>
-          }
+          <Nav>
+            <NavLink
+              to="#"
+              className="nav-link"
+              onClick={this.props.toggleSidebar}
+              id="canvas_history_toggler"
+            >
+              <i className={"tim-icons icon-bullet-list-67"} />
+              <p>Canvas History</p>
+            </NavLink>
+            <UncontrolledCollapse toggler="#canvas_history_toggler">
+              <NavLink
+                to="/vesion"
+                tag="a"
+                className="nav-link "
+                onClick={this.props.toggleSidebar}
+              >
+                <i className={"tim-icons icon-single-02"} />
+                <p>Changes by SOMEBOIZ</p>
+              </NavLink>
+            </UncontrolledCollapse>
+          </Nav>
+
+
         </div>
       </div>
     );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, /*Switch*/ } from "react-router-dom";
+import { Route  } from "react-router-dom";
 import { connect } from 'react-redux'
 
 // javascript plugin used to create scrollbars on windows
@@ -10,11 +10,11 @@ import PerfectScrollbar from "perfect-scrollbar";
 // import Sidebar from "components/Sidebar";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
-import routes from "routes.js";
 import { TesterNavBar } from "../../components/Navbars";
 import { TesterSideBar } from "../../components/Sidebar";
 import { mapDispatchToProps } from "../../utils";
 import { testerActions } from "../../redux/_actions";
+import CanvasDefaultLayout from "../Canvas/CanvasDefaultLayout";
 
 // import logo from "assets/img/brand-logo.png";
 
@@ -86,29 +86,9 @@ class Tester extends React.Component {
   handleBgClick = color => {
     this.setState({ backgroundColor: color });
   };
-  getBrandText = path => {
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        this.props.location.pathname.indexOf(
-          routes[i].layout + routes[i].path
-        ) !== -1
-      ) {
-        return routes[i].name;
-      }
-    }
-    return "Brand";
-  };
-  getRoutesForSideBar = () => {
-    return routes.reduce((a, prop) => {
-      if (prop.layout === "/tester") {
-        return [...a, prop]
-      }
-      return a
-    }, [])
-  }
   render() {
     return (
-      <>
+      <> 
         <div className="wrapper">
           <div
             className="main-panel"
@@ -122,11 +102,7 @@ class Tester extends React.Component {
               sidebarOpened={this.state.sidebarOpened}
             />
             <TesterSideBar bgColor={this.state.backgroundColor} />
-            {/* <Switch>{this.getRoutes(routes)}</Switch> */}
-            {/* {// we don't want the Footer to be rendered on map page
-              this.props.location.pathname.indexOf("maps") !== -1 ? null : (
-                <Footer fluid />
-              )} */}
+            <Route path={`${this.props.match.url}/make`} component={CanvasDefaultLayout} />
           </div>
         </div>
         <FixedPlugin

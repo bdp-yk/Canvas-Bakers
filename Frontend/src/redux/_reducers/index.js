@@ -6,6 +6,7 @@ import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { modal } from './modal.reducer';
 import { tester } from './tester.reducer';
+import { canvas } from './canvas.reducer';
 
 const rootReducer = combineReducers({
   authentication,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   users,
   alert,
   modal,
-  tester
+  tester,
+  canvas
 });
 
 export default rootReducer;

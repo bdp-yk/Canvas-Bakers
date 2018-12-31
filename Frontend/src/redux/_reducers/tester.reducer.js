@@ -7,6 +7,7 @@ import { testerConstants } from '../_constants';
 //   tester_register_request: false,
 //   tester_register_success: false,
 //   tester_register_failure: false,
+//   tester_canvas: [],
 
 //   tester: {
 //     testername: "",

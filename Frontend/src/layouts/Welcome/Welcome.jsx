@@ -66,7 +66,9 @@ class Welcome extends React.Component {
     this.setState({ backgroundColor: color });
   };
   render() {
-    const { modal } = this.props
+    const { modal } = this.props;
+    // if(localStorage.getItem('tester')) history.push('/tester');
+
     return (
       <>
         <WelcomeNavBar
@@ -79,7 +81,7 @@ class Welcome extends React.Component {
 
         {/* LOGIN AND SIGNUP MODALS */}
         <Modal isOpen={this.props.modal.open} toggle={() => this.props.dispatch(modalActions.toggle())}>
-          <Card  style={{marginBottom: 0}}>
+          <Card className="mb-0">
 
             {modal && this.renderModal()}
           </Card>

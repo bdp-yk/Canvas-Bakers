@@ -1,30 +1,30 @@
 
-const P={
+const P = {
     category: "problem",
     name: "Problem",
     logo: "P"
 };
-const S={
+const S = {
     category: "solution",
     name: "Solution",
     logo: "S"
 };
-const K={
+const K = {
     category: "key-activity",
     name: "Key Activity",
     logo: "K"
 };
-const U={
+const U = {
     category: "unique-value-propositions",
     name: "Unique Value Propositions",
     logo: "U"
 };
-const C={
+const C = {
     category: "cost-structure",
     name: "Cost Structure",
     logo: "C"
 };
-const R={
+const R = {
     category: "revenue",
     name: "Revenue",
     logo: "R"
@@ -36,7 +36,7 @@ const col_0 = {
     note_width: 12
 };
 const col_1 = {
-    composition: [S,K],
+    composition: [S, K],
     column_width: 4,
     note_width: 12
 };
@@ -63,3 +63,12 @@ export const lmc_design = [
     col_3,
     col_4
 ];
+export const lmc_schema = {
+    "problem": [],
+    "solution": [],
+    "key-activity": [],
+    "unique-value-propositions": [],
+    "cost-structure": [],
+    "revenue": [],
+    "brain-storm": []
+}

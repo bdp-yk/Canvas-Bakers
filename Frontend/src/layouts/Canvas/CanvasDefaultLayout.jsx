@@ -17,7 +17,7 @@ import {
 import { lmc_design } from "../../featured";
 import { history } from "../../redux/_helpers";
 import NotePartialView from "../../components/Canvas/NotePartialView";
-const smooth_column = (column, index,collapse) => {
+const smooth_column = (column, index, collapse) => {
   return <Col key={index} xs={column.column_width}>
     <Row>
       {column.composition.map(
@@ -31,8 +31,8 @@ const smooth_column = (column, index,collapse) => {
                 <Row>
                   <Col xs={column.note_width}>
                     {[{ "note_headline": `some ${exact_column.name} note`, "note_description": `some ${exact_column.name} description` }].map((note, ind) => {
-                      
-                      return <NotePartialView detailed_note={collapse} key={ind} note={note}/>
+
+                      return <NotePartialView detailed_note={collapse} key={ind} note={note} />
                     })}
                   </Col>
                 </Row>
@@ -52,6 +52,7 @@ class CanvasDefaultLayout extends React.Component {
       detailed_note: true
     }
     this.toggle_detailed_note = this.toggle_detailed_note.bind(this)
+    this.toggle_share_dropdown_open = this.toggle_share_dropdown_open.bind(this)
   }
   toggle_detailed_note = () => {
     this.setState({
@@ -95,7 +96,7 @@ class CanvasDefaultLayout extends React.Component {
           </Row>
           <Row>
             {lmc_design.map((e, index) => {
-              return smooth_column(e, index,detailed_note)
+              return smooth_column(e, index, detailed_note)
             })}
             <Col xs="12">
               <Card>

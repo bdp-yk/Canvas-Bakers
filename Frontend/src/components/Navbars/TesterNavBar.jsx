@@ -14,11 +14,11 @@ import {
   NavLink,
   Nav,
   Container
-  
+
 } from "reactstrap";
 import { connect } from 'react-redux'
 import { testerActions } from "../../redux/_actions";
-import { mapDispatchToProps } from "../../utils";
+import { mapDispatchToProps, who_am_i } from "../../utils";
 
 class TesterNavBar extends React.Component {
   constructor(props) {
@@ -48,21 +48,35 @@ class TesterNavBar extends React.Component {
     }
   };
 
-  getTesterInfo = () => {
-    const { tester } = this.props
-    return ((Boolean(tester && tester.tester)) && tester.tester) || ""
+  getTesterInfo = () => {     
+    return who_am_i()["email"];
   }
   render() {
     return (
       <>
         <Navbar
           className={classNames("navbar-absolute", this.state.color)}
-          expand="xs"
+          expand="md"
         >
           <Container fluid>
             <div className="navbar-wrapper">
+              <div
+                className={classNames("navbar-toggle d-inline", {
+                  toggled: this.props.sidebarOpened
+                })}
+              >
+                <button
+                  className="navbar-toggler"
+                  type="button"
+                  onClick={this.props.toggleSidebar}
+                >
+                  <span className="navbar-toggler-bar bar1" />
+                  <span className="navbar-toggler-bar bar2" />
+                  <span className="navbar-toggler-bar bar3" />
+                </button>
+              </div>
               <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
-                Hello, {this.getTesterInfo().testername}
+                Hello, {this.getTesterInfo() }
               </NavbarBrand>
             </div>
             <Collapse navbar isOpen={this.state.collapseOpen}>

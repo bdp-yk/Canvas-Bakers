@@ -2,6 +2,7 @@ import { testerConstants } from '../_constants';
 import { testerServices } from '../_services';
 import { alertActions } from './';
 import { history } from '../_helpers';
+import { _tester_route, _welcome_route } from '../../constants';
 
 export const testerActions = {
     check_test_season,
@@ -16,7 +17,7 @@ function toggle_tester_register_modal() {
 }
 
 function assert_tester(tester) {
-    return dispatch=>dispatch(success(tester));
+    return dispatch => dispatch(success(tester));
     function success(tester) { return { type: testerConstants.TESTER_REGISTER_SUCCESS, tester } }
 
 }
@@ -45,14 +46,13 @@ function register_tester_action(tester) {
         testerServices.register_tester(tester).then(
             response => {
                 dispatch(success(tester));
-                history.push('/quicktest');
+                history.push(_tester_route);
             }
 
         ).catch(
             error => {
                 dispatch(alertActions.error(error.toString()));
                 dispatch(failure());
-                history.push('/');
             }
         )
     }
@@ -66,7 +66,7 @@ function logout_tester() {
         testerServices.logout().then(
             r => {
                 dispatch({ type: testerConstants.TESTER_LOGOUT })
-                history.push('/');
+                history.push(_welcome_route);
             }
 
         )

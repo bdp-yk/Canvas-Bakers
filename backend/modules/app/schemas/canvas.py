@@ -2,29 +2,42 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from jsonschema.exceptions import SchemaError
 
-user_schema = {
+canvas_schema = {
     "type": "object",
     "properties": {
-        "name": {
+        "canvas_id": {
             "type": "string",
         },
-        "email": {
+        "canvas_description": {
             "type": "string",
-            "format": "email"
         },
-        "password": {
+        "canvas_name": {
             "type": "string",
-            "minLength": 5
-        }
+        },
+        "canvas_notes": {
+            "type": "string",
+        },
+        "canvas_team": {
+            "type": "string",
+        },
+        "canvas_base_version": {
+            "type": "string",
+        },
+        "canvas_version_name": {
+            "type": "string",
+        },
+        "canvas_version_stamp": {
+            "type": "string",
+        },
     },
-    "required": ["email", "password"],
+    "required": ["canvas_id"],
     "additionalProperties": False
 }
 
 
-def validate_user(data):
+def validate_canvas(data):
     try:
-        validate(data, user_schema)
+        validate(data, canvas_schema)
     except ValidationError as e:
         return {'ok': False, 'message': e}
     except SchemaError as e:

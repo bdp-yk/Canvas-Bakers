@@ -9,7 +9,8 @@ import { connect } from 'react-redux'
 import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
-import { Nav, UncontrolledCollapse, NavItem } from "reactstrap";
+import { Nav, UncontrolledCollapse, NavItem, Button } from "reactstrap";
+import { _tester_dashboard_route } from "../../constants";
 
 var ps;
 
@@ -34,69 +35,40 @@ class TesterSideBar extends React.Component {
     document.documentElement.classList.remove("nav-open");
   };
   render() {
-    const { bgColor, routes, logo } = this.props;
-    let logoImg = null;
-    let logoText = null;
-    if (logo !== undefined) {
-      if (logo.outterLink !== undefined) {
-        logoImg = (
-          <a
-            href={logo.outterLink}
-            className="simple-text logo-mini"
-            target="_blank"
-            onClick={this.props.toggleSidebar}
-          >
-            <div className="logo-img">
-              <img src={logo.imgSrc} alt="brand-logo" />
-            </div>
-          </a>
-        );
-        logoText = (
-          <a
-            href={logo.outterLink}
-            className="simple-text logo-normal"
-            onClick={this.props.toggleSidebar}
-          >
-            {logo.text}
-          </a>
-        );
-      } else {
-        logoImg = (
-          <Link
-            to={logo.innerLink}
-            className="simple-text logo-mini"
-            onClick={this.props.toggleSidebar}
-          >
-            <div className="logo-img">
-              <img src={logo.imgSrc} alt="brand-logo" />
-            </div>
-          </Link>
-        );
-        logoText = (
-          <Link
-            to={logo.innerLink}
-            className="simple-text logo-normal"
-            onClick={this.props.toggleSidebar}
-          >
-            {logo.text}
-          </Link>
-        );
-      }
-    }
+    const { bgColor, canvas } = this.props;
+    const { canvas_schema, canvas_history } = canvas;
     return (
       <div className="sidebar" data={bgColor}>
         <div className="sidebar-wrapper" ref="sidebar">
+
+          <div className="logo">
+            <Link
+              to="#"
+              className="simple-text logo-mini"
+              onClick={this.props.toggleSidebar}
+            >
+              <div className="logo-img">
+                <img src={require('assets/img/brand-logo.png')} alt="brand-logo" />
+              </div>
+            </Link>
+            <Button
+              color="link"
+              className="simple-text logo-normal"
+              onClick={this.props.toggleSidebar}
+            >
+              Menu
+            </Button>
+          </div>
+
           <Nav>
             <NavLink
-              to={"/quicktest/make"}
+              to={_tester_dashboard_route}
               className="nav-link"
               tag="a"
             >
               <i className={"tim-icons icon-settings"} />
-              <p>Workshop</p>
+              <p>Dashboard</p>
             </NavLink>
-          </Nav>
-          <Nav>
             <NavLink
               to="#"
               className="nav-link"
@@ -107,17 +79,15 @@ class TesterSideBar extends React.Component {
               <p>Team Members</p>
             </NavLink>
             <UncontrolledCollapse toggler="#nav_link_toggler">
-              <NavItem
+              {canvas_schema ? canvas_schema.canvas_team && canvas_schema.canvas_team.map(e => <NavItem
                 tag="a"
                 className="nav-link "
-                onClick={this.props.toggleSidebar}
               >
                 <i className={"tim-icons icon-single-02"} />
-                <p>Member_1</p>
-              </NavItem>
+                <p>{e["email"]}</p>
+              </NavItem>) : <NavItem tag="a"
+                className="nav-link "><p>Select a WorkSpace</p></NavItem>}
             </UncontrolledCollapse>
-          </Nav>
-          <Nav>
             <NavLink
               to="#"
               className="nav-link"
@@ -128,15 +98,22 @@ class TesterSideBar extends React.Component {
               <p>Canvas History</p>
             </NavLink>
             <UncontrolledCollapse toggler="#canvas_history_toggler">
-              <NavLink
+              {canvas && canvas_history ? canvas_history.map(e => {
+                <NavLink
+                  to="/vesion"
+                  tag="a"
+                  className="nav-link "
+                >
+                  <i className={"tim-icons icon-single-02"} />
+                  <p>Changes by {e["member"]}--{`at ${Date(e["time"])}`}</p>
+                </NavLink>
+              }) : <NavLink
                 to="/vesion"
                 tag="a"
                 className="nav-link "
-                onClick={this.props.toggleSidebar}
               >
-                <i className={"tim-icons icon-single-02"} />
-                <p>Changes by SOMEBOIZ</p>
-              </NavLink>
+                  <p>Select a WorkSpace</p>
+                </NavLink>}
             </UncontrolledCollapse>
           </Nav>
 
@@ -171,9 +148,10 @@ TesterSideBar.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { tester } = state;
+  const { tester, canvas } = state;
   return {
-    tester
+    tester,
+    canvas
   };
 }
 

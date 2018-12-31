@@ -1,5 +1,5 @@
 import React from "react";
-import { Route  } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { connect } from 'react-redux'
 
 // javascript plugin used to create scrollbars on windows
@@ -15,6 +15,8 @@ import { TesterSideBar } from "../../components/Sidebar";
 import { mapDispatchToProps } from "../../utils";
 import { testerActions } from "../../redux/_actions";
 import CanvasDefaultLayout from "../Canvas/CanvasDefaultLayout";
+import { Dashboard } from "../../views/canvas";
+import { _tester_dashboard_route, _tester_workspace_route } from "../../constants";
 
 // import logo from "assets/img/brand-logo.png";
 
@@ -88,7 +90,7 @@ class Tester extends React.Component {
   };
   render() {
     return (
-      <> 
+      <>
         <div className="wrapper">
           <div
             className="main-panel"
@@ -102,7 +104,8 @@ class Tester extends React.Component {
               sidebarOpened={this.state.sidebarOpened}
             />
             <TesterSideBar bgColor={this.state.backgroundColor} />
-            <Route path={`${this.props.match.url}/make`} component={CanvasDefaultLayout} />
+            <Route path={_tester_dashboard_route} component={Dashboard} />
+            <Route path={_tester_workspace_route} component={CanvasDefaultLayout} />
           </div>
         </div>
         <FixedPlugin

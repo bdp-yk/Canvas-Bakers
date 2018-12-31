@@ -9,6 +9,7 @@ export const LOCAL_STORAGE_REDUX_DATA_KEY = 'canvas-baker-redux-data';
 
 // The Api Providing Server adress
 export const BASE_URL = 'http://127.0.0.1/';
-export const API_URL = BASE_URL+'api/v1/';
-export const AUTH_API_URL = API_URL+'auth/';
-export const CANVAS_API_URL = API_URL+'canvas/';
+export const API_URL = BASE_URL + 'api/v1/';
+export const AUTH_API_URL = API_URL + 'auth/';
+export const CANVAS_API_URL = API_URL + 'canvas/';
+export * from "./routes_path";

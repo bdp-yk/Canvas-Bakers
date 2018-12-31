@@ -18,3 +18,9 @@ class _url():
 
     GET_ALL_USERS = USER_AUTH_URL + "get_all/"
     GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/"
+
+    CANVAS_ENTRY_URL = "/canvas/"
+    UPDATE_CANVAS_URL = CANVAS_ENTRY_URL + "update"
+    DELETE_CANVAS_URL = CANVAS_ENTRY_URL + "delete"
+    LIST_OF_USER_CANVAS_URL = CANVAS_ENTRY_URL + "list_canvas"
+    CANVAS_HISTOR_URL = CANVAS_ENTRY_URL + "canvas_history"

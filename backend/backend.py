@@ -12,6 +12,7 @@ PUBLIC_PATH = os.path.join(ROOT_PATH, 'public')
 
 import modules.logger as logger  # noqa
 from modules.app import app  # noqa
+from modules.app.controllers import *   # pylint: disable=W0401,C0413
 
 # Create a logger object to log the info and debug
 LOG = logger.get_root_logger(os.environ.get(
@@ -20,15 +21,20 @@ LOG = logger.get_root_logger(os.environ.get(
 # Port variable to run the server on.
 PORT = os.environ.get('PORT',5000)
 
-@app.route('/api/v1.0/ping', methods=['GET'])
+@app.route('/ping', methods=['GET'])
 def dummy_endpoint():
     """ Testing endpoint """
     return jsonify({'data': 'Server running'}), 200
-from modules.app.controllers import *   # pylint: disable=W0401,C0413
+
+@app.route('/ping2', methods=['GET'])
+def dummy_endpoint_2():
+    """ Testing endpoint """
+    return jsonify({'data': ['Server running']}), 200
+
+
 
 
 if __name__ == '__main__':
-    # LOG.info('running environment: %s', os.environ.get('ENV',"development"))
-    app.config['DEBUG'] = "development"
+    LOG.info('running environment: %s', os.environ.get('ENV',"development"))
     # app.run(host='0.0.0.0', port=int(PORT))
     app.run(host='127.0.0.1', port=int(PORT))

@@ -3,14 +3,20 @@ import isAfter from 'date-fns/is_after';
 // import * as actionCreators from "../redux/_actions";
 
 import { bindActionCreators } from 'redux';
+import { lmc_schema, bmc_schema } from '../featured';
+
+export const mapStateToProps = state => {
+  const { ...rest } = state;
+  return rest;
+}
 
 export const mapDispatchToProps = (actionCreators) => (dispatch) => {
   return bindActionCreators(actionCreators, dispatch);
 }
 export const multipleActionsMapDispatchToProps = (actionCreators) => (dispatch) => {
-  let all_actions={}
+  let all_actions = {}
   actionCreators.forEach(element => {
-    all_actions={
+    all_actions = {
       ...all_actions,
       ...element
     }
@@ -131,3 +137,22 @@ export const deleteCookie = key => {
     key
   )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 };
+
+
+export const get_init_schema = schema => {
+  switch (schema) {
+    case "bmc":
+      return bmc_schema;
+    case "lmc":
+      return lmc_schema;
+
+    default:
+      return bmc_schema;
+  }
+}
+
+export const who_am_i = () => {
+  return JSON.parse(localStorage.getItem('tester', "null") ||
+    localStorage.getItem('user', "null") ||
+    localStorage.getItem('admin', "null"))
+}

@@ -20,7 +20,19 @@ export const TESTER_UPDATE_URL = TESTER_AUTH_URL + "update/";
 export const TESTER_DELETE_URL = TESTER_AUTH_URL + "delete/";
 export const TESTER_LOGOUT_URL = TESTER_AUTH_URL + "logout/";
 
+
+
 //all url
 export const GET_ALL_USERS = USER_AUTH_URL + "get_all/"
 export const GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/"
+
+
 // canvas urls
+export const CANVAS_ENTRY_URL = API_URL + "canvas/";
+//update_one with upsert
+export const UPDATE_CANVAS_URL = CANVAS_ENTRY_URL + "update";
+export const LOAD_CANVAS_URL = CANVAS_ENTRY_URL + "delete";
+export const DELETE_CANVAS_URL = CANVAS_ENTRY_URL + "delete";
+
+export const LIST_OF_USER_CANVAS_URL = CANVAS_ENTRY_URL + "list_canvas";
+export const CANVAS_HISTOR_URL = CANVAS_ENTRY_URL + "canvas_history";

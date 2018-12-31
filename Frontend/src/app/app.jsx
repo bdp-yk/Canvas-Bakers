@@ -6,14 +6,16 @@ import NotificationAlert from "react-notification-alert";
 import { history } from '../redux/_helpers';
 import { alertActions } from '../redux/_actions';
 import { PrivateRoute } from '../_components';
-import { WelcomeLayout, CanvasDefaultLayout, AdminLayout, TesterLayout } from '../layouts';
-
+import { WelcomeLayout, CanvasDefaultLayout, AdminLayout, TesterLayout, UserLayout, DocumentationLayout } from '../layouts';
+import { _admin_route, _user_route, _tester_route, _canvas_preview_route, _welcome_route, _document_route } from '../constants';
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         const { dispatch } = this.props;
         history.listen((location, action) => {
+            console.log("wtf is this?", location, action);
+
             // clear alert on location change
             dispatch(alertActions.clear());
         });
@@ -41,12 +43,13 @@ class App extends React.Component {
                 </div>
                 <Router history={history}>
                     <Switch>
-                        <PrivateRoute path="/user" component={AdminLayout} />
-                        <PrivateRoute path="/admin" component={AdminLayout} />
-                        <PrivateRoute path="/quicktest" component={TesterLayout} />
-                        <Route exact path="/quickstart" component={CanvasDefaultLayout} />
-                        <Route path="/welcome" component={WelcomeLayout} />
-                        <Redirect from="/*" to="/welcome" />
+                        <PrivateRoute path={_admin_route} component={AdminLayout} />
+                        <PrivateRoute path={_user_route} component={UserLayout} />
+                        <PrivateRoute path={_tester_route} component={TesterLayout} />
+                        <Route path={_canvas_preview_route} component={CanvasDefaultLayout} />
+                        <Route path={_welcome_route} component={WelcomeLayout} />
+                        <Route path={_document_route} component={DocumentationLayout} />
+                        <Redirect from="/*" to={_welcome_route} />
                     </Switch>
                 </Router>
             </>

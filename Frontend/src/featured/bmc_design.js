@@ -97,3 +97,15 @@ export const bmc_design = [
     col_5,
     col_6
 ];
+export const bmc_schema = {
+    "key-partners": [],
+    "key-activites": [],
+    "key-resources": [],
+    "value-propositions": [],
+    "customer-relationships": [],
+    "channels": [],
+    "customer-segments": [],
+    "cost-structure": [],
+    "revenue-stream": [],
+    "brain-storm": []
+};

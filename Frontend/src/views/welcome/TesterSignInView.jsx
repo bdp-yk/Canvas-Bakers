@@ -23,8 +23,9 @@ class TesterSignInView extends React.Component {
 
         this.state = {
             tester: {
-                testername: "",
-                group: ""
+                email: "",
+                group: "",
+                class: "tester"
             },
             submitted: false
         };
@@ -64,12 +65,12 @@ class TesterSignInView extends React.Component {
         return (
             <Form name="form" onSubmit={this.handleSubmit}>
                 <Card className="mb-0">
-                    {/* Bad request parameters: 'testername' is a required property Failed validating 'required' in schema: {'additionalProperties': False, 'properties': {'connected': {'type': 'boolean'}, 'group': {'enum': ['A', 'B', 'C', 'D'], 'type': 'string'}, 'testername': {'type': 'string'}}, 'required': ['testername', 'group'], 'type': 'object'} On instance: {} */}
+                    {/* Bad request parameters: 'email' is a required property Failed validating 'required' in schema: {'additionalProperties': False, 'properties': {'connected': {'type': 'boolean'}, 'group': {'enum': ['A', 'B', 'C', 'D'], 'type': 'string'}, 'email': {'type': 'string'}}, 'required': ['email', 'group'], 'type': 'object'} On instance: {} */}
                     <CardHeader>
                         Tester information
                     </CardHeader>
                     <CardBody>
-                        <Input name="testername" id="FormInputGroup" onChange={this.handleChange} value={tester.testername} placeholder="Tester Name" type="text" />
+                        <Input name="email" id="FormInputGroup" onChange={this.handleChange} value={tester.email} placeholder="Tester Name" type="text" />
 
                     </CardBody>
                     <CardFooter>

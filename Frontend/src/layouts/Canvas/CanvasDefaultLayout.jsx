@@ -17,6 +17,9 @@ import {
 import { lmc_design } from "../../featured";
 import { history } from "../../redux/_helpers";
 import NotePartialView from "../../components/Canvas/NotePartialView";
+import { CANVAS_ID_LENGHT } from "../../constants";
+import { multipleActionsMapDispatchToProps } from "../../utils";
+import { canvasActions, testerActions } from "../../redux/_actions";
 const smooth_column = (column, index, collapse) => {
   return <Col key={index} xs={column.column_width}>
     <Row>
@@ -54,6 +57,17 @@ class CanvasDefaultLayout extends React.Component {
     this.toggle_detailed_note = this.toggle_detailed_note.bind(this)
     this.toggle_share_dropdown_open = this.toggle_share_dropdown_open.bind(this)
   }
+  componentDidMount() {
+    const { canvas_id } = this.props.match.params
+    const { canvas } = this.props
+
+    if (canvas_id.length === CANVAS_ID_LENGHT) {
+      if (!(canvas && canvas.load_canvas_success)) {
+        this.props.load_canvas_schema(canvas_id);
+      }
+
+    }
+  }
   toggle_detailed_note = () => {
     this.setState({
       detailed_note: !this.state.detailed_note
@@ -67,33 +81,39 @@ class CanvasDefaultLayout extends React.Component {
 
   render() {
     const { detailed_note, share_dropdown_open } = this.state
+    // const { canvas } = this.props;
+    const { canvas_schema, load_canvas_success, load_canvas_request } = this.props.canvas;
 
     return (
       <>
-        <div className="content">
-          <Row>
-            <span className="px-3" >{`Canvas: ${"aaa"} -version: ${"0"}`}</span>
-            <ButtonGroup className="px-3 ml-auto">
-              {(this.props.location.pathname === "/quickstart") && <Button onClick={() => history.push("/welcome")}>Home</Button>
-              }
+        {load_canvas_request ? <div>Requesting the Canvas ...</div> : <div className="content">
+          {load_canvas_success ?
+            <Row>
+              <span className="px-3" >
+                {`Canvas: ${canvas_schema.canvas_name} -version: ${canvas_schema.canvas_version_provider}/${canvas_schema.canvas_version_provider}`}
+              </span>
+              <ButtonGroup className="px-3 ml-auto">
+                {(this.props.location.pathname === "/quickstart") && <Button onClick={() => history.push("/welcome")}>Home</Button>
+                }
 
-            </ButtonGroup>
-            <ButtonGroup className="px-3 ml-auto">
-              <Button onClick={this.toggle_detailed_note}>Toggle Note Details</Button>
-              <ButtonDropdown isOpen={share_dropdown_open} toggle={this.toggle_share_dropdown_open}>
-                <DropdownToggle caret>
-                  Share Canvas
+              </ButtonGroup>
+              <ButtonGroup className="px-3 ml-auto">
+                <Button onClick={this.toggle_detailed_note}>Toggle Note Details</Button>
+                <ButtonDropdown isOpen={share_dropdown_open} toggle={this.toggle_share_dropdown_open}>
+                  <DropdownToggle caret>
+                    Share Canvas
                   </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem >{true && "Un-"}Share Canvas</DropdownItem>
-                  <DropdownItem >Copy Canvas Link</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Share it via Email </DropdownItem>
-                </DropdownMenu>
-              </ButtonDropdown>
-              <Button color="danger">Delete</Button>
-            </ButtonGroup>
-          </Row>
+                  <DropdownMenu>
+                    <DropdownItem >{true && "Un-"}Share Canvas</DropdownItem>
+                    <DropdownItem >Copy Canvas Link</DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem>Share it via Email </DropdownItem>
+                  </DropdownMenu>
+                </ButtonDropdown>
+                <Button color="danger">Delete</Button>
+              </ButtonGroup>
+            </Row> :
+            "eee"}
           <Row>
             {lmc_design.map((e, index) => {
               return smooth_column(e, index, detailed_note)
@@ -111,13 +131,12 @@ class CanvasDefaultLayout extends React.Component {
               </Card>
             </Col>
           </Row>
-        </div>
+        </div>}
       </>
     );
   }
 }
 
-export default CanvasDefaultLayout;
 function mapStateToProps(state) {
   const { canvas } = state;
   return {
@@ -125,5 +144,5 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedCanvasDefaultLayout = connect(mapStateToProps)(CanvasDefaultLayout);
+const connectedCanvasDefaultLayout = connect(mapStateToProps, multipleActionsMapDispatchToProps([canvasActions, testerActions]))(CanvasDefaultLayout);
 export { connectedCanvasDefaultLayout as CanvasDefaultLayout }; 

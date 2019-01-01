@@ -23,7 +23,7 @@ canvas_schema = {
         "canvas_base_version": {
             "type": "string",
         },
-        "canvas_version_name": {
+        "canvas_version_provider": {
             "type": "string",
         },
         "canvas_version_stamp": {

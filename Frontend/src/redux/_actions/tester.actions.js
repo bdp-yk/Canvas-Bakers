@@ -1,4 +1,4 @@
-import { testerConstants } from '../_constants';
+import { testerConstants, alertConstants } from '../_constants';
 import { testerServices } from '../_services';
 import { alertActions } from './';
 import { history } from '../_helpers';
@@ -66,9 +66,11 @@ function logout_tester() {
         testerServices.logout().then(
             r => {
                 dispatch({ type: testerConstants.TESTER_LOGOUT })
-                history.push(_welcome_route);
+
             }
 
-        )
+        ).catch(e => {
+            dispatch({ type: alertConstants.ERROR_CLASS, message: "Something Bad Happened" })
+        }).then(() => history.push(_welcome_route))
     }
 }

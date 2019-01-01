@@ -2,7 +2,7 @@ import { userConstants } from '../_constants';
 import { userService } from '../_services';
 import { alertActions } from './';
 import { history } from '../_helpers';
-import { _user_route } from '../../constants';
+import { _dashboard_route } from '../../constants';
 
 export const userActions = {
     login,
@@ -20,7 +20,7 @@ function login(email, password) {
             .then(
                 user => {
                     dispatch(success(user));
-                    history.push('/');
+                    history.push(_dashboard_route);
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -47,7 +47,7 @@ function register(user) {
             .then(
                 user => {
                     dispatch(success());
-                    history.push(_user_route);
+                    history.push(_dashboard_route);
                     dispatch(alertActions.success('Registration successful'));
                 },
                 error => {

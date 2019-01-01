@@ -24,7 +24,7 @@ def tester_register():
     if data['ok']:
         data = data['data']
         data["connected"] = True
-        mongo.db.testers.update_one({"testername":data["testername"]},{"$set":data},upsert=True)
+        mongo.db.testers.update_one({"email":data["email"]},{"$set":data},upsert=True)
         return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
     else:
         return jsonify({'ok': False, 'message': 'Bad request parameters: {}'.format(data['message'])}), 400
@@ -38,8 +38,8 @@ def tester_quit():
         data = data['data']
         print(data)
         mongo.db.testers.update_one(
-            {"testername": data["testername"]}, {'$set': {"connected": False}})
-        LOG.debug(data["testername"], "hast left the Test")
+            {"email": data["email"]}, {'$set': {"connected": False}})
+        LOG.debug(data["email"], "hast left the Test")
         return jsonify({'ok': True, 'message': 'Tester successfully left'}), 200
     else:
         return jsonify({'ok': False, 'message': 'Bad request parameters: {}'.format(data['message'])}), 400

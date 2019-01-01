@@ -13,3 +13,5 @@ export const API_URL = BASE_URL + 'api/v1/';
 export const AUTH_API_URL = API_URL + 'auth/';
 export const CANVAS_API_URL = API_URL + 'canvas/';
 export * from "./routes_path";
+
+export const CANVAS_ID_LENGHT = 21;

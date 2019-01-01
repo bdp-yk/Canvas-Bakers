@@ -5,18 +5,22 @@ from jsonschema.exceptions import SchemaError
 tester_schema = {
     "type": "object",
     "properties": {
-        "testername": {
+        "email": {
             "type": "string",
         },
         "group": {
             "type": "string",
             "enum": ["A", "B", "C", "D"]
         },
+        "class": {
+            "type": "string",
+            "enum": ["admin", "tester", "user"]
+        },
         "connected": {
             "type": "boolean"
         }
     },
-    "required": ["testername", "group"],
+    "required": ["email", "group"],
     "additionalProperties": False
 }
 

@@ -49,7 +49,7 @@ class TesterNavBar extends React.Component {
   };
 
   getTesterInfo = () => {     
-    return who_am_i()["email"];
+    return  Boolean(who_am_i())&&who_am_i()["email"];
   }
   render() {
     return (

@@ -10,7 +10,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Nav, UncontrolledCollapse, NavItem, Button } from "reactstrap";
-import { _tester_dashboard_route } from "../../constants";
+import { _dashboard_route } from "../../constants";
 
 var ps;
 
@@ -62,7 +62,7 @@ class TesterSideBar extends React.Component {
 
           <Nav>
             <NavLink
-              to={_tester_dashboard_route}
+              to={_dashboard_route}
               className="nav-link"
               tag="a"
             >
@@ -82,9 +82,10 @@ class TesterSideBar extends React.Component {
               {canvas_schema ? canvas_schema.canvas_team && canvas_schema.canvas_team.map(e => <NavItem
                 tag="a"
                 className="nav-link "
+                key={e}
               >
                 <i className={"tim-icons icon-single-02"} />
-                <p>{e["email"]}</p>
+                <small>{e["email"]}</small>
               </NavItem>) : <NavItem tag="a"
                 className="nav-link "><p>Select a WorkSpace</p></NavItem>}
             </UncontrolledCollapse>

@@ -14,9 +14,9 @@ import { TesterNavBar } from "../../components/Navbars";
 import { TesterSideBar } from "../../components/Sidebar";
 import { mapDispatchToProps } from "../../utils";
 import { testerActions } from "../../redux/_actions";
-import CanvasDefaultLayout from "../Canvas/CanvasDefaultLayout";
 import { Dashboard } from "../../views/canvas";
-import { _tester_dashboard_route, _tester_workspace_route } from "../../constants";
+import { _workspace_route, _dashboard_route } from "../../constants";
+import { CanvasDefaultLayout } from "../Canvas/CanvasDefaultLayout";
 
 // import logo from "assets/img/brand-logo.png";
 
@@ -68,23 +68,6 @@ class Tester extends React.Component {
     document.documentElement.classList.toggle("nav-open");
     this.setState({ sidebarOpened: !this.state.sidebarOpened });
   };
-  getRoutes = routes => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/tester") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        console.log(prop);
-
-        return null;
-      }
-    });
-  };
   handleBgClick = color => {
     this.setState({ backgroundColor: color });
   };
@@ -99,13 +82,13 @@ class Tester extends React.Component {
           >
             <TesterNavBar
               {...this.props}
-              brandText={this.props.tester.testername}
+              brandText={this.props.tester.email}
               toggleSidebar={this.toggleSidebar}
               sidebarOpened={this.state.sidebarOpened}
             />
             <TesterSideBar bgColor={this.state.backgroundColor} />
-            <Route path={_tester_dashboard_route} component={Dashboard} />
-            <Route path={_tester_workspace_route} component={CanvasDefaultLayout} />
+            <Route path={_dashboard_route} component={Dashboard} />
+            <Route path={_workspace_route} component={CanvasDefaultLayout} />
           </div>
         </div>
         <FixedPlugin

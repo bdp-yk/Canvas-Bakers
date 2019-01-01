@@ -1,19 +1,4 @@
 import { canvasConstants } from '../_constants';
-const nanoid = require('nanoid');
-
-const canvas_initial_schema = new_canvas => {
-    return {
-        canvas_id: nanoid(),
-        // canvas_description: "",
-        // canvas_name: "",
-        // canvas_notes: [],
-        // canvas_team: [],
-        canvas_base_version: null,
-        canvas_version_name: "",
-        canvas_version_stamp: 0,
-        ...new_canvas,
-    }
-}
 
 // const canvas_store = {
 //     init_canvas_request: true,
@@ -39,6 +24,8 @@ const canvas_initial_schema = new_canvas => {
 //     user_canvas: [],
 
 //     canvas_versions: [],
+//     canvas_schema: {...},
+
 
 // }
 export function canvas(state = {}, action) {
@@ -46,7 +33,10 @@ export function canvas(state = {}, action) {
         case canvasConstants.INIT_CANVAS_REQUEST:
             return {
                 ...state,
-                canvas_schema: canvas_initial_schema(action.schema)
+                init_canvas_request:true,
+                init_canvas_success: false,
+                init_canvas_failure: false,
+                canvas_schema: action.schema
             }
         case canvasConstants.INIT_CANVAS_SUCCESS:
             return {
@@ -94,26 +84,26 @@ export function canvas(state = {}, action) {
         case canvasConstants.LOAD_CANVAS_REQUEST:
             return {
                 ...state,
-                update_canvas_request: true,
-                update_canvas_success: false,
-                update_canvas_failure: false,
+                load_canvas_request: true,
+                load_canvas_success: false,
+                load_canvas_failure: false,
 
             };
         case canvasConstants.LOAD_CANVAS_SUCCESS:
             return {
                 ...state,
                 ...action.payload,
-                update_canvas_request: false,
-                update_canvas_success: true,
-                update_canvas_failure: false,
+                load_canvas_request: false,
+                load_canvas_success: true,
+                load_canvas_failure: false,
 
             };
         case canvasConstants.LOAD_CANVAS_FAILURE:
             return {
                 ...state,
-                update_canvas_request: false,
-                update_canvas_success: false,
-                update_canvas_failure: true,
+                load_canvas_request: false,
+                load_canvas_success: false,
+                load_canvas_failure: true,
 
             };
         case canvasConstants.DELETE_CANVAS_REQUEST:
@@ -172,7 +162,7 @@ export function canvas(state = {}, action) {
         case canvasConstants.CLEAR_CANVAS_SCHEMA:
             return {
                 ...state,
-                canvas_schema: {}
+                canvas_schema: null
 
             }
         default:

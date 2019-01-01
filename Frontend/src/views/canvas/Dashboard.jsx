@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 // reactstrap components
 import {
   Card, Button, CardImg, CardTitle, CardText, Row, CardFooter, Input,
-  CardBody
+  CardBody, Fade
 } from "reactstrap";
 // import { Link } from "react-router-dom";
 import { mapDispatchToProps, get_init_schema, who_am_i } from "../../utils";
@@ -38,18 +38,19 @@ class Dashboard extends React.Component {
       canvas_name,
       canvas_notes,
       canvas_team
-    })
+    });
+
 
   }
   componentDidMount = () => {
     this.props.list_all_canvases();
     this.props.clear_canvas_schema_action();
+    console.log(this.props);
+
 
   }
   handleInputChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
-
     this.setState({
       [name]: value
     })
@@ -61,25 +62,27 @@ class Dashboard extends React.Component {
       <>
         <div className="content">
           <h3>
-            Dashboard <br /><small className="text-muted">Manage your existing WorkSpaces or create a new one</small>
+            Dashboard <br /><small className="text-muted">Manage your existing WorkSpaces or </small><a href="#new_one" className="link text-muted"> create a new one</a>
           </h3>
           <Row className="justify-content-center">
-            {canvas.load_user_canvas_request && <div style={{ width: "18rem" }} className="mx-auto text-center" ><CardImg top alt="loader" src={loadingthumbnail} /> Loading Dashboard </div>}
+            {canvas.load_user_canvas_request && <div style={{ width: "5rem" }} className="mx-auto text-center" ><CardImg top alt="loader" src={loadingthumbnail} /> Loading Dashboard </div>}
             {canvas.user_canvas ? canvas.user_canvas.map((e) =>
-              <Card className="mx-auto" style={{ width: "18rem" }} key={e.canvas_id}>
-                <CardBody>
-                  <CardTitle>{e.canvas_name}</CardTitle>
-                  <CardText>{e.canvas_description}</CardText>
-                  {/* <Link to={`${this.props.match.url}/make`}> */}
+              <Fade className=" mx-auto" style={{ width: "18rem" }} key={e.canvas_id}>
+                <Card >
+                  <CardBody>
+                    <CardTitle>{e.canvas_name}</CardTitle>
+                    <CardText>{e.canvas_description}</CardText>
+                    {/* <Link to={`${this.props.match.url}/make`}> */}
 
-                  {/* </Link> */}
-                </CardBody>
-                <CardFooter> <Button block onClick={() => this.props.load_canvas_schema(e.canvas_id)}>  Load it in WorkSpace</Button></CardFooter>
-              </Card>
+                    {/* </Link> */}
+                  </CardBody>
+                  <CardFooter> <Button block onClick={() => this.props.load_canvas_schema(e.canvas_id)}>  Load it in WorkSpace</Button></CardFooter>
+                </Card>
+              </Fade>
             ) : null}
           </Row>
           <hr />
-          <Row>
+          <Row id="new_one">
             <Card className="mx-auto" style={{ width: "18rem" }}  >
               <CardBody>
                 <CardBody>
@@ -87,8 +90,8 @@ class Dashboard extends React.Component {
                   <CardText><Input name="canvas_description" placeholder="New Canvas Description" onChange={this.handleInputChange} /></CardText>
                 </CardBody>
                 <CardFooter>
-                  <Button block className="ml-0 text-center" color="light" onClick={() => this.selectCanvasSchema("bmc")} active={this.state.schema === "bmc"}>Make BMC</Button>
-                  <Button block className="ml-0 text-center" color="light" onClick={() => this.selectCanvasSchema("lmc")} active={this.state.schema === "bmc"}>Make LMC</Button>
+                  <Button block className="ml-0 text-center" disabled={canvas.init_canvas_request} color="light" onClick={() => this.selectCanvasSchema("bmc")} active={this.state.schema === "bmc"}>Make BMC</Button>
+                  <Button block className="ml-0 text-center" disabled={canvas.init_canvas_request} color="light" onClick={() => this.selectCanvasSchema("lmc")} active={this.state.schema === "bmc"}>Make LMC</Button>
 
                 </CardFooter>
 

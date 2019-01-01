@@ -31,7 +31,7 @@ export const GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/"
 export const CANVAS_ENTRY_URL = API_URL + "canvas/";
 //update_one with upsert
 export const UPDATE_CANVAS_URL = CANVAS_ENTRY_URL + "update";
-export const LOAD_CANVAS_URL = CANVAS_ENTRY_URL + "delete";
+export const LOAD_CANVAS_URL = CANVAS_ENTRY_URL + "load";
 export const DELETE_CANVAS_URL = CANVAS_ENTRY_URL + "delete";
 
 export const LIST_OF_USER_CANVAS_URL = CANVAS_ENTRY_URL + "list_canvas";

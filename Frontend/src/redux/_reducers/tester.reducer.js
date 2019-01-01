@@ -10,7 +10,7 @@ import { testerConstants } from '../_constants';
 //   tester_canvas: [],
 
 //   tester: {
-//     testername: "",
+//     email: "",
 //     group: ""
 //   }
 

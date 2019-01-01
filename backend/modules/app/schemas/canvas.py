@@ -11,23 +11,30 @@ canvas_schema = {
         "canvas_description": {
             "type": "string",
         },
+        "canvas_type": {
+            "type": "string",
+            "enum": ["bmc", "lmc"]
+        },
         "canvas_name": {
             "type": "string",
         },
         "canvas_notes": {
-            "type": "string",
+            "type": "array",
+        },
+        "canvas_is_shared": {
+            "type": "boolean",
         },
         "canvas_team": {
-            "type": "string",
+            "type": "array",
         },
         "canvas_base_version": {
             "type": "string",
         },
         "canvas_version_provider": {
-            "type": "string",
+            "type": "object",
         },
         "canvas_version_stamp": {
-            "type": "string",
+            "type": "integer",
         },
     },
     "required": ["canvas_id"],

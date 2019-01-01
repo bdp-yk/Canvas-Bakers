@@ -25,6 +25,8 @@ class TesterSideBar extends React.Component {
         suppressScrollY: false
       });
     }
+
+
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -35,8 +37,9 @@ class TesterSideBar extends React.Component {
     document.documentElement.classList.remove("nav-open");
   };
   render() {
-    const { bgColor, canvas } = this.props;
-    const { canvas_schema, canvas_history } = canvas;
+    console.log(this.props.canvas.canvas_history);
+    let { bgColor, canvas } = this.props;
+    let { canvas_schema, load_canvas_success, canvas_history } = canvas;
     return (
       <div className="sidebar" data={bgColor}>
         <div className="sidebar-wrapper" ref="sidebar">
@@ -69,53 +72,46 @@ class TesterSideBar extends React.Component {
               <i className={"tim-icons icon-settings"} />
               <p>Dashboard</p>
             </NavLink>
-            <NavLink
-              to="#"
-              className="nav-link"
-              onClick={this.props.toggleSidebar}
-              id="nav_link_toggler"
-            >
-              <i className={"tim-icons icon-components"} />
-              <p>Team Members</p>
-            </NavLink>
-            <UncontrolledCollapse toggler="#nav_link_toggler">
-              {canvas_schema ? canvas_schema.canvas_team && canvas_schema.canvas_team.map(e => <NavItem
-                tag="a"
-                className="nav-link "
-                key={e}
+            {load_canvas_success && <>
+              <NavLink
+                to="#"
+                className="nav-link"
+                id="nav_link_toggler"
               >
-                <i className={"tim-icons icon-single-02"} />
-                <small>{e["email"]}</small>
-              </NavItem>) : <NavItem tag="a"
-                className="nav-link "><p>Select a WorkSpace</p></NavItem>}
-            </UncontrolledCollapse>
-            <NavLink
-              to="#"
-              className="nav-link"
-              onClick={this.props.toggleSidebar}
-              id="canvas_history_toggler"
-            >
-              <i className={"tim-icons icon-bullet-list-67"} />
-              <p>Canvas History</p>
-            </NavLink>
-            <UncontrolledCollapse toggler="#canvas_history_toggler">
-              {canvas && canvas_history ? canvas_history.map(e => {
-                <NavLink
-                  to="/vesion"
+                <i className={"tim-icons icon-components"} />
+                <p>Team Members</p>
+              </NavLink>
+              <UncontrolledCollapse toggler="#nav_link_toggler">
+                {canvas_schema.canvas_team ? canvas_schema.canvas_team.map(e => <NavItem
                   tag="a"
                   className="nav-link "
+                  key={e}
                 >
                   <i className={"tim-icons icon-single-02"} />
-                  <p>Changes by {e["member"]}--{`at ${Date(e["time"])}`}</p>
-                </NavLink>
-              }) : <NavLink
-                to="/vesion"
-                tag="a"
-                className="nav-link "
+                  <small>{e["email"]}</small>
+                </NavItem>) : null}
+              </UncontrolledCollapse>
+              <NavLink
+                to="#"
+                className="nav-link"
+                id="canvas_history_toggler"
               >
-                  <p>Select a WorkSpace</p>
-                </NavLink>}
-            </UncontrolledCollapse>
+                <i className={"tim-icons icon-bullet-list-67"} />
+                <p>Canvas History</p>
+              </NavLink>
+              <UncontrolledCollapse toggler="#canvas_history_toggler">
+                {canvas.canvas_history ? canvas.canvas_history.map((e, key) => <NavItem
+                  tag="a"
+                  className="nav-link "
+                  key={key}
+                >
+                  <i className={"tim-icons icon-single-02"} />
+                  <small>{`${(e["canvas_version_stamp"])}`}</small>
+                </NavItem>
+                ) : null}
+              </UncontrolledCollapse>
+
+            </>}
           </Nav>
 
 

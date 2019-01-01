@@ -1,22 +1,34 @@
 // import config from 'config';
 // import { authHeader } from '../_helpers';
-import { UPDATE_CANVAS_URL, LIST_OF_USER_CANVAS_URL, LOAD_CANVAS_URL } from './url_strings';
+import { UPDATE_CANVAS_URL, LIST_OF_USER_CANVAS_URL, LOAD_CANVAS_URL, DELETE_CANVAS_URL } from './url_strings';
 import { who_am_i } from '../../utils';
 
 export const canvasServices = {
     update_canvas,
     list_all_canvases_for_user,
-    load_canvas_with_id
+    load_canvas_with_id,
+    delete_canvas_by_id
 
 };
 
+function delete_canvas_by_id(canvas_id) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            canvas_id
+        })
+    };
+    return fetch(DELETE_CANVAS_URL, requestOptions)
+        .then(handleResponse);
+}
 function load_canvas_with_id(canvas_id) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             canvas_id,
-            email: who_am_i()["email"]
+            email: who_am_i() && who_am_i()["email"]
         })
     };
     return fetch(LOAD_CANVAS_URL, requestOptions)

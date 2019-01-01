@@ -3,7 +3,7 @@ import isAfter from 'date-fns/is_after';
 // import * as actionCreators from "../redux/_actions";
 
 import { bindActionCreators } from 'redux';
-import { lmc_schema, bmc_schema } from '../featured';
+import { lmc_schema, bmc_schema, bmc_design } from '../featured';
 
 export const mapStateToProps = state => {
   const { ...rest } = state;
@@ -151,8 +151,18 @@ export const get_init_schema = schema => {
   }
 }
 
+export const get_init_design = schema => {
+  switch (schema) {
+    case "lmc":
+      return lmc_schema;
+
+    default:
+      return bmc_schema;
+  }
+}
+
 export const who_am_i = () => {
-  return JSON.parse(localStorage.getItem('tester', "null") ||
-    localStorage.getItem('user', "null") ||
-    localStorage.getItem('admin', "null"))
+  return JSON.parse(localStorage.getItem('tester', null) ||
+    localStorage.getItem('user', null) ||
+    localStorage.getItem('admin', null))
 }

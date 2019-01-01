@@ -36,7 +36,7 @@ def tester_quit():
     data = validate_tester(request.get_json())
     if data['ok']:
         data = data['data']
-        print(data)
+        # print(data)
         mongo.db.testers.update_one(
             {"email": data["email"]}, {'$set': {"connected": False}})
         LOG.debug(data["email"], "hast left the Test")

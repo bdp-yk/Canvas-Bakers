@@ -32,4 +32,5 @@ export const _workspace_link = (canvas_id) => {
 export const _quickstart_route = "/quickstart";
 export const _welcome_route = "/welcome";
 export const _document_route = "/docs";
-export const _canvas_preview_route = "/preview/:canvas_id";
+export const _canvas_preview_path = "/preview/";
+export const _canvas_preview_route = _canvas_preview_path + ":canvas_id";

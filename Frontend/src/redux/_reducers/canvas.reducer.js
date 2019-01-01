@@ -23,7 +23,7 @@ import { canvasConstants } from '../_constants';
 
 //     user_canvas: [],
 
-//     canvas_versions: [],
+//     canvas_history: [],
 //     canvas_schema: {...},
 
 
@@ -33,7 +33,7 @@ export function canvas(state = {}, action) {
         case canvasConstants.INIT_CANVAS_REQUEST:
             return {
                 ...state,
-                init_canvas_request:true,
+                init_canvas_request: true,
                 init_canvas_success: false,
                 init_canvas_failure: false,
                 canvas_schema: action.schema
@@ -162,7 +162,10 @@ export function canvas(state = {}, action) {
         case canvasConstants.CLEAR_CANVAS_SCHEMA:
             return {
                 ...state,
-                canvas_schema: null
+                load_user_canvas_request: false,
+                load_user_canvas_success: false,
+                load_user_canvas_failure: false,
+                canvas_schema: {}
 
             }
         default:

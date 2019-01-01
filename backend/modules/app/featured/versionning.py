@@ -1,8 +1,10 @@
 import collections
 
 
-def merge_commit_into_base(base, commit):
+def merge_commit_into_base(commit, base):
     "merges commit into base"
+    if base == None:
+        return base
     for key in commit:
         if key in base:
             if isinstance(base[key], dict) and isinstance(commit[key], dict):

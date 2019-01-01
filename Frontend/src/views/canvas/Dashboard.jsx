@@ -18,6 +18,7 @@ class Dashboard extends React.Component {
     this.state = {
       canvas_description: "",
       canvas_name: "",
+      canvas_type: "bmc",
       canvas_notes: [],
       canvas_team: [who_am_i()],
     };
@@ -26,16 +27,18 @@ class Dashboard extends React.Component {
 
   }
   selectCanvasSchema(schema) {
-    this.setState({ canvas_notes: get_init_schema(schema) });
+    this.setState({ canvas_notes: get_init_schema(schema), canvas_type: schema });
     // console.log(get_init_schema(schema));
 
     const { canvas_description,
       canvas_name,
       canvas_notes,
+      canvas_type,
       canvas_team } = this.state;
     this.props.init_canvas_action({
       canvas_description,
       canvas_name,
+      canvas_type,
       canvas_notes,
       canvas_team
     });

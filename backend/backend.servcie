@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve backend
+After=network.target
+
+[Service]
+User=sammy
+Group=www-data
+WorkingDirectory=~/Canvas-Backers/backend
+Environment="PATH=~/Canvas-Backers/backend/env/bin"
+ExecStart=~/Canvas-Backers/backend/env/bin/uwsgi --ini backend.ini
+
+[Install]
+WantedBy=multi-user.target

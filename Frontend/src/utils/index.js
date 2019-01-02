@@ -3,7 +3,7 @@ import isAfter from 'date-fns/is_after';
 // import * as actionCreators from "../redux/_actions";
 
 import { bindActionCreators } from 'redux';
-import { lmc_schema, bmc_schema, bmc_design } from '../featured';
+import { lmc_schema, bmc_schema, lmc_design, bmc_design } from '../featured';
 
 export const mapStateToProps = state => {
   const { ...rest } = state;
@@ -141,8 +141,6 @@ export const deleteCookie = key => {
 
 export const get_init_schema = schema => {
   switch (schema) {
-    case "bmc":
-      return bmc_schema;
     case "lmc":
       return lmc_schema;
 
@@ -154,10 +152,10 @@ export const get_init_schema = schema => {
 export const get_init_design = schema => {
   switch (schema) {
     case "lmc":
-      return lmc_schema;
+      return lmc_design;
 
     default:
-      return bmc_schema;
+      return bmc_design;
   }
 }
 

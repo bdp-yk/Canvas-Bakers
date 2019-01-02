@@ -1,23 +1,18 @@
 import React from "react";
 // react plugin for creating CanvasDefaultLayout over the dashboard
 import { connect } from 'react-redux'
+import { Container, Draggable } from "react-smooth-dnd";
 
 // reactstrap components
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Row,
-  Col,
-  Button,
-  ButtonGroup,
-  ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter
+  Card, CardHeader, CardBody, CardTitle, Row, Col,
+  Button, ButtonGroup, ButtonDropdown, DropdownToggle,
+  DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter
 } from "reactstrap";
 import { lmc_design, bmc_design } from "../../featured";
 import { history } from "../../redux/_helpers";
 import NotePartialView from "../../components/Canvas/NotePartialView";
-import { CANVAS_ID_LENGHT, _canvas_preview_route, BASE_URL, _canvas_preview_path, APP_URL } from "../../constants";
+import { CANVAS_ID_LENGHT, _canvas_preview_route, _canvas_preview_path, APP_URL } from "../../constants";
 import { multipleActionsMapDispatchToProps } from "../../utils";
 import { canvasActions, testerActions } from "../../redux/_actions";
 const smooth_column = (column, index, collapse, is_share) => {
@@ -26,21 +21,25 @@ const smooth_column = (column, index, collapse, is_share) => {
       {column.composition.map(
         (exact_column, key_c) => {
           return <Col key={key_c} xs="12" >
-            <Card  >
+            <Card >
               <CardHeader>
                 <CardTitle tag="h4"> {exact_column.name}</CardTitle>
               </CardHeader>
               <CardBody style={{ minHeight: "50px" }}>
-                <Row>
-                  <Col xs={column.note_width}>
-                    {[{ "note_headline": `some ${exact_column.name} note`, "note_description": `some ${exact_column.name} description` }].map((note, ind) => {
+                <Container groupName={exact_column.category} getChildPayload={i => i} onDrop={e => console.log(e)} type="container">
+                  <Row>
+                    <Col xs={column.note_width}>
 
-                      return <NotePartialView detailed_note={collapse} is_share={is_share} key={ind} note={note} />
-                    })}
-                  </Col>
-                </Row>
+                      {[{ "note_headline": `some ${exact_column.name} note`, "note_description": `some ${exact_column.name} description` }]
+                        .map((note, ind) => {return <Draggable key={ind} >
+                            <NotePartialView className="draggable-item" detailed_note={collapse} is_share={is_share} key={ind} note={note} />
+                          </Draggable>
+                        })}
+
+                    </Col>
+                  </Row>
+                </Container>
               </CardBody>
-
             </Card>
           </Col>
         }

@@ -29,10 +29,11 @@ def merge_commit_into_base(commit, base):
 
 def extends_base_notes_with_commit_nodes(base_n, commit_n):
     base_n_ids = set(map(lambda n: n["note_id"], base_n))
-    commit_n_ids = set(map(lambda n: n["note_id"], commit_n))
+    c_n_i = list(map(lambda n: n["note_id"], commit_n))
+    commit_n_ids = set(c_n_i)
     commit_n_ids = commit_n_ids - base_n_ids
-    return base_n.extend(list(map(lambda i: get_note_by_id(i, commit_n), commit_n_ids)))
+    return base_n.extend(list(map(lambda i: get_note_by_id(i, c_n_i, commit_n), commit_n_ids)))
 
 
-def get_note_by_id(id, note_collection):
-    list(map(lambda n: n["note_id"], note_collection)).index(id)
+def get_note_by_id(id, note_id_collection, note_collection):
+    return note_collection[note_id_collection.index(id)]

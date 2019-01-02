@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
       canvas_description: "",
       canvas_name: "",
       canvas_type: "bmc",
-      canvas_notes: [],
+      canvas_notes: {},
       canvas_team: [who_am_i()],
     };
     // Block Recursive Change
@@ -27,10 +27,15 @@ class Dashboard extends React.Component {
 
   }
   selectCanvasSchema(schema) {
-    this.setState({ canvas_notes: get_init_schema(schema), canvas_type: schema });
+    let i_c_s = get_init_schema(schema);
+    
+    
+    this.setState({ canvas_notes: i_c_s, canvas_type: schema });
+    console.log(">>",this.state.canvas_notes);
+    
     // console.log(get_init_schema(schema));
 
-    const { canvas_description,
+    let { canvas_description,
       canvas_name,
       canvas_notes,
       canvas_type,

@@ -19,7 +19,7 @@ canvas_schema = {
             "type": "string",
         },
         "canvas_notes": {
-            "type": "array",
+            "type": "object",
         },
         "canvas_is_shared": {
             "type": "boolean",

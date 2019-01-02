@@ -31,17 +31,19 @@ class NotePartialView extends React.Component {
 
     render() {
         const { detailed_note, note } = this.props
-        
+
         return (
-            <>
-                <Card body className="bg-light mb-0">
-                    <CardTitle>{note.note_headline}</CardTitle>
-                    {detailed_note && <>
-                        <CardText>{note.note_description}</CardText>
-                        <Button>Options</Button>
-                    </>}
-                </Card>
-            </>
+            <Card body className="bg-light mb-0">
+                <CardTitle>{note.note_headline}</CardTitle>
+                {detailed_note && <>
+                    <CardText>{note.note_description}</CardText>
+                    <CardText>
+
+                        <Button block size="small" className="d-lg-none" >+</Button>
+                        <Button block className="d-none d-lg-block" >Options</Button>
+                    </CardText>
+                </>}
+            </Card>
         );
     }
 }

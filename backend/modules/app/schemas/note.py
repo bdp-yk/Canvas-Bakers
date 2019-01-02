@@ -2,69 +2,45 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from jsonschema.exceptions import SchemaError
 
-task_schema = {
+note_schema = {
     "type": "object",
     "properties": {
-        "title": {
+        "note_id": {
             "type": "string"
         },
-        "description": {
+        "note_headline": {
             "type": "string"
         },
-        "status": {
-            "type": "string",
-            "enum": ["todo", "doing", "done"]
+        "note_description": {
+            "type": "string"
         },
-        "email": {
-            "type": "string",
-            "format": "email"
+        "note_maker": {
+            "type": "string"
+        },
+        "note_verdict": {
+            "type": "integer",
+            "multipleOf": 1.0,
+            "maximum": 100,
+            "minimum": 0,
+        },
+        "note_verdict_message": {
+            "type": "string"
+        },
+        "note_column": {
+            "type": "string"
+        },
+        "note_index_in_column": {
+            "type": "integer",
         }
     },
-    "required": ["email", "status", "title"],
-    "additionalProperties": False
-}
-
-task_update_schema = {
-    "type": "object",
-    "properties": {
-        "id": {
-            "type": "string"
-        },
-        "payload": {
-            "type": "object",
-            "properties": {
-                "title": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string",
-                    "enum": ["todo", "doing", "done"]
-                }
-            },
-            "additionalProperties": False
-        }
-    },
-    "required": ["id", "payload"],
+    "required": ["note_id", "status", "title"],
     "additionalProperties": False
 }
 
 
-def validate_task_update(data):
+def validate_note(data):
     try:
-        validate(data, task_update_schema)
-    except ValidationError as e:
-        return {'ok': False, 'message': e}
-    except SchemaError as e:
-        return {'ok': False, 'message': e}
-    return {'ok': True, 'data': data}
-
-
-def validate_task(data):
-    try:
-        validate(data, task_schema)
+        validate(data, note_schema)
     except ValidationError as e:
         return {'ok': False, 'message': e}
     except SchemaError as e:

@@ -45,14 +45,14 @@ function list_all_canvases_for_user(user) {
         .then(handleResponse);
 }
 
-function update_canvas(canvas) {
+async function update_canvas(canvas) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(canvas)
     };
 
-    return fetch(UPDATE_CANVAS_URL, requestOptions)
+    return await fetch(UPDATE_CANVAS_URL, requestOptions)
         .then(handleResponse);
 }
 

@@ -52,6 +52,13 @@ const RS = {
     logo: "RS"
 };
 
+const BS = {
+    category: "brain-storm",
+    name: "Brain Storm",
+    logo: "BS"
+};
+
+
 const col_0 = {
     composition: [KP],
     column_width: 2,
@@ -88,6 +95,11 @@ const col_6 = {
     column_width: 6,
     note_width: 4
 }
+const col_7 = {
+    composition: [BS],
+    column_width: 12,
+    note_width: 3
+}
 export const bmc_design = [
     col_0,
     col_1,
@@ -95,7 +107,8 @@ export const bmc_design = [
     col_3,
     col_4,
     col_5,
-    col_6
+    col_6,
+    col_7
 ];
 export const bmc_schema = {
     "key-partners": [

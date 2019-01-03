@@ -72,24 +72,19 @@ function list_all_canvases() {
 function init_canvas_action(schema) {
     const init_version = canvas_initial_schema(schema);
     return dispatch => {
-        dispatch(request(init_version));
-        update_canvas_action(init_version);
-        canvasServices.update_canvas(init_version).then(
-            response => {
-
-                dispatch(success(response["data"]));
-                dispatch({ type: alertConstants.SUCCESS, message: "Successfully created new Canvas" });
-                history.push(_workspace_link(init_version["canvas_id"]));
-
-            }
-
-        ).catch(
-            error => {
-                history.push(_welcome_route);
-                dispatch(alertActions.error(error.toString()));
-                dispatch(failure());
-            }
-        )
+        try {
+            dispatch(request(init_version));
+            update_canvas_action(init_version);
+            let response = canvasServices.update_canvas(init_version);
+            dispatch(success(response["data"]));
+            dispatch({ type: alertConstants.SUCCESS, message: "Successfully created new Canvas" });
+            history.push(_workspace_link(init_version["canvas_id"]));
+        }
+        catch (error) {
+            history.push(_welcome_route);
+            dispatch(alertActions.error(error.toString()));
+            dispatch(failure());
+        }
         /** */
 
         try {

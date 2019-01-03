@@ -28,6 +28,11 @@ const R = {
     name: "Revenue",
     logo: "R"
 };
+const BS = {
+    category: "brain-storm",
+    name: "Brain Storm",
+    logo: "BS"
+};
 
 const col_0 = {
     composition: [P],
@@ -55,12 +60,18 @@ const col_4 = {
     column_width: 3,
     note_width: 12
 }
+const col_5 = {
+    composition: [BS],
+    column_width: 12,
+    note_width: 3
+}
 export const lmc_design = [
     col_0,
     col_1,
     col_2,
     col_3,
-    col_4
+    col_4,
+    col_5
 ];
 export const lmc_schema = {
     "problem": [

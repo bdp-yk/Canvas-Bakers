@@ -16,7 +16,6 @@ class NotePartialView extends React.Component {
         this.state = {
             detailed_note: true
         }
-        this.toggle_detailed_note = this.toggle_detailed_note.bind(this)
     }
     toggle_detailed_note = () => {
         this.setState({
@@ -33,8 +32,13 @@ class NotePartialView extends React.Component {
         const { detailed_note, note } = this.props
 
         return (
-            <Card body className="bg-light mb-0">
-                <CardTitle>{note.note_headline}</CardTitle>
+            <Card body inverse color="light" className="mb-0">
+                <CardTitle>
+                    {note.note_headline}
+                    <Button close aria-label="Cancel">
+                        <span aria-hidden>&ndash;</span>
+                    </Button>
+                </CardTitle>
                 {detailed_note && <>
                     <CardText>{note.note_description}</CardText>
                     <CardText>

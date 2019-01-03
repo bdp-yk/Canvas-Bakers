@@ -15,38 +15,7 @@ import NotePartialView from "../../components/Canvas/NotePartialView";
 import { CANVAS_ID_LENGHT, _canvas_preview_route, _canvas_preview_path, APP_URL } from "../../constants";
 import { multipleActionsMapDispatchToProps } from "../../utils";
 import { canvasActions, testerActions } from "../../redux/_actions";
-const smooth_column = (column, index, collapse, is_share) => {
-  return <Col key={index} xs={column.column_width}>
-    <Row>
-      {column.composition.map(
-        (exact_column, key_c) => {
-          return <Col key={key_c} xs="12" >
-            <Card >
-              <CardHeader>
-                <CardTitle tag="h4"> {exact_column.name}</CardTitle>
-              </CardHeader>
-              <CardBody style={{ minHeight: "50px" }}>
-                <Container groupName={exact_column.category} getChildPayload={i => i} onDrop={e => console.log(e)} type="container">
-                  <Row>
-                    <Col xs={column.note_width}>
 
-                      {[{ "note_headline": `some ${exact_column.name} note`, "note_description": `some ${exact_column.name} description` }]
-                        .map((note, ind) => {return <Draggable key={ind} >
-                            <NotePartialView className="draggable-item" detailed_note={collapse} is_share={is_share} key={ind} note={note} />
-                          </Draggable>
-                        })}
-
-                    </Col>
-                  </Row>
-                </Container>
-              </CardBody>
-            </Card>
-          </Col>
-        }
-      )}
-    </Row>
-  </Col>
-}
 class CanvasDefaultLayout extends React.Component {
   constructor(props) {
     super(props);
@@ -59,6 +28,43 @@ class CanvasDefaultLayout extends React.Component {
     this.toggle_detailed_note = this.toggle_detailed_note.bind(this)
     this.toggle_share_dropdown_open = this.toggle_share_dropdown_open.bind(this)
     this.copy_canvas_link = this.copy_canvas_link.bind(this)
+  }
+  smooth_column = (canvas_notes, column, index, collapse, is_share) => {
+    return <Col key={index} xs={column.column_width}>
+      <Row>
+        {column.composition.map(
+          (exact_column, key_c) => {
+            return <Col key={key_c} xs="12" >
+              <Card >
+                <CardHeader>
+                  <CardTitle tag="h4">
+                    {exact_column.name}
+                    <Button onClick={() => this.addNote(exact_column.category)} close aria-label="Cancel">
+                      <span aria-hidden>+</span>
+                    </Button>
+                  </CardTitle>
+                </CardHeader>
+                <CardBody style={{ minHeight: "50px" }}>
+                  <Container groupName={exact_column.category} getChildPayload={i => i} onDrop={e => console.log(e)} type="container">
+                    <Row>
+                      <Col xs={column.note_width}>
+
+                        {canvas_notes[exact_column.category].map((note, ind) => {
+                          return <Draggable key={ind} >
+                            <NotePartialView className="draggable-item" detailed_note={collapse} is_share={is_share} key={ind} note={note} />
+                          </Draggable>
+                        })}
+
+                      </Col>
+                    </Row>
+                  </Container>
+                </CardBody>
+              </Card>
+            </Col>
+          }
+        )}
+      </Row>
+    </Col>
   }
   componentDidMount() {
     const { canvas_id } = this.props.match.params
@@ -109,7 +115,7 @@ class CanvasDefaultLayout extends React.Component {
 
   render() {
     const { detailed_note, share_dropdown_open, is_share } = this.state
-    // const { canvas } = this.props;
+    // const {canvas} = this.props;
     const { canvas_schema, load_canvas_success, load_canvas_request } = this.props.canvas;
     let get_canvas_design = [];
     if (canvas_schema && canvas_schema.canvas_type) {
@@ -159,20 +165,8 @@ class CanvasDefaultLayout extends React.Component {
             "Loading Canvas..."}
           {load_canvas_success ? <Row>
             {get_canvas_design.map((e, index) => {
-              return smooth_column(e, index, detailed_note, is_share)
+              return this.smooth_column(canvas_schema.canvas_notes, e, index, detailed_note, is_share)
             })}
-            <Col xs="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4"> Brain Storm</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                  </Row>
-                </CardBody>
-
-              </Card>
-            </Col>
           </Row> : null}
         </div>}
         <Modal isOpen={this.state.open_delete_modal} fade={false} toggle={() => this.delete_this_canvas(true)}  >

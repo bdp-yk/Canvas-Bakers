@@ -7,10 +7,13 @@ import {
   CardBody, Fade
 } from "reactstrap";
 // import { Link } from "react-router-dom";
-import { mapDispatchToProps, get_init_schema, who_am_i } from "../../utils";
+import { mapDispatchToProps, who_am_i } from "../../utils";
 import { canvasActions } from "../../redux/_actions";
+import { bmc_schema, lmc_schema } from "../../featured";
 // import { API_URL } from "../../redux/_services";
 // const axios = require("axios");
+const _bmc = bmc_schema, _lmc = lmc_schema;
+
 const loadingthumbnail = require("assets/img/loading.gif");
 class Dashboard extends React.Component {
   constructor(props) {
@@ -26,20 +29,24 @@ class Dashboard extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
 
   }
-  selectCanvasSchema(schema) {
-    let i_c_s = get_init_schema(schema);
-    
-    
-    this.setState({ canvas_notes: i_c_s, canvas_type: schema });
-    console.log(">>",this.state.canvas_notes);
-    
-    // console.log(get_init_schema(schema));
+  async selectCanvasSchema(schema) {
 
-    let { canvas_description,
+    if (schema === "lmc")
+      await this.setState({ canvas_notes: _lmc, canvas_type: schema }, function () {
+        console.log(">>async state canvas notes", this.state.canvas_notes);
+      });
+    else
+      await this.setState({ canvas_notes: _bmc, canvas_type: schema });
+    console.log(">>state canvas notes", this.state.canvas_notes);
+
+    // console.log(get_init_schema(schema));
+    const {
+      canvas_description,
       canvas_name,
-      canvas_notes,
       canvas_type,
-      canvas_team } = this.state;
+      canvas_notes,
+      canvas_team
+    } = this.state;
     this.props.init_canvas_action({
       canvas_description,
       canvas_name,
@@ -80,9 +87,6 @@ class Dashboard extends React.Component {
                   <CardBody>
                     <CardTitle>{e.canvas_name}</CardTitle>
                     <CardText>{e.canvas_description}</CardText>
-                    {/* <Link to={`${this.props.match.url}/make`}> */}
-
-                    {/* </Link> */}
                   </CardBody>
                   <CardFooter> <Button block onClick={() => this.props.load_canvas_schema(e.canvas_id)}>  Load it in WorkSpace</Button></CardFooter>
                 </Card>
@@ -98,12 +102,9 @@ class Dashboard extends React.Component {
                   <CardText><Input name="canvas_description" placeholder="New Canvas Description" onChange={this.handleInputChange} /></CardText>
                 </CardBody>
                 <CardFooter>
-                  <Button block className="ml-0 text-center" disabled={canvas.init_canvas_request} color="light" onClick={() => this.selectCanvasSchema("bmc")} active={this.state.schema === "bmc"}>Make BMC</Button>
-                  <Button block className="ml-0 text-center" disabled={canvas.init_canvas_request} color="light" onClick={() => this.selectCanvasSchema("lmc")} active={this.state.schema === "bmc"}>Make LMC</Button>
-
+                  <Button block className="ml-0 text-center" disabled={canvas.init_canvas_request} color="light" onClick={() => this.selectCanvasSchema("bmc")} >Make BMC</Button>
+                  <Button block className="ml-0 text-center" disabled={canvas.init_canvas_request} color="light" onClick={() => this.selectCanvasSchema("lmc")} >Make LMC</Button>
                 </CardFooter>
-
-                {/* <Link to={`/quicktest/make`}><Button>  Create New Canvas</Button></Link> */}
               </CardBody>
             </Card>
           </Row>

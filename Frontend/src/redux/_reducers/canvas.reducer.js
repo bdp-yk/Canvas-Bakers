@@ -1,4 +1,5 @@
 import { canvasConstants } from '../_constants';
+import { notes } from './notes.canvas.reducers';
 
 // const canvas_store = {
 //     init_canvas_request: true,
@@ -169,6 +170,6 @@ export function canvas(state = {}, action) {
 
             }
         default:
-            return state
+            return notes(state,action);
     }
 }

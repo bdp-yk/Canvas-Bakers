@@ -1,7 +1,6 @@
 import React from "react";
 // react plugin for creating CanvasDefaultLayout over the dashboard
-import { connect } from 'react-redux'
-import { Container, Draggable } from "react-smooth-dnd";
+import { connect } from 'react-redux';
 
 // reactstrap components
 import {
@@ -28,6 +27,7 @@ class CanvasDefaultLayout extends React.Component {
     this.toggle_detailed_note = this.toggle_detailed_note.bind(this)
     this.toggle_share_dropdown_open = this.toggle_share_dropdown_open.bind(this)
     this.copy_canvas_link = this.copy_canvas_link.bind(this)
+    this.add_note_to_category = this.add_note_to_category.bind(this)
   }
   smooth_column = (canvas_notes, column, index, collapse, is_share) => {
     return <Col key={index} xs={column.column_width}>
@@ -39,25 +39,22 @@ class CanvasDefaultLayout extends React.Component {
                 <CardHeader>
                   <CardTitle tag="h4">
                     {exact_column.name}
-                    <Button onClick={() => this.addNote(exact_column.category)} close aria-label="Cancel">
+                    <Button onClick={() => this.add_note_to_category(exact_column.category)} close aria-label="Cancel">
                       <span aria-hidden>+</span>
                     </Button>
                   </CardTitle>
                 </CardHeader>
                 <CardBody style={{ minHeight: "50px" }}>
-                  <Container groupName={exact_column.category} getChildPayload={i => i} onDrop={e => console.log(e)} type="container">
-                    <Row>
-                      <Col xs={column.note_width}>
+                  <Row>
+                    <Col xs={column.note_width}>
 
-                        {canvas_notes[exact_column.category].map((note, ind) => {
-                          return <Draggable key={ind} >
-                            <NotePartialView className="draggable-item" detailed_note={collapse} is_share={is_share} key={ind} note={note} />
-                          </Draggable>
-                        })}
+                      {canvas_notes[exact_column.category].map((note, ind) => {
+                        return <NotePartialView className="draggable-item" detailed_note={collapse} is_share={is_share} key={ind} note={note} />
 
-                      </Col>
-                    </Row>
-                  </Container>
+                      })}
+
+                    </Col>
+                  </Row>
                 </CardBody>
               </Card>
             </Col>
@@ -65,6 +62,10 @@ class CanvasDefaultLayout extends React.Component {
         )}
       </Row>
     </Col>
+  }
+
+  add_note_to_category = (category) => {
+
   }
   componentDidMount() {
     const { canvas_id } = this.props.match.params
@@ -141,9 +142,12 @@ class CanvasDefaultLayout extends React.Component {
           </>}
           {load_canvas_success ?
             <Row>
-              <ButtonGroup className="px-3 ml-auto">
+              <ButtonGroup className="px-3 ">
                 {(this.props.location.pathname === "/quickstart") && <Button onClick={() => history.push("/welcome")}>Home</Button>
                 }
+                <Button onClick={this.toggle_detailed_note} disabled={true} size="sm">{"<"}</Button>
+                <Button onClick={this.toggle_detailed_note} size="sm">{">"}</Button>&nbsp;
+                <Button onClick={this.toggle_detailed_note} size="sm">s</Button>
 
               </ButtonGroup>
               <ButtonGroup className="px-3 ml-auto">

@@ -1,35 +1,52 @@
-import { canvasConstants } from '../_constants';
-import { notes } from './notes.canvas.reducers';
+import {
+    canvasConstants
+} from '../_constants';
+import {
+    notes
+} from './notes.canvas.reducers';
 
-// const canvas_store = {
-//     init_canvas_request: true,
-//     init_canvas_success: false,
-//     init_canvas_failure: false,
+export const canvas_init_store = {
+    init_canvas_request: false,
+    init_canvas_success: false,
+    init_canvas_failure: false,
 
-//     update_canvas_request: false,
-//     update_canvas_success: false,
-//     update_canvas_failure: false,
+    upload_canvas_request: false,
+    upload_canvas_success: false,
+    upload_canvas_failure: false,
 
-//     load_canvas_request: false,
-//     load_canvas_success: false,
-//     load_canvas_failure: false,
+    load_canvas_request: false,
+    load_canvas_success: false,
+    load_canvas_failure: false,
 
-//     delete_canvas_request: false,
-//     delete_canvas_success: false,
-//     delete_canvas_failure: false,
+    delete_canvas_request: false,
+    delete_canvas_success: false,
+    delete_canvas_failure: false,
 
-//     load_user_canvas_request: true,
-//     load_user_canvas_success: false,
-//     load_user_canvas_failure: false,
-
-//     user_canvas: [],
-
-//     canvas_history: [],
-//     canvas_schema: {...},
+    load_user_canvas_request: true,
+    load_user_canvas_success: false,
+    load_user_canvas_failure: false,
 
 
-// }
-export function canvas(state = {}, action) {
+    fetch_canvas_team_mate_request: false,
+    fetch_canvas_team_mate_success: false,
+    fetch_canvas_team_mate_failure: false,
+
+    share_my_canvas_request: false,
+    share_my_canvas_success: false,
+    share_my_canvas_failure: false,
+
+    canvas_undo_list: [],
+    canvas_redo_list: [],
+
+    new_team_mate: {},
+
+    user_canvas: [],
+
+    canvas_history: [],
+
+    canvas_schema: {},
+}
+export function canvas(state = canvas_init_store, action) {
     switch (action.type) {
         case canvasConstants.INIT_CANVAS_REQUEST:
             return {
@@ -54,32 +71,32 @@ export function canvas(state = {}, action) {
                 init_canvas_failure: true,
 
             };
-        case canvasConstants.UPDATE_CANVAS_REQUEST:
+        case canvasConstants.UPLOAD_CANVAS_REQUEST:
             return {
                 ...state,
-                update_canvas_request: true,
-                update_canvas_success: false,
-                update_canvas_failure: false,
+                upload_canvas_request: true,
+                upload_canvas_success: false,
+                upload_canvas_failure: false,
                 canvas_schema: {
                     ...state.canvas_schema,
                     ...action.payload,
                 }
 
             };
-        case canvasConstants.UPDATE_CANVAS_SUCCESS:
+        case canvasConstants.UPLOAD_CANVAS_SUCCESS:
             return {
                 ...state,
-                update_canvas_request: false,
-                update_canvas_success: true,
-                update_canvas_failure: false,
+                upload_canvas_request: false,
+                upload_canvas_success: true,
+                upload_canvas_failure: false,
 
             };
-        case canvasConstants.UPDATE_CANVAS_FAILURE:
+        case canvasConstants.UPLOAD_CANVAS_FAILURE:
             return {
                 ...state,
-                update_canvas_request: false,
-                update_canvas_success: false,
-                update_canvas_failure: true,
+                upload_canvas_request: false,
+                upload_canvas_success: false,
+                upload_canvas_failure: true,
 
             };
         case canvasConstants.LOAD_CANVAS_REQUEST:
@@ -169,7 +186,65 @@ export function canvas(state = {}, action) {
                 canvas_schema: {}
 
             }
+        case canvasConstants.FETCH_CANVAS_TEAM_MATE_REQUEST:
+            return {
+                ...state,
+                fetch_canvas_team_mate_request: true,
+                fetch_canvas_team_mate_success: false,
+                fetch_canvas_team_mate_request: false,
+            }
+        case canvasConstants.FETCH_CANVAS_TEAM_MATE_SUCCESS:
+            return {
+                ...state,
+                fetch_canvas_team_mate_request: false,
+                fetch_canvas_team_mate_success: true,
+                fetch_canvas_team_mate_failure: false,
+                new_team_mate: action.payload
+            }
+        case canvasConstants.FREE_CANVAS_TEAM_MATE:
+            return {
+                ...state,
+                fetch_canvas_team_mate_request: false,
+                fetch_canvas_team_mate_success: false,
+                fetch_canvas_team_mate_failure: false,
+                new_team_mate: {}
+            }
+        case canvasConstants.FETCH_CANVAS_TEAM_MATE_FAILURE:
+            return {
+                ...state,
+                fetch_canvas_team_mate_request: false,
+                fetch_canvas_team_mate_success: false,
+                fetch_canvas_team_mate_failure: true,
+            }
+        case canvasConstants.SHARE_MY_CANVAS_REQUEST:
+            return {
+                ...state,
+                share_my_canvas_request: true,
+                share_my_canvas_success: false,
+                share_my_canvas_failure: false,
+            }
+        case canvasConstants.SHARE_MY_CANVAS_SUCCESS:
+            return {
+                ...state,
+                share_my_canvas_request: false,
+                share_my_canvas_success: true,
+                share_my_canvas_failure: false,
+            }
+        case canvasConstants.SHARE_MY_CANVAS_FAILURE:
+            return {
+                ...state,
+                share_my_canvas_request: false,
+                share_my_canvas_success: false,
+                share_my_canvas_failure: true,
+            }
+
+          /**
+           * UPLOAD CANVAS
+           * 
+           *  */  
+
+
         default:
-            return notes(state,action);
+            return notes(state, action);
     }
 }

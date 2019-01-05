@@ -72,10 +72,10 @@ class Dashboard extends React.Component {
   }
   render() {
 
-    const { canvas } = this.props
+    const { canvas, expand_side_bar } = this.props
     return (
       <>
-        <div className="content">
+        <div className={expand_side_bar ? "content" : "content py-3"}>
           <h3>
             Dashboard <br /><small className="text-muted">Manage your existing WorkSpaces or </small><a href="#new_one" className="link text-muted"> create a new one</a>
           </h3>

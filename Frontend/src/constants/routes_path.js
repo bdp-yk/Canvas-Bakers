@@ -1,4 +1,6 @@
-import { who_am_i } from "../utils";
+import {
+    who_am_i
+} from "../utils";
 
 //Requiring auth Routes
 export const _admin_route = "/admin";
@@ -21,11 +23,11 @@ let _auth_route = () => {
 
 
 //require leading auth Routes
-export const _dashboard_route = _auth_route() + "/dashboard";
-export const _workspace_path = _auth_route() + "/workspace/";
-export const _workspace_route = _auth_route() + "/workspace/:canvas_id";
+export const _dashboard_route = () => _auth_route() + "/dashboard";
+export const _workspace_path = () => _auth_route() + "/workspace/";
+export const _workspace_route = () => _auth_route() + "/workspace/:canvas_id";
 export const _workspace_link = (canvas_id) => {
-    return _workspace_path + canvas_id
+    return _workspace_path() + canvas_id
 };
 
 //public Routes

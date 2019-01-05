@@ -19,8 +19,8 @@ note_schema = {
         "note_verdict_request": {"type": "boolean"},
         "note_verdict_success": {"type": "boolean"},
         "note_verdict_failure": {"type": "boolean"},
-        "note_column": {"type": "string"},
-        "note_index_in_column": {"type": "integer"},
+        "note_category": {"type": "string"},
+        "note_index_in_categorie": {"type": "integer"},
         "note_verdict_history": {
             "type": "array",
             "items": {

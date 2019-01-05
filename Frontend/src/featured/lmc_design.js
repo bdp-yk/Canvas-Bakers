@@ -1,37 +1,44 @@
 const P = {
     category: "problem",
     name: "Problem",
-    logo: "P"
+    logo: "P",
+    direction: "vertical"
 };
 const S = {
     category: "solution",
     name: "Solution",
-    logo: "S"
+    logo: "S",
+    direction: "vertical"
 };
 const K = {
     category: "key-activity",
     name: "Key Activity",
-    logo: "K"
+    logo: "K",
+    direction: "vertical"
 };
 const U = {
     category: "unique-value-propositions",
     name: "Unique Value Propositions",
-    logo: "U"
+    logo: "U",
+    direction: "vertical"
 };
 const C = {
     category: "cost-structure",
     name: "Cost Structure",
-    logo: "C"
+    logo: "C",
+    direction: "horizontal"
 };
 const R = {
     category: "revenue",
     name: "Revenue",
-    logo: "R"
+    logo: "R",
+    direction: "horizontal"
 };
 const BS = {
     category: "brain-storm",
     name: "Brain Storm",
-    logo: "BS"
+    logo: "BS",
+    direction: "horizontal"
 };
 
 const col_0 = {
@@ -76,86 +83,79 @@ export const lmc_design = [
 export const lmc_schema = {
     "problem": [
         {
-            "note_id": "problem-1",
+            "note_id": "-1",
             "note_headline": "Problem Notes",
             "note_description": "Here you can state what are the main problem your Project may face.",
             "note_maker": "Canvas Bakers",
             "note_verdict": 100,
             "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_column": "problem",
-            "note_index_in_column": 0
+            "note_category": "problem",
         }
     ],
     "solution": [
         {
-            "note_id": "solution-1",
+            "note_id": "-2",
             "note_headline": "Solution Notes",
             "note_description": "Some of your project features that will help you.",
             "note_maker": "Canvas Bakers",
             "note_verdict": 100,
             "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_column": "solution",
-            "note_index_in_column": 0
+            "note_category": "solution",
         }
     ],
     "key-activity": [
         {
-            "note_id": "activity-1",
+            "note_id": "-3",
             "note_headline": "Key Activities Notes",
             "note_description": "Your project main field of activity",
             "note_maker": "Canvas Bakers",
             "note_verdict": 100,
             "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_column": "key-activity",
-            "note_index_in_column": 0
+            "note_category": "key-activity",
         }
     ],
     "unique-value-propositions": [
         {
-            "note_id": "value-1",
+            "note_id": "-4",
             "note_headline": "Key Activities Notes",
             "note_description": "Key Activities for a successful Business",
             "note_maker": "Canvas Bakers",
             "note_verdict": 100,
             "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_column": "unique-value-propositions",
-            "note_index_in_column": 0
+            "note_category": "unique-value-propositions",
         }
     ],
     "cost-structure": [
         {
-            "note_id": "structure-1",
+            "note_id": "-5",
             "note_headline": "Cost Structure Notes",
             "note_description": "Cost of various deals within the Project",
             "note_maker": "Canvas Bakers",
             "note_verdict": 100,
             "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_column": "cost-structure",
-            "note_index_in_column": 0
+            "note_category": "cost-structure",
         }
     ],
     "revenue": [
         {
-            "note_id": "revenue-1",
+            "note_id": "-6",
             "note_headline": "Revenu Plans",
             "note_description": "How will you generate income",
             "note_maker": "Canvas Bakers",
             "note_verdict": 100,
             "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_column": "revenue",
-            "note_index_in_column": 0
+            "note_category": "revenue",
         }
     ],
     "brain-storm": [
         {
-            "note_id": "storm-1",
+            "note_id": "-7",
             "note_headline": "BrainStorming Notes",
             "note_description": "What's on your mind but can't be classified?",
             "note_maker": "Canvas Bakers",
             "note_verdict": 100,
             "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_column": "brain-storm",
-            "note_index_in_column": 0
+            "note_category": "brain-storm",
         }
     ]
 }

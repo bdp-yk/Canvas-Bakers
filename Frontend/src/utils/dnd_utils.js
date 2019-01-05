@@ -1,5 +1,9 @@
 export const applyDrag = (arr, dragResult) => {
-    const { removedIndex, addedIndex, payload } = dragResult;
+    const {
+        removedIndex,
+        addedIndex,
+        payload
+    } = dragResult;
     if (removedIndex === null && addedIndex === null) return arr;
 
     const result = [...arr];
@@ -15,6 +19,17 @@ export const applyDrag = (arr, dragResult) => {
 
     return result;
 };
+
+export const find_index_by_property = (_array, property_value, property_name = "note_id") => {
+    let b = _array.findIndex(
+        e => e[property_name] === property_value
+    )
+    if (b === -1) b = _array.length;
+    return b;
+
+}
+
+
 
 export const generateItems = (count, creator) => {
     const result = [];

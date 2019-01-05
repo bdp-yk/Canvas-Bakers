@@ -87,8 +87,8 @@ class Tester extends React.Component {
               sidebarOpened={this.state.sidebarOpened}
             />
             <TesterSideBar bgColor={this.state.backgroundColor} />
-            <Route path={_dashboard_route} component={Dashboard} />
-            <Route path={_workspace_route} component={CanvasDefaultLayout} />
+            <Route path={_dashboard_route()} component={Dashboard} />
+            <Route path={_workspace_route()} component={CanvasDefaultLayout} />
           </div>
         </div>
         <FixedPlugin

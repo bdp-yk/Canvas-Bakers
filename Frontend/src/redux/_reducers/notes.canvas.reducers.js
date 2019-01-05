@@ -1,82 +1,104 @@
-import { notesConstants } from '../_constants';
+import {
+    notesConstants
+} from '../_constants';
+import {
+    canvas_init_store
+} from './canvas.reducer';
+import {
+    find_index_by_property
+} from '../../utils/dnd_utils';
 
-export function notes(state = {}, action) {
-    let { canvas_redo_list } = state;
-    if (action.payload.no_clear_redo)
-        canvas_redo_list = [];
-    let { canvas_notes } = state.canvas_schema;
-    let { source_categorie, source_index, target_categorie, target_index, note_category, note_column_index } = action.payload;
-    let old_note = canvas_notes[note_category][note_column_index];
+const complementary_action = action => {
+    let c_type, c_payload, {
+        type,
+        payload
+    } = action;
+    switch (type) {
+        case notesConstants.CREATE_NOTE_ACTION:
+            c_type = notesConstants.DELETE_NOTE_ACTION
+            break;
+        case notesConstants.DELETE_NOTE_ACTION:
+            c_type = notesConstants.CREATE_NOTE_ACTION
+            break;
+        default:
+            c_type = type
+            break;
+    };
+    if (Boolean(payload.target_category))
+        c_payload = {
+            source_category: payload.target_category,
+            source_index: payload.target_index,
+            target_category: payload.source_category,
+            target_index: payload.source_index
+        }
+    else c_payload = payload
+    console.log(">>> complementary_action", c_type, c_payload);
+
+    return {
+        type: c_type,
+        payload: c_payload
+    }
+}
+
+export function notes(state = canvas_init_store, action) {
+    let {
+        canvas_redo_list,
+        canvas_schema
+    } = state, old_note;
+    let _index = 0;
     switch (action.type) {
-        case notesConstants.INIT_NOTE_REQUEST:
-            canvas_notes[note_category].push(action.payload);
+        case notesConstants.CREATE_NOTE_ACTION:
+            if (!action.no_clear_redo) {
+                canvas_redo_list = [];
+                state.canvas_undo_list.unshift(complementary_action(action))
+            }
+            canvas_schema.canvas_notes[action.payload.note_category].push(action.payload);
             return {
                 ...state,
-                canvas_schema: {
-                    ...state.canvas_schema,
-                    canvas_notes
-                },
-                canvas_undo_list: [
-                    ...state.canvas_undo_list,
-                    {
-                        action: notesConstants.DELETE_NOTE_REQUEST,
-                        payload: action.payload
-                    }
-                ],
                 canvas_redo_list
             };
         case notesConstants.DRAG_NOTE_END:
-            canvas_notes[target_categorie].splice(target_index, 0, ...canvas_notes[source_categorie].splice(source_index, 1))
+            if (!action.no_clear_redo) {
+                canvas_redo_list = [];
+                state.canvas_undo_list.unshift(complementary_action(action))
+            }
+            let [new_note_schema] = state.canvas_schema.canvas_notes[action.payload.source_category].splice(action.payload.source_index, 1)
+            new_note_schema.note_category = action.payload.target_category
+            canvas_schema.canvas_notes[action.payload.target_category].splice(action.payload.target_index, 0, new_note_schema)
             return {
                 ...state,
-                dragged_note: {},
-                canvas_schema: {
-                    ...state.canvas_schema,
-                    canvas_notes
-                },
-                canvas_undo_list: [
-                    ...state.canvas_undo_list,
-                    {
-                        action: notesConstants.DRAG_NOTE_END,
-                        payload: { target_categorie, target_index, source_categorie, source_index }
-                    }
-                ],
+                canvas_schema,
                 canvas_redo_list
             };
-        case notesConstants.UPDATE_NOTE_REQUEST:
-            canvas_notes[note_category][note_column_index] = action.payload;
+        case notesConstants.UPDATE_NOTE_ACTION:
+            _index = find_index_by_property(canvas_schema.canvas_notes[action.payload.note_category], action.payload.note_id);
+            old_note = Object.assign({}, state.canvas_schema.canvas_notes[action.payload.note_category][_index]);
+            console.log(">>> old_note", old_note);
 
+            canvas_schema.canvas_notes[action.payload.note_category][_index] = action.payload;
+            if (!action.no_clear_redo) {
+                canvas_redo_list = [];
+                state.canvas_undo_list.unshift(complementary_action({
+                    type: notesConstants.UPDATE_NOTE_ACTION,
+                    payload: old_note
+                }))
+            }
             return {
                 ...state,
-                canvas_schema: {
-                    ...state.canvas_schema,
-                    canvas_notes
-                },
-                canvas_undo_list: [
-                    ...state.canvas_undo_list,
-                    {
-                        action: notesConstants.UPDATE_NOTE_REQUEST,
-                        payload: old_note
-                    }
-                ],
+                canvas_schema,
                 canvas_redo_list
 
             }
-        case notesConstants.DELETE_NOTE_REQUEST:
-            [note_category][note_column_index].splice(note_column_index, 1);
+        case notesConstants.DELETE_NOTE_ACTION:
+            _index = find_index_by_property(canvas_schema.canvas_notes[action.payload.note_category], action.payload.note_id);
+            [old_note] = canvas_schema.canvas_notes[action.payload.note_category].splice(_index, 1);
+            if (!action.no_clear_redo) {
+                canvas_redo_list = [];
+                state.canvas_undo_list.unshift(complementary_action(action))
+            }
             return {
                 ...state,
-                canvas_schema: {
-                    ...state.canvas_schema,
-                    canvas_notes
-                },
-                canvas_undo_list: [
-                    ...state.canvas_undo_list,
-                    {
-                        action: notesConstants.INIT_NOTE_REQUEST,
-                        payload: old_note
-                    }
-                ],
+                canvas_schema,
                 canvas_redo_list
             }
         case notesConstants.UNDO_NOTE_ACTION:
@@ -84,7 +106,7 @@ export function notes(state = {}, action) {
                 ...state,
                 canvas_redo_list: [
                     ...state.canvas_redo_list,
-                    state.canvas_redo_list.pop()
+                    complementary_action(state.canvas_undo_list.shift())
                 ]
             }
 
@@ -93,7 +115,7 @@ export function notes(state = {}, action) {
                 ...state,
                 canvas_undo_list: [
                     ...state.canvas_undo_list,
-                    state.canvas_redo_list.pop()
+                    complementary_action(state.canvas_redo_list.shift())
                 ]
             }
 

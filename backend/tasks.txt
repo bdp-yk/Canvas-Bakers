@@ -3,3 +3,4 @@ nano ~/myproject/myproject.ini
 sudo nano /etc/systemd/system/myproject.service
 sudo systemctl start myproject
 sudo systemctl enable myproject
+sudo cp  ~/Canvas-Backers/backend/default /etc/nginx/sites-available/canvas_backers

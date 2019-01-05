@@ -5,6 +5,8 @@ import isAfter from 'date-fns/is_after';
 import { bindActionCreators } from 'redux';
 import { lmc_schema, bmc_schema, lmc_design, bmc_design } from '../featured';
 
+
+//Redux Util for connect function
 export const mapStateToProps = state => {
   const { ...rest } = state;
   return rest;
@@ -23,6 +25,8 @@ export const multipleActionsMapDispatchToProps = (actionCreators) => (dispatch) 
   });
   return bindActionCreators(all_actions, dispatch);
 }
+
+//Featured function
 export const range = n =>
   Array(n)
     .fill()
@@ -78,6 +82,9 @@ export const stripHTMLFromString = string => {
 
   return placeholderDiv.textContent || placeholderDiv.innerText || '';
 };
+export const pure_alphanum_str=(x)=>{
+  return x.toLocaleLowerCase().match(/[a-zA-Z0-9]/g).join('')
+}
 
 export const truncateStringByWordCount = (string, maxWords) => {
   const wordArray = string.split(/\s/g);
@@ -90,7 +97,7 @@ export const truncateStringByWordCount = (string, maxWords) => {
   const truncatedString = wordArray.slice(0, maxWords).join(' ');
 
   // Attach an ellipsis at the end, since it needed truncation
-  return `${truncatedString}…`;
+  return `${truncatedString}`;
 };
 
 export const isEmpty = obj => Object.keys(obj).length === 0;

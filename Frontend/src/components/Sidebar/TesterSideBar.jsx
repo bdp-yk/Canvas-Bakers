@@ -36,8 +36,7 @@ class TesterSideBar extends React.Component {
   linkOnClick = () => {
     document.documentElement.classList.remove("nav-open");
   };
-  render() {
-    console.log(this.props.canvas.canvas_history);
+  render() { 
     let { bgColor, canvas } = this.props;
     let { canvas_schema, load_canvas_success, canvas_history } = canvas;
     return (
@@ -65,7 +64,7 @@ class TesterSideBar extends React.Component {
 
           <Nav>
             <NavLink
-              to={_dashboard_route}
+              to={_dashboard_route()}
               className="nav-link"
               tag="a"
             >
@@ -100,7 +99,7 @@ class TesterSideBar extends React.Component {
                 <p>Canvas History</p>
               </NavLink>
               <UncontrolledCollapse toggler="#canvas_history_toggler">
-                {canvas.canvas_history ? canvas.canvas_history.map((e, key) => <NavItem
+                {canvas_history ? canvas.canvas_history.map((e, key) => <NavItem
                   tag="a"
                   className="nav-link "
                   key={key}

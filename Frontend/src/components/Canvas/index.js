@@ -1,1 +1,1 @@
-export * from "./NotePartialView"
+export * from "./NotePartialView";

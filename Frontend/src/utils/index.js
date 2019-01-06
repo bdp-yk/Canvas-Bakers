@@ -83,7 +83,7 @@ export const stripHTMLFromString = string => {
   return placeholderDiv.textContent || placeholderDiv.innerText || '';
 };
 export const pure_alphanum_str=(x)=>{
-  return x.toLocaleLowerCase().match(/[a-zA-Z0-9]/g).join('')
+  return x.toLocaleLowerCase().match(/[a-z0-9]/ig).join('')
 }
 
 export const truncateStringByWordCount = (string, maxWords) => {

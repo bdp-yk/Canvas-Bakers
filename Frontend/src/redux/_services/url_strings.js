@@ -1,5 +1,5 @@
 export const API_URL = "http://localhost:5000/";
-// export const API_URL="http://sss:5000/";
+// export const API_URL="/";
 
 // sign in/out/up urls
 export const USER_AUTH_URL = API_URL + "user/";
@@ -25,18 +25,19 @@ export const TESTER_GET_BY_ID_URL = TESTER_AUTH_URL + "get_by_id/";
 export const TESTER_GET_BY_EMAIL = TESTER_AUTH_URL + "get_by_email/";
 
 
-//get all url
+// get all url
 export const GET_ALL_USERS = USER_AUTH_URL + "get_all/"
 export const GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/"
 
 
 // canvas urls
 export const CANVAS_ENTRY_URL = API_URL + "canvas/";
-//update_one with upsert
+// update_one with upsert
 export const UPLOAD_CANVAS_URL = CANVAS_ENTRY_URL + "update";
 export const LOAD_CANVAS_URL = CANVAS_ENTRY_URL + "load";
 export const DELETE_CANVAS_URL = CANVAS_ENTRY_URL + "delete";
 export const SHARE_CANVAS_URL = CANVAS_ENTRY_URL + "share";
+// listing urls
 
 export const LIST_OF_USER_CANVAS_URL = CANVAS_ENTRY_URL + "list_canvas";
 export const CANVAS_HISTOR_URL = CANVAS_ENTRY_URL + "canvas_history";

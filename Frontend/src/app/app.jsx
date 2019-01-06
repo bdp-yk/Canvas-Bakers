@@ -8,6 +8,7 @@ import { alertActions } from '../redux/_actions';
 import { PrivateRoute } from '../_components';
 import { WelcomeLayout, CanvasDefaultLayout, AdminLayout, TesterLayout, UserLayout, DocumentationLayout } from '../layouts';
 import { _admin_route, _user_route, _tester_route, _canvas_preview_route, _welcome_route, _document_route } from '../constants';
+import { random } from '../utils';
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -30,11 +31,11 @@ class App extends React.Component {
             autoDismiss: 7
         };
         this.refs.notificationAlert.notificationAlert(options);
-    };
-
+    }; 
     render() {
         const { alert } = this.props;
-        alert.message && this.notify(alert);
+        if (alert.message)
+            this.notify(alert);
         return (
             <>
 

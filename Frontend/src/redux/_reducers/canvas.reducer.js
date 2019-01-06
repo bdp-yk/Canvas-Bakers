@@ -14,6 +14,10 @@ export const canvas_init_store = {
     upload_canvas_success: false,
     upload_canvas_failure: false,
 
+    update_canvas_schema_request: false,
+    update_canvas_schema_success: false,
+    update_canvas_schema_failure: false,
+
     load_canvas_request: false,
     load_canvas_success: false,
     load_canvas_failure: false,
@@ -77,10 +81,9 @@ export function canvas(state = canvas_init_store, action) {
                 upload_canvas_request: true,
                 upload_canvas_success: false,
                 upload_canvas_failure: false,
-                canvas_schema: {
-                    ...state.canvas_schema,
-                    ...action.payload,
-                }
+                canvas_redo_list:[],
+                canvas_undo_list:[],
+
 
             };
         case canvasConstants.UPLOAD_CANVAS_SUCCESS:
@@ -180,9 +183,9 @@ export function canvas(state = canvas_init_store, action) {
         case canvasConstants.CLEAR_CANVAS_SCHEMA:
             return {
                 ...state,
-                load_user_canvas_request: false,
-                load_user_canvas_success: false,
-                load_user_canvas_failure: false,
+                load_canvas_request: false,
+                load_canvas_success: false,
+                load_canvas_failure: false, 
                 canvas_schema: {}
 
             }
@@ -191,7 +194,7 @@ export function canvas(state = canvas_init_store, action) {
                 ...state,
                 fetch_canvas_team_mate_request: true,
                 fetch_canvas_team_mate_success: false,
-                fetch_canvas_team_mate_request: false,
+                fetch_canvas_team_mate_failure: false,
             }
         case canvasConstants.FETCH_CANVAS_TEAM_MATE_SUCCESS:
             return {
@@ -238,12 +241,34 @@ export function canvas(state = canvas_init_store, action) {
                 share_my_canvas_failure: true,
             }
 
-          /**
-           * UPLOAD CANVAS
-           * 
-           *  */  
-
-
+        case canvasConstants.UPDATE_CANVAS_SCHEMA_REQUEST:
+            return {
+                ...state,
+                update_canvas_schema_request: true,
+                update_canvas_schema_success: false,
+                update_canvas_schema_failure: false,
+                canvas_schema: {
+                    ...state.canvas_schema,
+                    ...action.payload
+                },
+                canvas_redo_list:[],
+                canvas_undo_list:[]
+            }
+        case canvasConstants.UPDATE_CANVAS_SCHEMA_SUCCESS:
+            return {
+                ...state,
+                update_canvas_schema_request: false,
+                update_canvas_schema_success: true,
+                update_canvas_schema_failure: false,
+                
+            }
+        case canvasConstants.UPDATE_CANVAS_SCHEMA_FAILURE:
+            return {
+                ...state,
+                update_canvas_schema_request: false,
+                update_canvas_schema_success: false,
+                update_canvas_schema_failure: true
+            }
         default:
             return notes(state, action);
     }

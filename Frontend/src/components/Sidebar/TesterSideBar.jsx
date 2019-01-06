@@ -10,7 +10,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Nav, UncontrolledCollapse, NavItem, Button } from "reactstrap";
-import { _dashboard_route } from "../../constants";
+import { _dashboard_route, _workspace_link } from "../../constants";
 
 var ps;
 
@@ -81,13 +81,13 @@ class TesterSideBar extends React.Component {
                 <p>Team Members</p>
               </NavLink>
               <UncontrolledCollapse toggler="#nav_link_toggler">
-                {canvas_schema.canvas_team ? canvas_schema.canvas_team.map(e => <NavItem
-                  tag="a"
+                {canvas_schema.canvas_team ? canvas_schema.canvas_team.map((e,key) => <NavItem
+                  tag="li"
                   className="nav-link "
-                  key={e}
+                  key={key}
                 >
                   <i className={"tim-icons icon-single-02"} />
-                  <small>{e["email"]}</small>
+                  <small className="text-dark">{e["email"]}</small>
                 </NavItem>) : null}
               </UncontrolledCollapse>
               <NavLink
@@ -99,14 +99,15 @@ class TesterSideBar extends React.Component {
                 <p>Canvas History</p>
               </NavLink>
               <UncontrolledCollapse toggler="#canvas_history_toggler">
-                {canvas_history ? canvas.canvas_history.map((e, key) => <NavItem
+                {canvas_history ? canvas.canvas_history.map((e, key) => <NavLink
+                  to={_workspace_link(canvas_schema.canvas_id,e["canvas_version_stamp"])}
                   tag="a"
                   className="nav-link "
                   key={key}
                 >
                   <i className={"tim-icons icon-single-02"} />
                   <small>{`${(e["canvas_version_stamp"])}`}</small>
-                </NavItem>
+                </NavLink>
                 ) : null}
               </UncontrolledCollapse>
 

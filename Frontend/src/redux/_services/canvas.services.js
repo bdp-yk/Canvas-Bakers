@@ -18,10 +18,10 @@ export const canvasServices = {
     load_canvas_with_id,
     delete_canvas_by_id,
     fetch_team_mate_service,
-    share_my_canvas
+    share_my_canvas_service
 };
 
-async function fetch_team_mate_service(email) {
+function fetch_team_mate_service(email) {
 
     const requestOptions = {
         method: 'POST',
@@ -32,22 +32,21 @@ async function fetch_team_mate_service(email) {
             email
         })
     };
-    let resp = await fetch(TESTER_GET_BY_EMAIL, requestOptions).then(handleResponse);
-    return resp;
+    return fetch(TESTER_GET_BY_EMAIL, requestOptions).then(handleResponse);;
 }
 
-async function share_my_canvas(new_member) {
+function share_my_canvas_service(canvas_team_new_members, by_email) {
     const requestOptions = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            user: new_member
+            canvas_team_new_members,
+            by_email
         })
     };
-    let resp = await fetch(SHARE_CANVAS_URL, requestOptions).then(handleResponse);
-    return resp;
+    return fetch(SHARE_CANVAS_URL, requestOptions).then(handleResponse);
 
 }
 
@@ -66,7 +65,7 @@ function delete_canvas_by_id(canvas_id) {
         .then(handleResponse);
 }
 
-function load_canvas_with_id(canvas_id) {
+function load_canvas_with_id(canvas_id, stamp) {
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -74,7 +73,8 @@ function load_canvas_with_id(canvas_id) {
         },
         body: JSON.stringify({
             canvas_id,
-            email: who_am_i() && who_am_i()["email"]
+            email: Boolean(who_am_i()) && who_am_i()["email"],
+            stamp
         })
     };
     return fetch(LOAD_CANVAS_URL, requestOptions)
@@ -93,13 +93,15 @@ function list_all_canvases_for_user(user) {
         .then(handleResponse);
 }
 
-async function upload_canvas_service(canvas) {
+async function upload_canvas_service(canvas_schema) {
+    console.log("upload_canvas_service>>", canvas_schema.canvas_version_stamp);
+
     const requestOptions = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(canvas)
+        body: JSON.stringify(canvas_schema)
     };
 
     return await fetch(UPLOAD_CANVAS_URL, requestOptions)

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { connect } from 'react-redux'
 
 // javascript plugin used to create scrollbars on windows
@@ -86,9 +86,12 @@ class Tester extends React.Component {
               toggleSidebar={this.toggleSidebar}
               sidebarOpened={this.state.sidebarOpened}
             />
+
             <TesterSideBar bgColor={this.state.backgroundColor} />
+
             <Route path={_dashboard_route()} component={Dashboard} />
             <Route path={_workspace_route()} component={CanvasDefaultLayout} />
+            <Redirect from="/" exact to={_dashboard_route()} />
           </div>
         </div>
         <FixedPlugin

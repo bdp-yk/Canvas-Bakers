@@ -3,7 +3,7 @@ import {
     alertConstants
 } from '../_constants';
 import {
-    canvasServices
+    canvasServices,
 } from '../_services';
 import {
     alertActions
@@ -22,13 +22,15 @@ import {
 
 export const canvasActions = {
     init_canvas_action,
-    upload_canvas_action,
+    commit_canvas_schema_action,
     clear_canvas_schema_action,
     list_all_canvases,
     load_canvas_schema,
     delete_my_canvas,
     fetch_team_mate,
-    share_my_canvas
+    approve_team_mate,
+    update_canvas_schema,
+    share_my_canvas_action
 };
 
 const nanoid = require('nanoid');
@@ -53,47 +55,64 @@ function fetch_team_mate(email) {
         dispatch({
             type: canvasConstants.FETCH_CANVAS_TEAM_MATE_REQUEST
         });
-        let response = fetch_team_mate_service(email);
-        if (response["ok"])
-            dispatch({
-                type: canvasConstants.FETCH_CANVAS_TEAM_MATE_SUCCESS,
-                payload: response["user"]
-            });
-        else
-            dispatch({
-                type: canvasConstants.FETCH_CANVAS_TEAM_MATE_FAILURE
-            });
+        canvasServices.fetch_team_mate_service(email).then(
+            response => {
+                if (response["ok"])
+                    dispatch({
+                        type: canvasConstants.FETCH_CANVAS_TEAM_MATE_SUCCESS,
+                        payload: response["user"]
+                    });
+                else
+                    dispatch({
+                        type: canvasConstants.FETCH_CANVAS_TEAM_MATE_FAILURE
+                    });
+            }
+        )
+
+
+    }
+}
+
+function approve_team_mate() {
+    return dispatch => {
+        dispatch({
+            type: canvasConstants.FREE_CANVAS_TEAM_MATE
+        });
     }
 }
 
 
-function share_my_canvas(canvas_team_new_membres, by_email) {
+function share_my_canvas_action(canvas_team_new_members, by_email) {
     return dispatch => {
         dispatch({
             type: canvasConstants.SHARE_MY_CANVAS_REQUEST
         });
-        let response = share_my_canvas_service(canvas_team_new_membres, by_email);
-        if (response["ok"]) {
-            dispatch({
-                type: canvasConstants.SHARE_MY_CANVAS_SUCCESS
-            });
-            dispatch({
-                type: alertConstants.SUCCESS,
-                message: `${canvas_team_new_membres} joined this Workspace team successfully.`
-            });
-        } else {
-            dispatch({
-                type: canvasConstants.SHARE_MY_CANVAS_FAILURE
-            });
+        canvasServices.share_my_canvas_service(canvas_team_new_members, by_email).then(response => {
+            if (response["ok"]) {
+                dispatch({
+                    type: canvasConstants.SHARE_MY_CANVAS_SUCCESS
+                });
+                dispatch({
+                    type: alertConstants.SUCCESS,
+                    message: `${canvas_team_new_members.reduce((a,v)=>{return a+v.email},"")} joined this Workspace team successfully.`
+                });
+            } else {
+                dispatch({
+                    type: canvasConstants.SHARE_MY_CANVAS_FAILURE
+                });
+
+            }
+        }).catch(err => {
             dispatch({
                 type: alertConstants.ERROR,
-                message: `Sorry, we couldn't invite ${canvas_team_new_membres}.`
+                message: `${err}Sorry, we couldn't invite ${canvas_team_new_members.map(element => {
+                return element.email+" "
+            })}.`
             });
-        }
+        })
 
     }
 }
-
 
 function delete_my_canvas(canvas_id, push = true) {
     return dispatch => {
@@ -171,13 +190,12 @@ function list_all_canvases() {
 
 }
 
-
 function init_canvas_action(schema) {
     const init_version = canvas_initial_schema(schema);
     return dispatch => {
         try {
             dispatch(request(init_version));
-            upload_canvas_action(init_version);
+            commit_canvas_schema_action(init_version);
             let response = canvasServices.upload_canvas_service(init_version);
             dispatch(success(response["data"]));
             dispatch({
@@ -217,40 +235,66 @@ function init_canvas_action(schema) {
         }
     }
 }
-/*
-canvas payload :{
-    canvas_base_version
-    canvas_field
-}
- */
 
+function update_canvas_schema(payload) {
 
-function upload_canvas_action(canvas_payload) {
     return dispatch => {
-        dispatch(request(canvas_payload));
-        canvasServices.upload_canvas_service(canvas_payload).then(
+        try {
+            dispatch({
+                type: canvasConstants.UPDATE_CANVAS_SCHEMA_REQUEST,
+                payload
+            })
+            dispatch({
+                type: canvasConstants.UPDATE_CANVAS_SCHEMA_SUCCESS
+            })
+            dispatch({
+                type: alertConstants.SUCCESS,
+                message: "update local copy"
+            })
+        } catch (err) {
+            dispatch({
+                type: canvasConstants.UPDATE_CANVAS_SCHEMA_FAILURE
+            })
+            dispatch({
+                type: alertConstants.ERROR,
+                message: `Oups! something went wrong${err}`
+            })
+        }
+    }
+
+}
+
+function commit_canvas_schema_action(payload) {
+    return dispatch => {
+        dispatch(request());
+        let canvas_schema = Object.assign({}, payload);
+        console.log(">commit_canvas_schema_action bf", canvas_schema.canvas_version_stamp);
+
+        canvas_schema.canvas_version_stamp = Date.now();
+        canvas_schema.canvas_version_provider = who_am_i();
+        console.log(">commit_canvas_schema_action nx", canvas_schema.canvas_version_stamp);
+        canvasServices.upload_canvas_service(canvas_schema).then(
             response => {
 
-                dispatch(success(response["data"]));
+                dispatch(success());
                 dispatch({
                     type: alertConstants.SUCCESS,
                     message: "Your Changes Have been Applied"
                 });
+                history.push(_workspace_link(canvas_schema["canvas_id"]));
             }
 
         ).catch(
             error => {
                 dispatch(alertActions.error(error.toString()));
                 dispatch(failure());
-                history.push('/');
             }
         )
     }
 
-    function request(canvas) {
+    function request() {
         return {
-            type: canvasConstants.UPLOAD_CANVAS_REQUEST,
-            canvas
+            type: canvasConstants.UPLOAD_CANVAS_REQUEST
         }
     }
 
@@ -267,18 +311,21 @@ function upload_canvas_action(canvas_payload) {
     }
 }
 
-function load_canvas_schema(canvas_id, redirect = true) {
+function load_canvas_schema(canvas_id, redirect = true, stamp = "") {
 
     return dispatch => {
         dispatch({
             type: canvasConstants.LOAD_CANVAS_REQUEST
         });
-        canvasServices.load_canvas_with_id(canvas_id)
+        canvasServices.load_canvas_with_id(canvas_id, stamp)
             .then(response => {
-                dispatch(success(response));
-                console.log(">>Load Canvas Schema", response);
-                if (redirect)
-                    history.push(_workspace_link(canvas_id))
+                let {
+                    ok,
+                    ...rest
+                } = response
+                dispatch(success(rest));
+                if (ok && redirect)
+                    history.replace(_workspace_link(canvas_id, stamp))
             })
             .catch(error => {
                 dispatch({
@@ -305,6 +352,7 @@ function load_canvas_schema(canvas_id, redirect = true) {
 
 function clear_canvas_schema_action() {
     return dispatch => {
+        history.replace(_dashboard_route())
         dispatch({
             type: canvasConstants.CLEAR_CANVAS_SCHEMA
         })

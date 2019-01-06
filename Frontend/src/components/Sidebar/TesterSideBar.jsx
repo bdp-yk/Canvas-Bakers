@@ -2,41 +2,41 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 // nodejs library to set properties for components
-import { PropTypes } from "prop-types";
+// import { PropTypes, number } from "prop-types";
 import { connect } from 'react-redux'
 
 // javascript plugin used to create scrollbars on windows
-import PerfectScrollbar from "perfect-scrollbar";
+// import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Nav, UncontrolledCollapse, NavItem, Button } from "reactstrap";
 import { _dashboard_route, _workspace_link } from "../../constants";
 
-var ps;
+// var ps;
 
 class TesterSideBar extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.refs.sidebar, {
-        suppressScrollX: true,
-        suppressScrollY: false
-      });
-    }
+  // componentDidMount() {
+  //   if (navigator.platform.indexOf("Win") > -1) {
+  //     ps = new PerfectScrollbar(this.refs.sidebar, {
+  //       suppressScrollX: true,
+  //       suppressScrollY: false
+  //     });
+  //   }
 
 
-  }
-  componentWillUnmount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps.destroy();
-    }
-  }
+  // }
+  // componentWillUnmount() {
+  //   if (navigator.platform.indexOf("Win") > -1) {
+  //     ps.destroy();
+  //   }
+  // }
   linkOnClick = () => {
     document.documentElement.classList.remove("nav-open");
   };
-  render() { 
+  render() {
     let { bgColor, canvas } = this.props;
     let { canvas_schema, load_canvas_success, canvas_history } = canvas;
     return (
@@ -81,13 +81,13 @@ class TesterSideBar extends React.Component {
                 <p>Team Members</p>
               </NavLink>
               <UncontrolledCollapse toggler="#nav_link_toggler">
-                {canvas_schema.canvas_team ? canvas_schema.canvas_team.map((e,key) => <NavItem
+                {canvas_schema.canvas_team ? canvas_schema.canvas_team.map((e, key) => <NavItem
                   tag="li"
                   className="nav-link "
                   key={key}
                 >
                   <i className={"tim-icons icon-single-02"} />
-                  <small className="text-dark">{e["email"]}</small>
+                  <small className="text-dark">{e["email"].slice(0,Number( (e["email"]).length / 2))}</small>
                 </NavItem>) : null}
               </UncontrolledCollapse>
               <NavLink
@@ -100,7 +100,7 @@ class TesterSideBar extends React.Component {
               </NavLink>
               <UncontrolledCollapse toggler="#canvas_history_toggler">
                 {canvas_history ? canvas.canvas_history.map((e, key) => <NavLink
-                  to={_workspace_link(canvas_schema.canvas_id,e["canvas_version_stamp"])}
+                  to={_workspace_link(canvas_schema.canvas_id, e["canvas_version_stamp"])}
                   tag="a"
                   className="nav-link "
                   key={key}
@@ -121,28 +121,28 @@ class TesterSideBar extends React.Component {
   }
 }
 
-TesterSideBar.defaultProps = {
-  bgColor: "primary",
-  routes: [{}]
-};
+// TesterSideBar.defaultProps = {
+//   bgColor: "primary",
+//   routes: [{}]
+// };
 
-TesterSideBar.propTypes = {
-  // insde the links of this component
-  bgColor: PropTypes.oneOf(["primary", "blue", "green"]),
-  routes: PropTypes.arrayOf(PropTypes.object),
-  logo: PropTypes.shape({
-    // innerLink is for links that will direct the user within the app
-    // it will be rendered as <Link to="...">...</Link> tag
-    innerLink: PropTypes.string,
-    // outterLink is for links that will direct the user outside the app
-    // it will be rendered as simple <a href="...">...</a> tag
-    outterLink: PropTypes.string,
-    // the text of the logo
-    text: PropTypes.node,
-    // the image src of the logo
-    imgSrc: PropTypes.string
-  })
-};
+// TesterSideBar.propTypes = {
+//   // insde the links of this component
+//   bgColor: PropTypes.oneOf(["primary", "blue", "green"]),
+//   routes: PropTypes.arrayOf(PropTypes.object),
+//   logo: PropTypes.shape({
+//     // innerLink is for links that will direct the user within the app
+//     // it will be rendered as <Link to="...">...</Link> tag
+//     innerLink: PropTypes.string,
+//     // outterLink is for links that will direct the user outside the app
+//     // it will be rendered as simple <a href="...">...</a> tag
+//     outterLink: PropTypes.string,
+//     // the text of the logo
+//     text: PropTypes.node,
+//     // the image src of the logo
+//     imgSrc: PropTypes.string
+//   })
+// };
 
 function mapStateToProps(state) {
   const { tester, canvas } = state;

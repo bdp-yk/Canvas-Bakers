@@ -49,7 +49,8 @@ class TesterNavBar extends React.Component {
   };
 
   getTesterInfo = () => {     
-    return  Boolean(who_am_i())&&who_am_i()["email"];
+    let name=  Boolean(who_am_i())&&who_am_i()["email"];
+    return name.split(/[^a-z]+/ig)[0]
   }
   render() {
     return (

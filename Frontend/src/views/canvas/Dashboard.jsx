@@ -19,6 +19,8 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canvas_name_error: false,
+      canvas_description_error: false,
       canvas_description: "",
       canvas_name: "",
       canvas_type: "bmc",
@@ -30,16 +32,23 @@ class Dashboard extends React.Component {
 
   }
   async selectCanvasSchema(schema) {
+    let t = false;
+    ["canvas_name", "canvas_description"].forEach(e => {
+      if (this.state[e] === "") {
+        this.setState({
+          [e + "_error"]: true
+        })
+        t = true;
+      }
+    });
+    if (t) return;
 
     if (schema === "lmc")
       await this.setState({ canvas_notes: _lmc, canvas_type: schema }, function () {
-        console.log(">>async state canvas notes", this.state.canvas_notes);
       });
     else
       await this.setState({ canvas_notes: _bmc, canvas_type: schema });
-    console.log(">>state canvas notes", this.state.canvas_notes);
 
-    // console.log(get_init_schema(schema));
     const {
       canvas_description,
       canvas_name,
@@ -60,7 +69,6 @@ class Dashboard extends React.Component {
   componentDidMount = () => {
     this.props.list_all_canvases();
     this.props.clear_canvas_schema_action();
-    console.log(this.props);
 
 
   }
@@ -72,10 +80,11 @@ class Dashboard extends React.Component {
   }
   render() {
 
-    const { canvas, expand_side_bar } = this.props
+    const { canvas } = this.props
     return (
       <>
-        <div className={expand_side_bar ? "content" : "content py-3"}>
+        {/* <div className={expand_side_bar ? "content" : "content px-3"}> */}
+        <div className="content">
           <h3>
             Dashboard <br /><small className="text-muted">Manage your existing WorkSpaces or </small><a href="#new_one" className="link text-muted"> create a new one</a>
           </h3>
@@ -85,8 +94,8 @@ class Dashboard extends React.Component {
               <Fade className=" mx-auto" style={{ width: "18rem" }} key={e.canvas_id}>
                 <Card >
                   <CardBody>
-                    <CardTitle>{e.canvas_name}</CardTitle>
-                    <CardText>{e.canvas_description}</CardText>
+                    <CardTitle>{e.canvas_name}&nbsp;</CardTitle>
+                    <CardText>{e.canvas_description}&nbsp;</CardText>
                   </CardBody>
                   <CardFooter> <Button block onClick={() => this.props.load_canvas_schema(e.canvas_id)}>  Load it in WorkSpace</Button></CardFooter>
                 </Card>
@@ -98,8 +107,8 @@ class Dashboard extends React.Component {
             <Card className="mx-auto" style={{ width: "18rem" }}  >
               <CardBody>
                 <CardBody>
-                  <CardTitle><Input name="canvas_name" placeholder="New Canvas Title" onChange={this.handleInputChange} /> </CardTitle>
-                  <CardText><Input name="canvas_description" placeholder="New Canvas Description" onChange={this.handleInputChange} /></CardText>
+                  <CardTitle><Input invalid={this.state.canvas_name_error} name="canvas_name" placeholder="New Canvas Title" onChange={this.handleInputChange} /> </CardTitle>
+                  <CardText><Input invalid={this.state.canvas_description_error} name="canvas_description" placeholder="New Canvas Description" onChange={this.handleInputChange} /></CardText>
                 </CardBody>
                 <CardFooter>
                   <Button block className="ml-0 text-center" disabled={canvas.init_canvas_request} color="light" onClick={() => this.selectCanvasSchema("bmc")} >Make BMC</Button>

@@ -28,13 +28,13 @@ canvas_schema = {
             "type": "array",
         },
         "canvas_base_version": {
-            "type": "string",
+            "type": ["integer", "string"],
         },
         "canvas_version_provider": {
             "type": "object",
         },
         "canvas_version_stamp": {
-            "type": "integer",
+            "type": ["integer", "string"],
         },
     },
     "required": ["canvas_id"],

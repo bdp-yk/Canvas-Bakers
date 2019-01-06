@@ -6,12 +6,12 @@ import { PropTypes } from "prop-types";
 import { connect } from 'react-redux'
 
 // javascript plugin used to create scrollbars on windows
-import PerfectScrollbar from "perfect-scrollbar";
+// import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Nav } from "reactstrap";
 
-var ps;
+// var ps;
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -22,19 +22,19 @@ class Sidebar extends React.Component {
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   }
-  componentDidMount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.refs.sidebar, {
-        suppressScrollX: true,
-        suppressScrollY: false
-      });
-    }
-  }
-  componentWillUnmount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps.destroy();
-    }
-  }
+  // componentDidMount() {
+  //   if (navigator.platform.indexOf("Win") > -1) {
+  //     ps = new PerfectScrollbar(this.refs.sidebar, {
+  //       suppressScrollX: true,
+  //       suppressScrollY: false
+  //     });
+  //   }
+  // }
+  // componentWillUnmount() {
+  //   if (navigator.platform.indexOf("Win") > -1) {
+  //     ps.destroy();
+  //   }
+  // }
   linkOnClick = () => {
     document.documentElement.classList.remove("nav-open");
   };

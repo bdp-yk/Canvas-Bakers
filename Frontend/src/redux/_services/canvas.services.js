@@ -32,7 +32,7 @@ function fetch_team_mate_service(email) {
             email
         })
     };
-    return fetch(TESTER_GET_BY_EMAIL, requestOptions).then(handleResponse);;
+    return fetch(TESTER_GET_BY_EMAIL, requestOptions).then(handleResponse);
 }
 
 function share_my_canvas_service(canvas_team_new_members, by_email) {

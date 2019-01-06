@@ -2,13 +2,21 @@ import isBefore from 'date-fns/is_before';
 import isAfter from 'date-fns/is_after';
 // import * as actionCreators from "../redux/_actions";
 
-import { bindActionCreators } from 'redux';
-import { lmc_schema, bmc_schema, lmc_design, bmc_design } from '../featured';
+import {
+  bindActionCreators
+} from 'redux';
+import {
+  lmc_schema,
+  bmc_schema,
+  lmc_design,
+  bmc_design
+} from '../featured';
 
 
 //Redux Util for connect function
 export const mapStateToProps = state => {
-  const { ...rest } = state;
+  const { ...rest
+  } = state;
   return rest;
 }
 
@@ -29,8 +37,8 @@ export const multipleActionsMapDispatchToProps = (actionCreators) => (dispatch) 
 //Featured function
 export const range = n =>
   Array(n)
-    .fill()
-    .map((_, i) => i);
+  .fill()
+  .map((_, i) => i);
 
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)];
 
@@ -82,11 +90,19 @@ export const stripHTMLFromString = string => {
 
   return placeholderDiv.textContent || placeholderDiv.innerText || '';
 };
-export const pure_alphanum_str=(x)=>{
+export const pure_alphanum_str = (x) => {
   return x.toLocaleLowerCase().match(/[a-z0-9]/ig).join('')
 }
+export const truncateByLetterCount = (string, l_count) => {
+  if (!string) return string
+  let l = 0,
+    st = string.split(/[^a-z0-9]/ig),
+    i = st.findIndex(e => (l += e.length) >= l_count);
 
+  return st.splice(0, i).join(' ') + "..."
+}
 export const truncateStringByWordCount = (string, maxWords) => {
+  if (!string) return string
   const wordArray = string.split(/\s/g);
 
   // Maybe no truncation is necessary, if the string is below the limit?
@@ -107,8 +123,7 @@ export const convertArrayToMap = list =>
     (acc, item) => ({
       ...acc,
       [item.id]: item,
-    }),
-    {}
+    }), {}
   );
 
 // Either removes or adds an item to an array
@@ -122,14 +137,18 @@ export const toggleInArray = (arr, item) =>
 export const mergeUnique = (arr1, arr2) =>
   arr1.concat(arr2.filter(item => arr1.indexOf(item) === -1));
 
-export const isBetween = ({ date, startDate, endDate }) =>
+export const isBetween = ({
+    date,
+    startDate,
+    endDate
+  }) =>
   isAfter(date, startDate) && isBefore(date, endDate);
 
 export const findRight = (arr, predicate) =>
   arr
-    .slice()
-    .reverse()
-    .find(predicate);
+  .slice()
+  .reverse()
+  .find(predicate);
 
 export function requestAnimationFramePromise() {
   return new Promise(resolve => window.requestAnimationFrame(resolve));

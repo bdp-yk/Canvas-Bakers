@@ -25,7 +25,7 @@ let _auth_route = () => {
 //require leading auth Routes
 export const _dashboard_route = () => _auth_route() + "/dashboard";
 export const _workspace_path = () => _auth_route() + "/workspace/";
-export const _workspace_route = () => _auth_route() + "/workspace/:canvas_id/:stamp";
+export const _workspace_route = () => _auth_route() + "/workspace/:canvas_id/:stamp?";
 export const _workspace_link = (canvas_id, stamp = "") => {
     return _workspace_path() + `${canvas_id}/${stamp}`
 };

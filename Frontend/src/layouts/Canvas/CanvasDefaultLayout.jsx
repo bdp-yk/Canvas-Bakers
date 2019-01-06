@@ -7,7 +7,7 @@ import {
   Card, CardHeader, CardBody, CardTitle, Row, Col,
   Button, ButtonGroup, ButtonDropdown, DropdownToggle,
   DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter,
-  ListGroup, ListGroupItem, Badge, InputGroup, InputGroupAddon, Input
+  Input
 } from "reactstrap";
 import { lmc_design, bmc_design } from "../../featured";
 import { history } from "../../redux/_helpers";
@@ -21,7 +21,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { GenerateDraggable } from "../../_components";
 import { LoaderGif } from "../../_components/LoaderGif";
 
-var timeago = require("timeago.js");
+var TimeAgo = require('timeago-react');
 
 class CanvasDefaultLayout extends React.Component {
   constructor(props) {
@@ -126,7 +126,7 @@ class CanvasDefaultLayout extends React.Component {
     const { canvas } = this.props
     const { is_share } = this.state
 
-    if (canvas_id.length === CANVAS_ID_LENGHT && stamp.length >= 0) {
+    if (canvas_id.length === CANVAS_ID_LENGHT) {
       if (!(canvas && canvas.load_canvas_success)) {
         this.props.load_canvas_schema(canvas_id, !is_share, stamp);
       }
@@ -136,8 +136,8 @@ class CanvasDefaultLayout extends React.Component {
     let { canvas_id, stamp } = this.props.match.params,
       n_canvas_id = nextProps.match.params.canvas_id,
       n_stamp = nextProps.match.params.stamp;
-    if ((canvas_id != n_canvas_id) || ((stamp != n_stamp)))
-      this.props.load_canvas_schema(n_canvas_id, true, n_stamp);
+    if ((canvas_id !== n_canvas_id) || ((stamp !== n_stamp)))
+      this.props.load_canvas_schema(n_canvas_id, false, n_stamp);
 
 
   }
@@ -198,19 +198,19 @@ class CanvasDefaultLayout extends React.Component {
     }
   }
   share_this_canvas = (ask_user = true) => {
-    if (ask_user)
-      this.setState({
-        open_share_modal: !this.state.open_share_modal,
-        _canvas_team: []
-      })
-    else {
-      this.props.share_my_canvas_action(this.state._canvas_team, true)
+    if (!ask_user) {
       let canvas_team = [...this.props.canvas.canvas_schema.canvas_team, ...this.state._canvas_team]
+      // console.log(canvas_team);
+
       this.props.update_canvas_schema({ canvas_team })
       this.commit_canvas_schema()
+      // this.props.share_my_canvas_action(this.state._canvas_team, true)
       this.share_this_canvas()
     }
-
+    this.setState({
+      open_share_modal: !this.state.open_share_modal,
+      _canvas_team: []
+    })
   }
   handle_undo = () => {
     const { canvas_undo_list } = this.props.canvas;
@@ -251,7 +251,7 @@ class CanvasDefaultLayout extends React.Component {
           {load_canvas_success && <>
             <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `}</h4>
             <span className="text-muted px-3" >
-              {`Changes made by ${canvas_schema.canvas_version_provider.email} ${timeago.format(canvas_schema.canvas_version_stamp)}`}
+              {`Changes made by ${canvas_schema.canvas_version_provider.email} ${<TimeAgo datetime={canvas_schema.canvas_version_stamp} />}`}
             </span>
           </>}
           {load_canvas_success ?
@@ -261,7 +261,7 @@ class CanvasDefaultLayout extends React.Component {
                 }
                 <Button onClick={this.handle_undo} disabled={this.props.canvas.canvas_undo_list.length === 0} size="sm">&#9668;</Button>
                 <Button onClick={this.handle_redo} disabled={this.props.canvas.canvas_redo_list.length === 0} size="sm">&#9658;</Button>&nbsp;
-                <Button onClick={this.commit_canvas_schema} disabled={this.props.canvas.canvas_undo_list.length == 0 || this.props.canvas.upload_canvas_request} size="sm">&#10004;</Button>
+                <Button onClick={this.commit_canvas_schema} disabled={this.props.canvas.canvas_undo_list.length === 0 || this.props.canvas.upload_canvas_request} size="sm">&#10004;</Button>
 
               </ButtonGroup>
               <ButtonGroup className="px-3 ml-auto">
@@ -288,7 +288,7 @@ class CanvasDefaultLayout extends React.Component {
               })}
             </Row> : null}
           </DragDropContext>
-          {LoaderGif( load_canvas_request, "Canvas")}
+          {LoaderGif(load_canvas_request, "Canvas")}
         </div>
         <Modal isOpen={this.state.open_delete_modal} fade={false} toggle={() => this.delete_this_canvas(true)}  >
           <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
@@ -327,7 +327,7 @@ class CanvasDefaultLayout extends React.Component {
             <Button className="px-auto" color="success" disabled={!(this.props.canvas.fetch_canvas_team_mate_success && (this.props.canvas.new_team_mate.email === this.state.new_team_mate))} onClick={() => this.approve_new_maker()}>Add To This Team</Button>
           </ModalFooter>
           <ModalFooter>
-            <Button className="px-auto" color="primary" disabled={(this.props.canvas.share_my_canvas_request) || (this.state._canvas_team.length == 0)} onClick={() => this.share_this_canvas(false)}>Expand your Team!</Button>{' '}
+            <Button className="px-auto" color="primary" disabled={(this.props.canvas.share_my_canvas_request) || (this.state._canvas_team.length === 0)} onClick={() => this.share_this_canvas(false)}>Expand your Team!</Button>{' '}
             <Button className="px-auto" color="info" onClick={() => this.share_this_canvas(true)}>Cancel</Button>
           </ModalFooter>
         </Modal>

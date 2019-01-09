@@ -31,7 +31,7 @@ canvas_schema = {
             "type": ["integer", "string"],
         },
         "canvas_version_provider": {
-            "type": "object",
+            "type": ["string","object"],
         },
         "canvas_version_stamp": {
             "type": ["integer", "string"],

@@ -1,11 +1,15 @@
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from jsonschema.exceptions import SchemaError
+from app.featured.utils import strip_accents
 
 tester_schema = {
     "type": "object",
     "properties": {
         "email": {
+            "type": "string",
+        },
+        "standard_email": {
             "type": "string",
         },
         "group": {
@@ -25,6 +29,8 @@ tester_schema = {
 }
 
 
+
+
 def validate_tester(data):
     try:
         validate(data, tester_schema)
@@ -32,4 +38,5 @@ def validate_tester(data):
         return {'ok': False, 'message': e}
     except SchemaError as e:
         return {'ok': False, 'message': e}
+    data["standard_email"]=strip_accents(data["email"])
     return {'ok': True, 'data': data}

@@ -83,7 +83,7 @@ export const lmc_design = [
 export const lmc_schema = {
     "problem": [
         {
-            "note_id": "-1",
+            "note_id": "default_note",
             "note_headline": "Problem Notes",
             "note_description": "Here you can state what are the main problem your Project may face.",
             "note_maker": "Canvas Bakers",
@@ -94,7 +94,7 @@ export const lmc_schema = {
     ],
     "solution": [
         {
-            "note_id": "-2",
+            "note_id": "default_note",
             "note_headline": "Solution Notes",
             "note_description": "Some of your project features that will help you.",
             "note_maker": "Canvas Bakers",
@@ -105,7 +105,7 @@ export const lmc_schema = {
     ],
     "key-activity": [
         {
-            "note_id": "-3",
+            "note_id": "default_note",
             "note_headline": "Key Activities Notes",
             "note_description": "Your project main field of activity",
             "note_maker": "Canvas Bakers",
@@ -116,7 +116,7 @@ export const lmc_schema = {
     ],
     "unique-value-propositions": [
         {
-            "note_id": "-4",
+            "note_id": "default_note",
             "note_headline": "Key Activities Notes",
             "note_description": "Key Activities for a successful Business",
             "note_maker": "Canvas Bakers",
@@ -127,7 +127,7 @@ export const lmc_schema = {
     ],
     "cost-structure": [
         {
-            "note_id": "-5",
+            "note_id": "default_note",
             "note_headline": "Cost Structure Notes",
             "note_description": "Cost of various deals within the Project",
             "note_maker": "Canvas Bakers",
@@ -138,7 +138,7 @@ export const lmc_schema = {
     ],
     "revenue": [
         {
-            "note_id": "-6",
+            "note_id": "default_note",
             "note_headline": "Revenu Plans",
             "note_description": "How will you generate income",
             "note_maker": "Canvas Bakers",
@@ -149,7 +149,7 @@ export const lmc_schema = {
     ],
     "brain-storm": [
         {
-            "note_id": "-7",
+            "note_id": "default_note",
             "note_headline": "BrainStorming Notes",
             "note_description": "What's on your mind but can't be classified?",
             "note_maker": "Canvas Bakers",

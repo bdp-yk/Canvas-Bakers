@@ -13,6 +13,16 @@ import { Nav, UncontrolledCollapse, NavItem, Button } from "reactstrap";
 import { _dashboard_route, _workspace_link } from "../../constants";
 
 // var ps;
+const slice = (str, len) => {
+  return (str.slice(0, len)) + ((str.length > len) ? "..." : "")
+}
+
+const format_provider = (e) => {
+  if (e["email"])
+    return ("Commit by ") + (slice(e["email"].split("@")[0], 6));
+  else
+    return ("Merge by ") + slice(e, 12)
+}
 
 class TesterSideBar extends React.Component {
   constructor(props) {
@@ -39,6 +49,7 @@ class TesterSideBar extends React.Component {
   render() {
     let { bgColor, canvas } = this.props;
     let { canvas_schema, load_canvas_success, canvas_history } = canvas;
+    let canvas_version_stamp = canvas_schema.canvas_version_stamp;
     return (
       <div className="sidebar" data={bgColor}>
         <div className="sidebar-wrapper" ref="sidebar">
@@ -87,7 +98,7 @@ class TesterSideBar extends React.Component {
                   key={key}
                 >
                   <i className={"tim-icons icon-single-02"} />
-                  <small className="text-dark">{e["email"].slice(0,Number( (e["email"]).length / 2))}</small>
+                  <small className="text-dark">{slice(e["email"], 23)}</small>
                 </NavItem>) : null}
               </UncontrolledCollapse>
               <NavLink
@@ -99,15 +110,20 @@ class TesterSideBar extends React.Component {
                 <p>Canvas History</p>
               </NavLink>
               <UncontrolledCollapse toggler="#canvas_history_toggler">
-                {canvas_history ? canvas.canvas_history.map((e, key) => <NavLink
-                  to={_workspace_link(canvas_schema.canvas_id, e["canvas_version_stamp"])}
-                  tag="a"
-                  className="nav-link "
-                  key={key}
-                >
-                  <i className={"tim-icons icon-single-02"} />
-                  <small>{`${(e["canvas_version_stamp"])}`}</small>
-                </NavLink>
+                {canvas_history ? canvas.canvas_history.map((e, key) => {
+                  return <NavItem key={key}>
+                    <NavLink
+                      to={_workspace_link(canvas_schema.canvas_id, e["canvas_version_stamp"])}
+                      disabled={canvas_version_stamp === e["canvas_version_stamp"]}
+                      className={`${canvas_version_stamp === e["canvas_version_stamp"] ? "bg-primary" : "bg-success"} nav-link`}
+
+                    >
+                      {/* {console.log(, ">>stamp")} */}
+                      <i className={"tim-icons icon-tag"} />
+                      <small>{`#${canvas.canvas_history.length - key} ${format_provider(e["canvas_version_provider"])}`}</small>
+                    </NavLink>
+                  </NavItem>
+                }
                 ) : null}
               </UncontrolledCollapse>
 

@@ -4,6 +4,9 @@ import {
 import {
     notes
 } from './notes.canvas.reducers';
+import {
+    find_index_by_property
+} from '../../utils/dnd_utils';
 
 export const canvas_init_store = {
     init_canvas_request: false,
@@ -38,6 +41,8 @@ export const canvas_init_store = {
     share_my_canvas_request: false,
     share_my_canvas_success: false,
     share_my_canvas_failure: false,
+
+    contains_default_notes: false,
 
     canvas_undo_list: [],
     canvas_redo_list: [],
@@ -81,8 +86,8 @@ export function canvas(state = canvas_init_store, action) {
                 upload_canvas_request: true,
                 upload_canvas_success: false,
                 upload_canvas_failure: false,
-                canvas_redo_list:[],
-                canvas_undo_list:[],
+                canvas_redo_list: [],
+                canvas_undo_list: [],
 
 
             };
@@ -185,7 +190,7 @@ export function canvas(state = canvas_init_store, action) {
                 ...state,
                 load_canvas_request: false,
                 load_canvas_success: false,
-                load_canvas_failure: false, 
+                load_canvas_failure: false,
                 canvas_schema: {}
 
             }
@@ -251,8 +256,8 @@ export function canvas(state = canvas_init_store, action) {
                     ...state.canvas_schema,
                     ...action.payload
                 },
-                canvas_redo_list:[],
-                canvas_undo_list:[]
+                canvas_redo_list: [],
+                canvas_undo_list: []
             }
         case canvasConstants.UPDATE_CANVAS_SCHEMA_SUCCESS:
             return {
@@ -260,7 +265,7 @@ export function canvas(state = canvas_init_store, action) {
                 update_canvas_schema_request: false,
                 update_canvas_schema_success: true,
                 update_canvas_schema_failure: false,
-                
+
             }
         case canvasConstants.UPDATE_CANVAS_SCHEMA_FAILURE:
             return {
@@ -269,6 +274,38 @@ export function canvas(state = canvas_init_store, action) {
                 update_canvas_schema_success: false,
                 update_canvas_schema_failure: true
             }
+        case canvasConstants.CLEAR_DEFAULT_NOTES_ACTION:
+            let {canvas_notes}=state.canvas_schema;
+            console.log(">>CLEAR_DEFAULT_NOTES_ACTION",canvas_notes);
+            Object.keys(canvas_notes).forEach(e => {
+                let i = find_index_by_property(canvas_notes[e], "default_note", "note_id");
+                canvas_notes[e].splice(i, 1) 
+                return canvas_notes;
+                // if (i > -1) {
+                // }
+                // // canvas_notes;
+                // return e;
+            });
+            return {
+                ...state,
+                canvas_notes,
+                contains_default_notes: false
+
+            }
+        case canvasConstants.CHECK_DEFAULT_NOTES:
+            let does_contain = false;
+            if (state.canvas_schema.canvas_notes) {
+                Object.keys(state.canvas_schema.canvas_notes).forEach(e => {
+                    does_contain = does_contain || find_index_by_property(state.canvas_schema.canvas_notes[e], "default_canvas", "note_id") > -1;
+                });
+            }
+            console.log("CHECK_DEFAULT_NOTES >> does>>",does_contain)
+            return {
+                ...state,
+                contains_default_notes: does_contain
+
+            }
+
         default:
             return notes(state, action);
     }

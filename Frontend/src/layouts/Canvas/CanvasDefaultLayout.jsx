@@ -21,8 +21,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { GenerateDraggable } from "../../_components";
 import { LoaderGif } from "../../_components/LoaderGif";
 
-var TimeAgo = require('timeago-react');
-
+import TimeAgo from 'timeago-react';
 class CanvasDefaultLayout extends React.Component {
   constructor(props) {
     super(props);
@@ -43,6 +42,7 @@ class CanvasDefaultLayout extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.commit_canvas_schema = this.commit_canvas_schema.bind(this);
+    this.handleClearDefaultNotes = this.handleClearDefaultNotes.bind(this);
   }
   smooth_column = (canvas_notes, column, index, collapse, is_share) => {
 
@@ -102,7 +102,6 @@ class CanvasDefaultLayout extends React.Component {
   commit_canvas_schema = () => {
     this.props.commit_canvas_schema_action(this.props.canvas.canvas_schema);
   }
-
   onDragEnd = result => {
     console.log(result);
 
@@ -138,8 +137,6 @@ class CanvasDefaultLayout extends React.Component {
       n_stamp = nextProps.match.params.stamp;
     if ((canvas_id !== n_canvas_id) || ((stamp !== n_stamp)))
       this.props.load_canvas_schema(n_canvas_id, false, n_stamp);
-
-
   }
   componentWillUnmount() {
     this.props.clear_canvas_schema_action();
@@ -166,7 +163,6 @@ class CanvasDefaultLayout extends React.Component {
       share_dropdown_open: !this.state.share_dropdown_open
     })
   }
-
   delete_this_canvas = (ask_user) => {
     if (ask_user)
       this.setState({
@@ -179,7 +175,6 @@ class CanvasDefaultLayout extends React.Component {
     }
 
   }
-
   fetch_new_maker = () => {
     this.props.fetch_team_mate(this.state.new_team_mate);
   }
@@ -203,7 +198,7 @@ class CanvasDefaultLayout extends React.Component {
       // console.log(canvas_team);
 
       this.props.update_canvas_schema({ canvas_team })
-      this.commit_canvas_schema()
+      // this.commit_canvas_schema()
       // this.props.share_my_canvas_action(this.state._canvas_team, true)
       this.share_this_canvas()
     }
@@ -226,7 +221,11 @@ class CanvasDefaultLayout extends React.Component {
       [name]: value
     })
   }
+  handleClearDefaultNotes = () => {
+    this.props.clear_default_notes()
+  }
   render() {
+
     const { detailed_note, share_dropdown_open, is_share, _canvas_team } = this.state
     // const {canvas} = this.props;
     const { canvas_schema, load_canvas_success, load_canvas_request } = this.props.canvas;
@@ -242,7 +241,7 @@ class CanvasDefaultLayout extends React.Component {
           get_canvas_design = bmc_design;
           break;
       }
-      render_canvas_team = canvas_schema.canvas_team
+      render_canvas_team = canvas_schema.canvas_team;
     }
 
     return (
@@ -251,7 +250,8 @@ class CanvasDefaultLayout extends React.Component {
           {load_canvas_success && <>
             <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `}</h4>
             <span className="text-muted px-3" >
-              {`Changes made by ${canvas_schema.canvas_version_provider.email} ${<TimeAgo datetime={canvas_schema.canvas_version_stamp} />}`}
+              {`Changes made by ${canvas_schema.canvas_version_provider.email} `}
+              <TimeAgo datetime={canvas_schema.canvas_version_stamp} />
             </span>
           </>}
           {load_canvas_success ?
@@ -259,6 +259,7 @@ class CanvasDefaultLayout extends React.Component {
               <ButtonGroup className="px-3 ">
                 {(this.props.location.pathname === _quickstart_route) && <Button onClick={() => history.push("/welcome")}>Home</Button>
                 }
+                {this.props.canvas.contains_default_notes ? <Button onClick={this.handleClearDefaultNotes} size="sm">Delete Default Notes</Button> : null}
                 <Button onClick={this.handle_undo} disabled={this.props.canvas.canvas_undo_list.length === 0} size="sm">&#9668;</Button>
                 <Button onClick={this.handle_redo} disabled={this.props.canvas.canvas_redo_list.length === 0} size="sm">&#9658;</Button>&nbsp;
                 <Button onClick={this.commit_canvas_schema} disabled={this.props.canvas.canvas_undo_list.length === 0 || this.props.canvas.upload_canvas_request} size="sm">&#10004;</Button>

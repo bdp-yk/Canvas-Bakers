@@ -15,6 +15,9 @@ import { RegisterPage } from "../../views/welcome/RegisterPage";
 import { modalConstants } from "../../redux/_constants";
 import { WelcomeNavBar } from "../../components/Navbars";
 import { modalActions } from "../../redux/_actions/modal.actions";
+import { who_am_i } from "../../utils";
+import { history } from "../../redux/_helpers";
+import { _dashboard_route } from "../../constants";
 
 const items = [
   {
@@ -51,6 +54,10 @@ class Welcome extends React.Component {
     document.documentElement.classList.toggle("nav-open");
     this.setState({ sidebarOpened: !this.state.sidebarOpened });
   };
+  componentDidMount = () => {
+    if (who_am_i())
+      history.push(_dashboard_route())
+  }
   renderModal = () => {
     const { modal } = this.props
     switch (modal.target_modal) {

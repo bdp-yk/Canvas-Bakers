@@ -25,15 +25,18 @@ export const canvasActions = {
     commit_canvas_schema_action,
     clear_canvas_schema_action,
     list_all_canvases,
+    check_default_notes,
     load_canvas_schema,
     delete_my_canvas,
     fetch_team_mate,
     approve_team_mate,
     update_canvas_schema,
-    share_my_canvas_action
+    share_my_canvas_action,
+    clear_default_notes
 };
 
 const nanoid = require('nanoid');
+
 
 const canvas_initial_schema = new_canvas => {
     return {
@@ -47,6 +50,21 @@ const canvas_initial_schema = new_canvas => {
         canvas_version_provider: who_am_i(),
         canvas_version_stamp: Date.now(),
         ...new_canvas,
+    }
+}
+
+function check_default_notes (){
+    return dispatch => {
+        dispatch({
+            type: canvasConstants.CHECK_DEFAULT_NOTES
+        })
+    }
+}
+function clear_default_notes (){
+    return dispatch => {
+        dispatch({
+            type: canvasConstants.CLEAR_DEFAULT_NOTES_ACTION
+        })
     }
 }
 
@@ -202,6 +220,9 @@ function init_canvas_action(schema) {
                 type: alertConstants.SUCCESS,
                 message: "Successfully created new Canvas"
             });
+            dispatch({
+                type: canvasConstants.CHECK_DEFAULT_NOTES
+            })
             history.push(_workspace_link(init_version["canvas_id"]));
         } catch (error) {
             history.push(_welcome_route);
@@ -251,6 +272,9 @@ function update_canvas_schema(payload) {
                 type: alertConstants.SUCCESS,
                 message: "update local copy"
             })
+            dispatch({
+                type: canvasConstants.CHECK_DEFAULT_NOTES
+            })
         } catch (err) {
             dispatch({
                 type: canvasConstants.UPDATE_CANVAS_SCHEMA_FAILURE
@@ -268,20 +292,21 @@ function commit_canvas_schema_action(payload) {
     return dispatch => {
         dispatch(request());
         let canvas_schema = Object.assign({}, payload);
-        console.log(">commit_canvas_schema_action bf", canvas_schema.canvas_version_stamp);
+        // console.log(">commit_canvas_schema_action bf", canvas_schema.canvas_version_stamp);
 
         canvas_schema.canvas_version_stamp = Date.now();
         canvas_schema.canvas_version_provider = who_am_i();
-        console.log(">commit_canvas_schema_action nx", canvas_schema.canvas_version_stamp);
+        // console.log(">commit_canvas_schema_action nx", canvas_schema.canvas_version_stamp);
         canvasServices.upload_canvas_service(canvas_schema).then(
             response => {
+                console.log(response);
 
                 dispatch(success());
                 dispatch({
                     type: alertConstants.SUCCESS,
-                    message: "Your Changes Have been Applied"
+                    message: `Your Changes Have been Applied, Redirected to ${canvas_schema.canvas_version_stamp}`
                 });
-                history.push(_workspace_link(canvas_schema["canvas_id"]));
+                history.push(_workspace_link(canvas_schema["canvas_id"], canvas_schema.canvas_version_stamp));
             }
 
         ).catch(
@@ -326,6 +351,9 @@ function load_canvas_schema(canvas_id, redirect = true, stamp = "") {
                 dispatch(success(rest));
                 if (ok && redirect)
                     history.replace(_workspace_link(canvas_id, stamp))
+                    dispatch({
+                        type: canvasConstants.CHECK_DEFAULT_NOTES
+                    })
             })
             .catch(error => {
                 dispatch({

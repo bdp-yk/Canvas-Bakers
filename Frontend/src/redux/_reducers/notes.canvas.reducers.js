@@ -73,7 +73,7 @@ export function notes(state = canvas_init_store, action) {
         case notesConstants.UPDATE_NOTE_ACTION:
             _index = find_index_by_property(canvas_schema.canvas_notes[action.payload.note_category], action.payload.note_id);
             old_note = Object.assign({}, state.canvas_schema.canvas_notes[action.payload.note_category][_index]);
-            console.log(">>> old_note", old_note);
+            // console.log(">>> old_note", old_note);
 
             canvas_schema.canvas_notes[action.payload.note_category][_index] = action.payload;
             if (!action.no_clear_redo) {
@@ -118,7 +118,7 @@ export function notes(state = canvas_init_store, action) {
                     complementary_action(state.canvas_redo_list.shift())
                 ]
             }
-
+            
         default:
             return state
     }

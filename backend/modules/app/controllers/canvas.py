@@ -13,7 +13,7 @@ import logger
 from .url_constants import _url
 import time
 
-from app.featured.versionning import merge_commit_into_base
+from app.featured.versionning import update_base_by_commit
 
 # http://localhost:5000/tester/check_test_season/
 ROOT_PATH = os.environ.get("ROOT_PATH")
@@ -45,10 +45,10 @@ def _LIST_OF_USER_CANVAS_URL():
             {
                 "$group": {
                     "_id": "$canvas_id",
-                    "canvas_id":{"$first": "$$ROOT.canvas_id"},
-                    "canvas_name":{"$first": "$$ROOT.canvas_name"},
-                    "canvas_description":{"$first": "$$ROOT.canvas_description"},
-                    "canvas_team":{"$first": "$$ROOT.canvas_team"},
+                    "canvas_id": {"$first": "$$ROOT.canvas_id"},
+                    "canvas_name": {"$first": "$$ROOT.canvas_name"},
+                    "canvas_description": {"$first": "$$ROOT.canvas_description"},
+                    "canvas_team": {"$first": "$$ROOT.canvas_team"},
                 }
             },
             {"$match": {"canvas_team.email": email}},
@@ -96,11 +96,38 @@ def _UPLOAD_CANVAS_URL():
             .sort("canvas_version_stamp", -1)
             .limit(1)
         )
+        data_canvas_base_version = mongo.db.canvas.find_one(
+            {"canvas_version_stamp": data["canvas_base_version"]}, {"_id": 0}
+        )
+        # Find the last saved version of the document
         most_recent_version = most_recent_version[0] if (most_recent_version) else None
-        data["canvas_base_version"] = most_recent_version["canvas_version_stamp"]
+        print(data_canvas_base_version == most_recent_version)
+        changes, final_version = update_base_by_commit(most_recent_version, data)
+
+        # Save the changes made by this maker
+        # data["canvas_base_version"] = most_recent_version["canvas_version_stamp"]
+
         mongo.db.canvas.insert_one(data)
-        print(">>> _UPLOAD_CANVAS_URL",data)
-        return jsonify({"ok": True, "message": "Canvas Updated Successfully!"}), 200
+        print(changes)
+
+        # there should be only one changes which is header of the version
+        # else there is a merge to be done
+        
+        if len(changes) > 1:
+            final_version["canvas_version_stamp"] = data["canvas_version_stamp"] + 1
+            final_version["canvas_version_provider"] = "CanvasBakers"
+            mongo.db.canvas.insert_one(final_version)
+
+        return (
+            jsonify(
+                {
+                    "ok": True,
+                    "system_merge": final_version,
+                    "message": "Canvas Updated Successfully!",
+                }
+            ),
+            200,
+        )
     else:
         return (
             jsonify(

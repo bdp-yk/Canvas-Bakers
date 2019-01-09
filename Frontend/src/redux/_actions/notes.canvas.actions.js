@@ -73,8 +73,7 @@ function update_note_action(payload) {
 }
 
 function delete_note_action(payload) {
-    console.log(">>delete_note_action>> ",payload);
-    
+
     return dispatch => {
         dispatch({
             type: notesConstants.DELETE_NOTE_ACTION,
@@ -96,8 +95,7 @@ function redo_note_changes(payload) {
 }
 
 function undo_note_changes(payload) {
-    return dispatch => {
-        console.log(payload);
+    return dispatch => { 
 
         payload["no_clear_redo"] = true;
         dispatch(payload)

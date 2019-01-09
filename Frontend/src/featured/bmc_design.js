@@ -97,12 +97,12 @@ const col_4 = {
 }
 const col_5 = {
     composition: [CSt],
-    column_width: 6,
+    column_width: 8,
     note_width: 4
 }
 const col_6 = {
     composition: [RS],
-    column_width: 6,
+    column_width: 4,
     note_width: 4
 }
 const col_7 = {
@@ -123,7 +123,7 @@ export const bmc_design = [
 export const bmc_schema = {
     "key-partners": [
         {
-            "note_id": "-1",
+            "note_id": "default_note",
             "note_headline": "Key Partners",
             "note_description": "Your alliances between competitors or non-competitors.",
             "note_maker": "Canvas Bakers",
@@ -134,7 +134,7 @@ export const bmc_schema = {
     ],
     "key-activites": [
         {
-            "note_id": "-2",
+            "note_id": "default_note",
             "note_headline": "Key Activities Notes",
             "note_description": "The most important activities in executing your project value proposition.",
             "note_maker": "Canvas Bakers",
@@ -145,7 +145,7 @@ export const bmc_schema = {
     ],
     "key-resources": [
         {
-            "note_id": "-3",
+            "note_id": "default_note",
             "note_headline": "Key Ressources Notes",
             "note_description": "The resources that are necessary to create value for the customer.",
             "note_maker": "Canvas Bakers",
@@ -156,7 +156,7 @@ export const bmc_schema = {
     ],
     "value-propositions": [
         {
-            "note_id": "-4",
+            "note_id": "default_note",
             "note_headline": "Problem Notes",
             "note_description": "Set of products and services a business offers to meet the needs of its customers.",
             "note_maker": "Canvas Bakers",
@@ -167,7 +167,7 @@ export const bmc_schema = {
     ],
     "customer-relationships": [
         {
-            "note_id": "-5",
+            "note_id": "default_note",
             "note_headline": "Customer RS Notes",
             "note_description": "Identify the type of relationship you want to create with your customer segments.",
             "note_maker": "Canvas Bakers",
@@ -178,7 +178,7 @@ export const bmc_schema = {
     ],
     "channels": [
         {
-            "note_id": "-6",
+            "note_id": "default_note",
             "note_headline": "Channels Notes",
             "note_description": "How to get in touch with your customers",
             "note_maker": "Canvas Bakers",
@@ -189,7 +189,7 @@ export const bmc_schema = {
     ],
     "customer-segments": [
         {
-            "note_id": "-7",
+            "note_id": "default_note",
             "note_headline": "Custumor Segment Notes",
             "note_description": "identify which customers your project tries to serve",
             "note_maker": "Canvas Bakers",
@@ -200,7 +200,7 @@ export const bmc_schema = {
     ],
     "cost-structure": [
         {
-            "note_id": "-8",
+            "note_id": "default_note",
             "note_headline": "Cost Structure Notes",
             "note_description": "This describes the most important monetary consequences while operating under different business models.",
             "note_maker": "Canvas Bakers",
@@ -211,7 +211,7 @@ export const bmc_schema = {
     ],
     "revenue-stream": [
         {
-            "note_id": "-9",
+            "note_id": "default_note",
             "note_headline": "Revenue Notes",
             "note_description": "The way your project will make income from each customer segment.",
             "note_maker": "Canvas Bakers",
@@ -222,7 +222,7 @@ export const bmc_schema = {
     ],
     "brain-storm": [
         {
-            "note_id": "-10",
+            "note_id": "default_note",
             "note_headline": "Brain Storming Notes",
             "note_description": "What's on your mind but can't be classified?",
             "note_maker": "Canvas Bakers",

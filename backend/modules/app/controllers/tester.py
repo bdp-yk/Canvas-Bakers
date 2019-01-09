@@ -12,6 +12,7 @@ from app.schemas import validate_tester
 import logger
 from .url_constants import _url
 from flask_mail import Mail, Message
+from app.featured.utils import strip_accents
 
 # http://localhost:5000/tester/check_test_season/
 ROOT_PATH = os.environ.get("ROOT_PATH")
@@ -78,8 +79,8 @@ def get_all_testers():
 @app.route(_url.TESTER_GET_BY_EMAIL, methods=["POST"])
 def tester_by_email():
     req = request.get_json()
-    req = req["email"]
-    user = mongo.db.testers.find_one({"email": req}, {"_id": 0})
+    req = req["email"] 
+    user = mongo.db.testers.find_one({"standard_email": strip_accents(req)}, {"_id": 0,"standard_email":0})
     return jsonify({"ok": user != None, "user": user})
 
 

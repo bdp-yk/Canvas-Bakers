@@ -51,14 +51,15 @@ function share_my_canvas_service(canvas_team_new_members, by_email) {
 }
 
 
-function delete_canvas_by_id(canvas_id) {
+function delete_canvas_by_id(canvas_id,canvas_version_stamp) {
     const requestOptions = {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            canvas_id
+            canvas_id,
+            canvas_version_stamp
         })
     };
     return fetch(DELETE_CANVAS_URL, requestOptions)

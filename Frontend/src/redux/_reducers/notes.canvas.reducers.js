@@ -55,7 +55,8 @@ export function notes(state = canvas_init_store, action) {
             canvas_schema.canvas_notes[action.payload.note_category].push(action.payload);
             return {
                 ...state,
-                canvas_redo_list
+                canvas_redo_list,
+                update_canvas_schema_success: true
             };
         case notesConstants.DRAG_NOTE_END:
             if (!action.no_clear_redo) {
@@ -68,7 +69,8 @@ export function notes(state = canvas_init_store, action) {
             return {
                 ...state,
                 canvas_schema,
-                canvas_redo_list
+                canvas_redo_list,
+                update_canvas_schema_success: true
             };
         case notesConstants.UPDATE_NOTE_ACTION:
             _index = find_index_by_property(canvas_schema.canvas_notes[action.payload.note_category], action.payload.note_id);
@@ -86,7 +88,8 @@ export function notes(state = canvas_init_store, action) {
             return {
                 ...state,
                 canvas_schema,
-                canvas_redo_list
+                canvas_redo_list,
+                update_canvas_schema_success: true
 
             }
         case notesConstants.DELETE_NOTE_ACTION:
@@ -99,7 +102,8 @@ export function notes(state = canvas_init_store, action) {
             return {
                 ...state,
                 canvas_schema,
-                canvas_redo_list
+                canvas_redo_list,
+                update_canvas_schema_success: true
             }
         case notesConstants.UNDO_NOTE_ACTION:
             return {
@@ -107,7 +111,8 @@ export function notes(state = canvas_init_store, action) {
                 canvas_redo_list: [
                     ...state.canvas_redo_list,
                     complementary_action(state.canvas_undo_list.shift())
-                ]
+                ],
+                update_canvas_schema_success: (state.canvas_undo_list.length > 0)
             }
 
         case notesConstants.REDO_NOTE_ACTION:
@@ -116,9 +121,9 @@ export function notes(state = canvas_init_store, action) {
                 canvas_undo_list: [
                     ...state.canvas_undo_list,
                     complementary_action(state.canvas_redo_list.shift())
-                ]
+                ],
             }
-            
+
         default:
             return state
     }

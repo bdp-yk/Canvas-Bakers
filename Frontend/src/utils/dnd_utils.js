@@ -29,6 +29,12 @@ export const find_index_by_property = (_array, property_value, property_name = "
 
 }
 
+export const find_exact_index_by_property = (_array, property_value, property_name = "note_id") => {
+    let b = _array.findIndex(
+        e => e[property_name] === property_value
+    )
+    return b;
+}
 
 
 export const generateItems = (count, creator) => {

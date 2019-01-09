@@ -5,7 +5,7 @@ import {
     notes
 } from './notes.canvas.reducers';
 import {
-    find_index_by_property
+    find_index_by_property, find_exact_index_by_property
 } from '../../utils/dnd_utils';
 
 export const canvas_init_store = {
@@ -276,30 +276,26 @@ export function canvas(state = canvas_init_store, action) {
             }
         case canvasConstants.CLEAR_DEFAULT_NOTES_ACTION:
             let {canvas_notes}=state.canvas_schema;
-            console.log(">>CLEAR_DEFAULT_NOTES_ACTION",canvas_notes);
             Object.keys(canvas_notes).forEach(e => {
                 let i = find_index_by_property(canvas_notes[e], "default_note", "note_id");
                 canvas_notes[e].splice(i, 1) 
                 return canvas_notes;
-                // if (i > -1) {
-                // }
-                // // canvas_notes;
-                // return e;
             });
             return {
                 ...state,
                 canvas_notes,
-                contains_default_notes: false
+                contains_default_notes: false,
+                update_canvas_schema_success:true
 
             }
         case canvasConstants.CHECK_DEFAULT_NOTES:
             let does_contain = false;
             if (state.canvas_schema.canvas_notes) {
                 Object.keys(state.canvas_schema.canvas_notes).forEach(e => {
-                    does_contain = does_contain || find_index_by_property(state.canvas_schema.canvas_notes[e], "default_canvas", "note_id") > -1;
+                    console.log(e,(find_exact_index_by_property(state.canvas_schema.canvas_notes[e], "default_note", "note_id")),state.canvas_schema.canvas_notes[e]);
+                    does_contain = does_contain || (find_exact_index_by_property(state.canvas_schema.canvas_notes[e], "default_note", "note_id") > -1);
                 });
             }
-            console.log("CHECK_DEFAULT_NOTES >> does>>",does_contain)
             return {
                 ...state,
                 contains_default_notes: does_contain

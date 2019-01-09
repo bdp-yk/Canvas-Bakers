@@ -7,7 +7,7 @@ import {
   Card, CardHeader, CardBody, CardTitle, Row, Col,
   Button, ButtonGroup, ButtonDropdown, DropdownToggle,
   DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter,
-  Input
+  Input, FormGroup, Label
 } from "reactstrap";
 import { lmc_design, bmc_design } from "../../featured";
 import { history } from "../../redux/_helpers";
@@ -31,7 +31,9 @@ class CanvasDefaultLayout extends React.Component {
       is_share: this.props.match.path === _canvas_preview_route,
       open_delete_modal: false,
       open_share_modal: false,
-      _canvas_team: []
+      _canvas_team: [],
+      i_want_to_delete_a_commit: true,
+      this_is_not_a_joke: false
     }
     this.toggle_detailed_note = this.toggle_detailed_note.bind(this);
     this.toggle_share_dropdown_open = this.toggle_share_dropdown_open.bind(this);
@@ -41,6 +43,7 @@ class CanvasDefaultLayout extends React.Component {
     this.handle_redo = this.handle_redo.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.onDragStart = this.onDragStart.bind(this);
     this.commit_canvas_schema = this.commit_canvas_schema.bind(this);
     this.handleClearDefaultNotes = this.handleClearDefaultNotes.bind(this);
   }
@@ -101,6 +104,13 @@ class CanvasDefaultLayout extends React.Component {
   }
   commit_canvas_schema = () => {
     this.props.commit_canvas_schema_action(this.props.canvas.canvas_schema);
+  }
+  onDragStart = result => {
+    console.log("onDragStart>>", result);
+    let { draggableId } = result;
+    if (draggableId === "default_note")
+      return
+
   }
   onDragEnd = result => {
     console.log(result);
@@ -163,15 +173,31 @@ class CanvasDefaultLayout extends React.Component {
       share_dropdown_open: !this.state.share_dropdown_open
     })
   }
-  delete_this_canvas = (ask_user) => {
+  toggle_delete_dropdown_open = () => {
+    this.setState({
+      delete_dropdown_open: !this.state.delete_dropdown_open
+    })
+  }
+  delete_this_canvas = (ask_user, i_want_to_delete_a_commit = true) => {
     if (ask_user)
       this.setState({
-        open_delete_modal: !this.state.open_delete_modal
+        open_delete_modal: !this.state.open_delete_modal,
+        i_want_to_delete_a_commit
       })
     else {
-      this.props.clear_canvas_schema_action();
+      let {canvas_id,canvas_version_stamp} = this.props.canvas.canvas_schema;
+      if (i_want_to_delete_a_commit) {
+        console.log("canvas_version_stamp_from history", canvas_version_stamp);
+        this.props.delete_my_canvas(this.props.canvas.canvas_schema.canvas_id, i_want_to_delete_a_commit, canvas_version_stamp);
+      }
+      else {
+        // Delete/canvas_id
+        console.log("canvas to delete", canvas_id);
+        this.props.delete_my_canvas(this.props.canvas.canvas_schema.canvas_id, i_want_to_delete_a_commit, -1);
 
-      this.props.delete_my_canvas(this.props.canvas.canvas_schema.canvas_id)
+      }
+      this.props.clear_canvas_schema_action();
+      // this.props.delete_my_canvas(this.props.canvas.canvas_schema.canvas_id, i_want_to_delete_a_commit, canvas_version_stamp)
     }
 
   }
@@ -226,7 +252,7 @@ class CanvasDefaultLayout extends React.Component {
   }
   render() {
 
-    const { detailed_note, share_dropdown_open, is_share, _canvas_team } = this.state
+    const { detailed_note, share_dropdown_open, is_share, _canvas_team, delete_dropdown_open } = this.state
     // const {canvas} = this.props;
     const { canvas_schema, load_canvas_success, load_canvas_request } = this.props.canvas;
     let get_canvas_design = [];
@@ -262,27 +288,40 @@ class CanvasDefaultLayout extends React.Component {
                 {this.props.canvas.contains_default_notes ? <Button onClick={this.handleClearDefaultNotes} size="sm">Delete Default Notes</Button> : null}
                 <Button onClick={this.handle_undo} disabled={this.props.canvas.canvas_undo_list.length === 0} size="sm">&#9668;</Button>
                 <Button onClick={this.handle_redo} disabled={this.props.canvas.canvas_redo_list.length === 0} size="sm">&#9658;</Button>&nbsp;
-                <Button onClick={this.commit_canvas_schema} disabled={this.props.canvas.canvas_undo_list.length === 0 || this.props.canvas.upload_canvas_request} size="sm">&#10004;</Button>
+                <Button onClick={this.commit_canvas_schema} disabled={!(this.props.canvas.update_canvas_schema_success) || (this.props.canvas.upload_canvas_request)} size="sm">&#10004;</Button>
 
               </ButtonGroup>
-              <ButtonGroup className="px-3 ml-auto">
+              {(!is_share) && <ButtonGroup className="px-3 ml-auto">
                 <Button onClick={this.toggle_detailed_note}>Toggle Note Details</Button>
                 <ButtonDropdown isOpen={share_dropdown_open} toggle={this.toggle_share_dropdown_open}>
                   <DropdownToggle caret>
                     Share Canvas
                   </DropdownToggle>
                   <DropdownMenu>
-                    {(!is_share) && <DropdownItem onClick={() => this.share_this_canvas(true)} >Share Canvas</DropdownItem>}
+                    {<DropdownItem onClick={() => this.share_this_canvas(true)} >Share Canvas</DropdownItem>}
                     <DropdownItem onClick={this.copy_canvas_link}  >Copy Canvas Link</DropdownItem>
-                    {(!is_share) && <DropdownItem divider />}
-                    {(!is_share) && <DropdownItem>Share it via Email </DropdownItem>}
+                    {<DropdownItem divider />}
+                    {<DropdownItem>Share it via Email </DropdownItem>}
                   </DropdownMenu>
                 </ButtonDropdown>
-                {(!is_share) && <Button color="danger" onClick={() => this.delete_this_canvas(true)}>Delete</Button>}
-              </ButtonGroup>
+                {<>
+
+                  <ButtonDropdown isOpen={delete_dropdown_open} toggle={this.toggle_delete_dropdown_open}>
+                    <DropdownToggle caret>
+                      Delete
+                  </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem onClick={() => this.delete_this_canvas(true, true)} >Delete This Version</DropdownItem>
+                      <DropdownItem onClick={() => this.delete_this_canvas(true,false)}  >Delete Canvas</DropdownItem>
+                    </DropdownMenu>
+                  </ButtonDropdown>
+                </>
+
+                }
+              </ButtonGroup>}
             </Row> :
             "Loading Canvas..."}
-          <DragDropContext onDragEnd={this.onDragEnd}>
+          <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
             {load_canvas_success ? <Row>
               {get_canvas_design.map((e, index) => {
                 return this.smooth_column(canvas_schema.canvas_notes, e, index, detailed_note, is_share)
@@ -291,14 +330,25 @@ class CanvasDefaultLayout extends React.Component {
           </DragDropContext>
           {LoaderGif(load_canvas_request, "Canvas")}
         </div>
-        <Modal isOpen={this.state.open_delete_modal} fade={false} toggle={() => this.delete_this_canvas(true)}  >
+        <Modal isOpen={this.state.open_delete_modal} fade={false} backdrop={false} toggle={() => this.delete_this_canvas(true, true)}  >
           <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
           <ModalBody>
-            Deleting this modal means deleting its entire record! Forever!
+            Deleting this {this.state.i_want_to_delete_a_commit ? "Commit" : "Canvas"} means deleting its entire record! Forever!
+            {this.state.i_want_to_delete_a_commit ?
+              null :
+              <>
+                <FormGroup check>
+                  <Label check>
+                    <Input type="checkbox" value={this.state.this_is_not_a_joke} onChange={() => this.setState({ this_is_not_a_joke: !this.state.this_is_not_a_joke })} />{' '}
+                    I agree to delete my Canvas! Forever!
+                  </Label>
+                </FormGroup>
+              </>
+            }
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => this.delete_this_canvas(false)}>I agree</Button>{' '}
-            <Button color="secondary" onClick={() => this.delete_this_canvas(true)}>Cancel</Button>
+            <Button color="primary" disabled={(!this.state.i_want_to_delete_a_commit && !this.state.this_is_not_a_joke)} onClick={() => this.delete_this_canvas(false, this.state.i_want_to_delete_a_commit)}>I agree</Button>{' '}
+            <Button color="secondary" onClick={() => this.delete_this_canvas(true, true)}>Cancel</Button>
           </ModalFooter>
         </Modal>
         <Modal isOpen={this.state.open_share_modal} fade={false} toggle={() => this.share_this_canvas(true)}  >

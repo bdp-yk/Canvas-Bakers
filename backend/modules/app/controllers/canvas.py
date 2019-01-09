@@ -81,7 +81,7 @@ def _LOAD_CANVAS_URL():
             {"canvas_id": canvas_id, "canvas_version_stamp": stamp}, {"_id": 0}
         )
     else:
-        most_recent_version = most_recent_versions[0]
+        most_recent_version = most_recent_versions[0] if len(most_recent_versions)>0 else None
     data = {"ok": True, "canvas_history": mrv, "canvas_schema": most_recent_version}
     return jsonify(data), 200
 
@@ -143,5 +143,10 @@ def _UPLOAD_CANVAS_URL():
 @app.route(_url.DELETE_CANVAS_URL, methods=["DELETE"])
 def _DELETE_CANVAS_URL():
     _del = request.get_json()
-    mongo.db.canvas.delete_many({"canvas_id": _del["canvas_id"]})
+    _del_id=_del["canvas_id"]
+    _del_stamp=_del["canvas_version_stamp"]
+    if _del_stamp == -1:
+        mongo.db.canvas.delete_many({"canvas_id": _del_id})
+    else:
+        mongo.db.canvas.delete_many({"canvas_id": _del_id,"canvas_version_stamp":_del_stamp})
     return jsonify({"ok": True}), 200

@@ -132,10 +132,10 @@ function share_my_canvas_action(canvas_team_new_members, by_email) {
     }
 }
 
-function delete_my_canvas(canvas_id, push = true) {
+function delete_my_canvas(canvas_id, push = true,stamp) {
     return dispatch => {
         dispatch(request());
-        canvasServices.delete_canvas_by_id(canvas_id).then(
+        canvasServices.delete_canvas_by_id(canvas_id,stamp).then(
             resp => {
                 dispatch(success());
                 dispatch({
@@ -349,11 +349,11 @@ function load_canvas_schema(canvas_id, redirect = true, stamp = "") {
                     ...rest
                 } = response
                 dispatch(success(rest));
+                dispatch({
+                    type: canvasConstants.CHECK_DEFAULT_NOTES
+                })
                 if (ok && redirect)
                     history.replace(_workspace_link(canvas_id, stamp))
-                    dispatch({
-                        type: canvasConstants.CHECK_DEFAULT_NOTES
-                    })
             })
             .catch(error => {
                 dispatch({

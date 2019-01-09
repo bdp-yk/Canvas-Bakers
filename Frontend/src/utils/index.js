@@ -1,5 +1,8 @@
-import isBefore from 'date-fns/is_before';
-import isAfter from 'date-fns/is_after';
+import {
+  isBefore,
+  isAfter,
+  formatRelative
+} from "date-fns";
 // import * as actionCreators from "../redux/_actions";
 
 import {
@@ -136,6 +139,10 @@ export const toggleInArray = (arr, item) =>
 // EXAMPLE: mergeUnique([1, 2], [2, 3]) -> [1, 2, 3]
 export const mergeUnique = (arr1, arr2) =>
   arr1.concat(arr2.filter(item => arr1.indexOf(item) === -1));
+
+export const prettyDate = (dateN) =>{
+  return formatRelative(new Date(dateN),new Date());
+}
 
 export const isBetween = ({
     date,

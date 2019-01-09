@@ -9,8 +9,9 @@ import { connect } from 'react-redux'
 // import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
-import { Nav, UncontrolledCollapse, NavItem, Button } from "reactstrap";
+import { Nav, UncontrolledCollapse, UncontrolledTooltip, NavItem, Button } from "reactstrap";
 import { _dashboard_route, _workspace_link } from "../../constants";
+import { prettyDate } from "../../utils";
 
 // var ps;
 const slice = (str, len) => {
@@ -111,7 +112,7 @@ class TesterSideBar extends React.Component {
               </NavLink>
               <UncontrolledCollapse toggler="#canvas_history_toggler">
                 {canvas_history ? canvas.canvas_history.map((e, key) => {
-                  return <NavItem key={key}>
+                  return <NavItem key={key} >
                     <NavLink
                       to={_workspace_link(canvas_schema.canvas_id, e["canvas_version_stamp"])}
                       disabled={canvas_version_stamp === e["canvas_version_stamp"]}
@@ -119,8 +120,11 @@ class TesterSideBar extends React.Component {
 
                     >
                       {/* {console.log(, ">>stamp")} */}
-                      <i className={"tim-icons icon-tag"} />
-                      <small>{`#${canvas.canvas_history.length - key} ${format_provider(e["canvas_version_provider"])}`}</small>
+                      <i  id={`UncontrolledTooltipExample${key}`} className={"tim-icons icon-tag "} />
+                      <small className="py-0">{`#${canvas.canvas_history.length - key} ${format_provider(e["canvas_version_provider"])}`}</small><br />
+                      <UncontrolledTooltip placement="left" target={`UncontrolledTooltipExample${key}`}>
+                        {`${prettyDate(e["canvas_version_stamp"])}`}
+                      </UncontrolledTooltip>
                     </NavLink>
                   </NavItem>
                 }

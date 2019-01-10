@@ -293,18 +293,15 @@ function commit_canvas_schema_action(payload) {
         dispatch(request());
         let canvas_schema = Object.assign({}, payload);
         // console.log(">commit_canvas_schema_action bf", canvas_schema.canvas_version_stamp);
-
+        canvas_schema.canvas_base_version = canvas_schema.canvas_version_stamp ;
         canvas_schema.canvas_version_stamp = Date.now();
         canvas_schema.canvas_version_provider = who_am_i();
-        // console.log(">commit_canvas_schema_action nx", canvas_schema.canvas_version_stamp);
         canvasServices.upload_canvas_service(canvas_schema).then(
             response => {
-                console.log(response);
-
                 dispatch(success());
                 dispatch({
                     type: alertConstants.SUCCESS,
-                    message: `Your Changes Have been Applied, Redirected to ${canvas_schema.canvas_version_stamp}`
+                    message: response.message
                 });
                 history.push(_workspace_link(canvas_schema["canvas_id"], canvas_schema.canvas_version_stamp));
             }

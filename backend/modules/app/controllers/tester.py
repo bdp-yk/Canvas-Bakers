@@ -57,7 +57,7 @@ def tester_quit():
         mongo.db.testers.update_one(
             {"email": data["email"]}, {"$set": {"connected": False}}
         )
-        LOG.debug(data["email"], "hast left the Test")
+        LOG.debug(data["email"]+" hast left the Test")
         return jsonify({"ok": True, "message": "Tester successfully left"}), 200
     else:
         return (
@@ -73,7 +73,7 @@ def tester_quit():
 
 @app.route(_url.GET_ALL_TESTERS, methods=["GET"])
 def get_all_testers():
-    return jsonify({"ok": True, "testers": list(mongo.db.testers.find({}, {"_id": 0}))})
+    return jsonify({"ok": True, "testers": list(mongo.db.testers.find({}, {"_id": 0}))}),200
 
 
 @app.route(_url.TESTER_GET_BY_EMAIL, methods=["POST"])
@@ -81,7 +81,8 @@ def tester_by_email():
     req = request.get_json()
     req = req["email"] 
     user = mongo.db.testers.find_one({"standard_email": strip_accents(req)}, {"_id": 0,"standard_email":0})
-    return jsonify({"ok": user != None, "user": user})
+    # print(user)
+    return jsonify({"ok": user != None, "user": user}),200
 
 
 @app.route(_url.SHARE_CANVAS_URL, methods=["POST"])
@@ -98,8 +99,8 @@ def share_canvas_by_email():
         mail.send(msg)
 
         by_email = req["by_email"]
-        return jsonify({"ok": True})
+        return jsonify({"ok": True}),200
     except:
-        return jsonify({"ok": False})
+        return jsonify({"ok": False}),500
 
 

@@ -1,6 +1,19 @@
 // import config from 'config';
-import { authHeader } from '../_helpers';
-import { TESTER_LOGOUT_URL, GET_ALL_USERS, TESTER_REGISTER_URL, TESTER_DELETE_URL, TESTER_UPDATE_URL, TESTER_GET_BY_ID_URL, CHECK_TEST_SEASON_URL } from './url_strings';
+import {
+    authHeader
+} from '../_helpers';
+import {
+    TESTER_LOGOUT_URL,
+    GET_ALL_USERS,
+    TESTER_REGISTER_URL,
+    TESTER_DELETE_URL,
+    TESTER_UPDATE_URL,
+    TESTER_GET_BY_ID_URL,
+    CHECK_TEST_SEASON_URL
+} from './url_strings';
+import {
+    who_am_i
+} from '../../utils';
 
 export const testerServices = {
     register_tester,
@@ -15,7 +28,9 @@ export const testerServices = {
 function register_tester(tester) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(tester)
     };
 
@@ -28,20 +43,27 @@ function register_tester(tester) {
 function checktestseason() {
     const requestOptions = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json'
+        }
     };
     return fetch(CHECK_TEST_SEASON_URL, requestOptions).then(handleResponse);
 }
 
-function logout() {
+function logout(remove_storage = true) {
 
     const requestOptions = {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: localStorage.getItem('tester')
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(who_am_i())
     };
     // remove user from local storage to log user out
-    return fetch(TESTER_LOGOUT_URL, requestOptions).then(handleResponse).then(localStorage.removeItem('tester')).catch(
+    return fetch(TESTER_LOGOUT_URL, requestOptions).then(() => {
+        if (remove_storage)
+            localStorage.removeItem('tester')
+    }).catch(
         (error) => {
             alert("Something bad happened, but we will log you out" + error);
             localStorage.removeItem('tester');
@@ -71,7 +93,9 @@ function getById(id) {
 function update(user) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: { ...authHeader(),
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(user)
     };
 

@@ -48,8 +48,10 @@ class TesterNavBar extends React.Component {
     }
   };
 
-  getTesterInfo = () => {     
-    let name=  Boolean(who_am_i())&&who_am_i()["email"];
+  getTesterInfo = () => {
+    let name = "";
+    if (Boolean(who_am_i()))
+      name = who_am_i()["email"];
     return name.split(/[^a-z]+/ig)[0]
   }
   render() {
@@ -77,7 +79,7 @@ class TesterNavBar extends React.Component {
                 </button>
               </div>
               <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
-                Hello, {this.getTesterInfo() }
+                Hello, {this.getTesterInfo()}
               </NavbarBrand>
             </div>
             <Collapse navbar isOpen={this.state.collapseOpen}>

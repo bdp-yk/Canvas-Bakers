@@ -5,7 +5,7 @@ import NotificationAlert from "react-notification-alert";
 import PerfectScrollbar from "perfect-scrollbar";
 
 import { history } from '../redux/_helpers';
-import { alertActions } from '../redux/_actions';
+import { alertActions, testerActions } from '../redux/_actions';
 import { PrivateRoute } from '../_components';
 import { WelcomeLayout, CanvasDefaultLayout, AdminLayout, TesterLayout, UserLayout, DocumentationLayout } from '../layouts';
 import { _admin_route, _user_route, _tester_route, _canvas_preview_route, _welcome_route, _document_route } from '../constants';
@@ -43,6 +43,8 @@ class App extends React.Component {
             document.documentElement.className += " perfect-scrollbar-off";
             document.documentElement.classList.remove("perfect-scrollbar-on");
         }
+        this.props.dispatch(testerActions.logout_tester());
+
     }
     componentDidUpdate(e) {
         if (history.action === "PUSH") {

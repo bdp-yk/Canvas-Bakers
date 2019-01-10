@@ -8,6 +8,7 @@ export const testerActions = {
     check_test_season,
     register_tester_action,
     logout_tester,
+    disconnect_tester,
     toggle_tester_register_modal,
     assert_tester
 };
@@ -40,6 +41,12 @@ function check_test_season() {
         )
     }
 }
+function disconnect_tester() {
+    return dispatch =>{
+        testerServices.logout(false);
+    }
+}
+
 function register_tester_action(tester) {
     return dispatch => {
         dispatch(request(tester))

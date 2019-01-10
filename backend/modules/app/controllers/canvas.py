@@ -30,11 +30,9 @@ def boom_():
         }
     )
 
-
 @app.route("/vroom", methods=["GET"])
 def vroom():
     return jsonify({"canvas": list(mongo.db.canvas.remove({}))})
-
 
 @app.route(_url.LIST_OF_USER_CANVAS_URL, methods=["POST"])
 def _LIST_OF_USER_CANVAS_URL():
@@ -42,20 +40,18 @@ def _LIST_OF_USER_CANVAS_URL():
     email = user["email"]
     most_recent_versions = mongo.db.canvas.aggregate(
         [
+            {"$match": {"canvas_team.email": email}},
             {
                 "$group": {
                     "_id": "$canvas_id",
                     "canvas_id": {"$first": "$$ROOT.canvas_id"},
                     "canvas_name": {"$first": "$$ROOT.canvas_name"},
-                    "canvas_description": {"$first": "$$ROOT.canvas_description"},
-                    "canvas_team": {"$first": "$$ROOT.canvas_team"},
+                    "canvas_description": {"$first": "$$ROOT.canvas_description"}, 
                 }
             },
-            {"$match": {"canvas_team.email": email}},
         ]
     )
     return jsonify({"user_canvas": list(most_recent_versions)}), 200
-
 
 @app.route(_url.LOAD_CANVAS_URL, methods=["POST"])
 def _LOAD_CANVAS_URL():
@@ -85,7 +81,6 @@ def _LOAD_CANVAS_URL():
     data = {"ok": True, "canvas_history": mrv, "canvas_schema": most_recent_version}
     return jsonify(data), 200
 
-
 @app.route(_url.UPLOAD_CANVAS_URL, methods=["POST"])
 def _UPLOAD_CANVAS_URL():
     data = validate_canvas(request.get_json())
@@ -96,34 +91,28 @@ def _UPLOAD_CANVAS_URL():
             .sort("canvas_version_stamp", -1)
             .limit(1)
         )
-        data_canvas_base_version = mongo.db.canvas.find_one(
-            {"canvas_version_stamp": data["canvas_base_version"]}, {"_id": 0}
-        )
-        # Find the last saved version of the document
-        most_recent_version = most_recent_version[0] if (most_recent_version) else None
-        print(data_canvas_base_version == most_recent_version)
-        changes, final_version = update_base_by_commit(most_recent_version, data)
-
-        # Save the changes made by this maker
-        # data["canvas_base_version"] = most_recent_version["canvas_version_stamp"]
-
+        message=""
         mongo.db.canvas.insert_one(data)
-        print(changes)
-
-        # there should be only one changes which is header of the version
-        # else there is a merge to be done
-        
-        if len(changes) > 1:
-            final_version["canvas_version_stamp"] = data["canvas_version_stamp"] + 1
-            final_version["canvas_version_provider"] = "CanvasBakers"
-            mongo.db.canvas.insert_one(final_version)
-
+        final_version = data
+        if len(most_recent_version)==0:
+            message= "Successfully initialized {}".format(data["canvas_name"])
+        elif len(most_recent_version)>0:
+            most_recent_version=most_recent_version[0]
+            if most_recent_version["canvas_version_stamp"] == data["canvas_base_version"]:
+                message= "Successfully Updated the base version {}".format(data["canvas_base_version"])
+            else:
+                mrv_stamp = most_recent_version["canvas_version_stamp"]
+                final_version = update_base_by_commit(most_recent_version,data)
+                final_version["canvas_base_version"]=data["canvas_version_stamp"]
+                final_version["canvas_version_stamp"]+=1
+                final_version["canvas_version_provider"]="Canvas Bakers"
+                message= "Successfully Merged the Conflict {} version.\nSee Canvas History for more details.".format(str(data["canvas_base_version"])[:5:]+"<->"+str(data["canvas_base_version"])[:5:])
         return (
             jsonify(
                 {
                     "ok": True,
                     "system_merge": final_version,
-                    "message": "Canvas Updated Successfully!",
+                    "message": message,
                 }
             ),
             200,
@@ -138,7 +127,6 @@ def _UPLOAD_CANVAS_URL():
             ),
             400,
         )
-
 
 @app.route(_url.DELETE_CANVAS_URL, methods=["DELETE"])
 def _DELETE_CANVAS_URL():

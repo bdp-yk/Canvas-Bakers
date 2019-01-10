@@ -32,7 +32,6 @@ const complementary_action = action => {
             target_index: payload.source_index
         }
     else c_payload = payload
-    console.log(">>> complementary_action", c_type, c_payload);
 
     return {
         type: c_type,
@@ -75,7 +74,6 @@ export function notes(state = canvas_init_store, action) {
         case notesConstants.UPDATE_NOTE_ACTION:
             _index = find_index_by_property(canvas_schema.canvas_notes[action.payload.note_category], action.payload.note_id);
             old_note = Object.assign({}, state.canvas_schema.canvas_notes[action.payload.note_category][_index]);
-            // console.log(">>> old_note", old_note);
 
             canvas_schema.canvas_notes[action.payload.note_category][_index] = action.payload;
             if (!action.no_clear_redo) {
@@ -109,8 +107,8 @@ export function notes(state = canvas_init_store, action) {
             return {
                 ...state,
                 canvas_redo_list: [
+                    complementary_action(state.canvas_undo_list.shift()),
                     ...state.canvas_redo_list,
-                    complementary_action(state.canvas_undo_list.shift())
                 ],
                 update_canvas_schema_success: (state.canvas_undo_list.length > 0)
             }
@@ -119,8 +117,8 @@ export function notes(state = canvas_init_store, action) {
             return {
                 ...state,
                 canvas_undo_list: [
+                    complementary_action(state.canvas_redo_list.shift()),
                     ...state.canvas_undo_list,
-                    complementary_action(state.canvas_redo_list.shift())
                 ],
             }
 

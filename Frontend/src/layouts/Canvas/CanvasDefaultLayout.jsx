@@ -22,6 +22,8 @@ import { GenerateDraggable } from "../../_components";
 import { LoaderGif } from "../../_components/LoaderGif";
 
 import TimeAgo from 'timeago-react';
+import { find_exact_index_by_property } from "../../utils/dnd_utils";
+import NoteVerdict from "../../components/Canvas/NoteVerdict";
 class CanvasDefaultLayout extends React.Component {
   constructor(props) {
     super(props);
@@ -89,6 +91,7 @@ class CanvasDefaultLayout extends React.Component {
                             </Col>
 
                           })}
+                          {provided.placeholder}
 
 
                         </Row>
@@ -206,7 +209,7 @@ class CanvasDefaultLayout extends React.Component {
   }
   approve_new_maker = () => {
     let { _canvas_team } = this.state;
-    if (_canvas_team.findIndex(e => e.email === this.props.canvas.new_team_mate.email) >= 0) {
+    if ((_canvas_team.findIndex(e => e.email === this.props.canvas.new_team_mate.email) >= 0) || find_exact_index_by_property(this.props.canvas.canvas_schema.canvas_team,this.props.canvas.new_team_mate.email,"email")>0){
       this.props.error("Already part of team!")
     }
     else {
@@ -273,6 +276,8 @@ class CanvasDefaultLayout extends React.Component {
     return (
       <>
         <div className="content">
+        <NoteVerdict/>
+
           {load_canvas_success && <>
             <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `}</h4>
             <span className="text-muted px-3" >
@@ -329,9 +334,10 @@ class CanvasDefaultLayout extends React.Component {
             </Row> : null}
           </DragDropContext>
           {LoaderGif(load_canvas_request, "Canvas")}
+          
         </div>
         <Modal isOpen={this.state.open_delete_modal} fade={false} backdrop={false} toggle={() => this.delete_this_canvas(true, true)}  >
-          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Canvas Delete Options</ModalHeader>
           <ModalBody>
             Deleting this {this.state.i_want_to_delete_a_commit ? "Commit" : "Canvas"} means deleting its entire record! Forever!
             {this.state.i_want_to_delete_a_commit ?
@@ -352,7 +358,7 @@ class CanvasDefaultLayout extends React.Component {
           </ModalFooter>
         </Modal>
         <Modal isOpen={this.state.open_share_modal} fade={false} toggle={() => this.share_this_canvas(true)}  >
-          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Canvas Sharing</ModalHeader>
           <ModalBody >
             <Card>
               {render_canvas_team.map((_t_mate, ind) => {
@@ -375,7 +381,7 @@ class CanvasDefaultLayout extends React.Component {
           <ModalFooter>
             <Button className="px-auto" color="fetch" disabled={this.props.canvas.fetch_canvas_team_mate_request || this.state.new_team_mate === ""}
               onClick={() => this.fetch_new_maker()}>Fetch User</Button>{this.props.canvas.fetch_canvas_team_mate_failure && 'No such user exists ... '}
-            <Button className="px-auto" color="success" disabled={!(this.props.canvas.fetch_canvas_team_mate_success && (this.props.canvas.new_team_mate.email === this.state.new_team_mate))} onClick={() => this.approve_new_maker()}>Add To This Team</Button>
+            <Button className="px-auto" color="success" disabled={!(this.props.canvas.fetch_canvas_team_mate_success && (this.props.canvas.new_team_mate.email.toUpperCase() === this.state.new_team_mate.toUpperCase()))} onClick={() => this.approve_new_maker()}>Add To This Team</Button>
           </ModalFooter>
           <ModalFooter>
             <Button className="px-auto" color="primary" disabled={(this.props.canvas.share_my_canvas_request) || (this.state._canvas_team.length === 0)} onClick={() => this.share_this_canvas(false)}>Expand your Team!</Button>{' '}

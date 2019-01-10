@@ -1,7 +1,7 @@
 import {
     notesConstants
 } from '../_constants';
-
+import _ from "lodash"
 // CREATE_NOTE_ACTION
 // UPDATE_NOTE_ACTION
 // DELETE_NOTE_ACTION
@@ -26,13 +26,26 @@ export const notesActions = {
 // "note_verdict_message": "",
 // "note_verdict_request": "",
 // "note_verdict_success": "",
+// "note_equivalent_verdict": "",
 // "note_verdict_failure": "",
 // "note_category": "",
 // "note_verdict_history": [{
-//             "note_verdict_hash": "",
+//             "note_encoded_content": "",
+//                  // means we serialize the categorie
+//                  // the headline and the description for 
+//                  // giving old note version
 //             "note_verdict_value": "",
 //             "note_verdict_message": "",
 //         }],
+
+export const encode_note_content = (note) => {
+    // remove all what is not alphanumeric
+    let _string = "";
+    ["note_headline", "note_description", "note_category"].map(e => _string += note[e])
+    return _.deburr(_string).replace(/[^a-z0-9-]/ig, "").toLowerCase()
+    // return _.deburr(_string).toLowerCase();
+}
+
 
 const get_note_init_schema = (payload) => {
     return {
@@ -95,7 +108,7 @@ function redo_note_changes(payload) {
 }
 
 function undo_note_changes(payload) {
-    return dispatch => { 
+    return dispatch => {
 
         payload["no_clear_redo"] = true;
         dispatch(payload)

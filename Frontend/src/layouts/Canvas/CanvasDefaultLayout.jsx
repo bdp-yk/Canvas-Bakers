@@ -15,7 +15,7 @@ import { CANVAS_ID_LENGHT, _canvas_preview_route, _canvas_preview_path, APP_URL,
 import { multipleActionsMapDispatchToProps, who_am_i } from "../../utils";
 import { canvasActions, testerActions, alertActions } from "../../redux/_actions";
 import { notesActions } from "../../redux/_actions/notes.canvas.actions";
-import { NotePartialView } from "../../components/Canvas";
+import { NoteVerdict, NotePartialView } from "../../components/Canvas";
 //dnd
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { GenerateDraggable } from "../../_components";
@@ -23,7 +23,7 @@ import { LoaderGif } from "../../_components/LoaderGif";
 
 import TimeAgo from 'timeago-react';
 import { find_exact_index_by_property } from "../../utils/dnd_utils";
-import NoteVerdict from "../../components/Canvas/NoteVerdict";
+import _ from 'lodash'
 class CanvasDefaultLayout extends React.Component {
   constructor(props) {
     super(props);
@@ -188,15 +188,15 @@ class CanvasDefaultLayout extends React.Component {
         i_want_to_delete_a_commit
       })
     else {
-      let {canvas_id,canvas_version_stamp} = this.props.canvas.canvas_schema;
+      let { canvas_id, canvas_version_stamp } = this.props.canvas.canvas_schema;
       if (i_want_to_delete_a_commit) {
-        console.log("canvas_version_stamp_from history", canvas_version_stamp);
-        this.props.delete_my_canvas(this.props.canvas.canvas_schema.canvas_id, i_want_to_delete_a_commit, canvas_version_stamp);
+        // console.log("canvas_version_stamp_from history", canvas_version_stamp);
+        this.props.delete_my_canvas(canvas_id, i_want_to_delete_a_commit, canvas_version_stamp);
       }
       else {
         // Delete/canvas_id
-        console.log("canvas to delete", canvas_id);
-        this.props.delete_my_canvas(this.props.canvas.canvas_schema.canvas_id, i_want_to_delete_a_commit, -1);
+        // console.log("canvas to delete", canvas_id);
+        this.props.delete_my_canvas(canvas_id, i_want_to_delete_a_commit, -1);
 
       }
       this.props.clear_canvas_schema_action();
@@ -209,7 +209,7 @@ class CanvasDefaultLayout extends React.Component {
   }
   approve_new_maker = () => {
     let { _canvas_team } = this.state;
-    if ((_canvas_team.findIndex(e => e.email === this.props.canvas.new_team_mate.email) >= 0) || find_exact_index_by_property(this.props.canvas.canvas_schema.canvas_team,this.props.canvas.new_team_mate.email,"email")>0){
+    if ((_canvas_team.findIndex(e => e.email === this.props.canvas.new_team_mate.email) >= 0) || find_exact_index_by_property(this.props.canvas.canvas_schema.canvas_team, this.props.canvas.new_team_mate.email, "email") > 0) {
       this.props.error("Already part of team!")
     }
     else {
@@ -276,7 +276,7 @@ class CanvasDefaultLayout extends React.Component {
     return (
       <>
         <div className="content">
-        <NoteVerdict/>
+          <NoteVerdict />
 
           {load_canvas_success && <>
             <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `}</h4>
@@ -293,7 +293,7 @@ class CanvasDefaultLayout extends React.Component {
                 {this.props.canvas.contains_default_notes ? <Button onClick={this.handleClearDefaultNotes} size="sm">Delete Default Notes</Button> : null}
                 <Button onClick={this.handle_undo} disabled={this.props.canvas.canvas_undo_list.length === 0} size="sm">&#9668;</Button>
                 <Button onClick={this.handle_redo} disabled={this.props.canvas.canvas_redo_list.length === 0} size="sm">&#9658;</Button>&nbsp;
-                <Button onClick={this.commit_canvas_schema} disabled={!(this.props.canvas.update_canvas_schema_success) || (this.props.canvas.upload_canvas_request)} size="sm">&#10004;</Button>
+                <Button onClick={this.commit_canvas_schema} disabled={!(this.props.canvas.update_canvas_schema_success) || (this.props.canvas.upload_canvas_request) || _.isEmpty(this.props.canvas.canvas_undo_list)} size="sm">&#10004;</Button>
 
               </ButtonGroup>
               {(!is_share) && <ButtonGroup className="px-3 ml-auto">
@@ -317,7 +317,7 @@ class CanvasDefaultLayout extends React.Component {
                   </DropdownToggle>
                     <DropdownMenu>
                       <DropdownItem onClick={() => this.delete_this_canvas(true, true)} >Delete This Version</DropdownItem>
-                      <DropdownItem onClick={() => this.delete_this_canvas(true,false)}  >Delete Canvas</DropdownItem>
+                      <DropdownItem onClick={() => this.delete_this_canvas(true, false)}  >Delete Canvas</DropdownItem>
                     </DropdownMenu>
                   </ButtonDropdown>
                 </>
@@ -334,7 +334,7 @@ class CanvasDefaultLayout extends React.Component {
             </Row> : null}
           </DragDropContext>
           {LoaderGif(load_canvas_request, "Canvas")}
-          
+
         </div>
         <Modal isOpen={this.state.open_delete_modal} fade={false} backdrop={false} toggle={() => this.delete_this_canvas(true, true)}  >
           <ModalHeader toggle={this.toggle}>Canvas Delete Options</ModalHeader>

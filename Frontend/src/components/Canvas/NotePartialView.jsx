@@ -18,6 +18,7 @@ import {
 } from "reactstrap";
 import { multipleActionsMapDispatchToProps } from "../../utils";
 import { notesActions } from "../../redux/_actions/notes.canvas.actions";
+import { notesVerdictActions } from "../../redux/_actions";
 
 class NotePartialView extends React.Component {
     constructor(props) {
@@ -29,6 +30,11 @@ class NotePartialView extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
+        this.select_note_for_verdict = this.select_note_for_verdict.bind(this);
+    }
+    select_note_for_verdict = () => {
+        this.props.update_note_action(this.state._note);
+        this.props.select_note_for_verdict_action(this.state._note);
     }
     handleChange = (event) => {
         let { name, value } = event.target;
@@ -40,7 +46,7 @@ class NotePartialView extends React.Component {
         })
     }
     handleToggle = (event) => {
-        let { name, className } = event.target; 
+        let { name, className } = event.target;
 
         if (className.indexOf("togglers") >= 0)
             this.setState({
@@ -56,7 +62,7 @@ class NotePartialView extends React.Component {
     render() {
         const { _note, toggle_note_headline, toggle_note_description } = this.state
         const { detailed_note, note } = this.props;
-        console.log(this.state.toggle_note_headline,toggle_note_headline, toggle_note_description);
+        console.log(this.state.toggle_note_headline, toggle_note_headline, toggle_note_description);
 
         return (
             <Card body inverse color="light" className="mb-1">
@@ -86,8 +92,8 @@ class NotePartialView extends React.Component {
                         {toggle_note_description ? note.note_description : <Input placeholder="Description" name="note_description" value={_note.note_description} onChange={this.handleChange} onBlur={this.handleToggle} />}
                     </CardText>
                     <CardText>
-                        <Button block onClick={this.handleToggle} size="small" className="togglers px-0 d-lg-none" >+</Button>
-                        <Button block onClick={this.handleToggle} className="togglers px-0 d-none d-lg-block" >Options  </Button>
+                        <Button block onClick={this.select_note_for_verdict} size="small" className="togglers px-0 d-lg-none" >+</Button>
+                        <Button block onClick={this.select_note_for_verdict} className="togglers px-0 d-none d-lg-block" >Options  </Button>
                     </CardText>
                 </>}
             </Card>
@@ -102,5 +108,5 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedNotePartialView = connect(mapStateToProps, multipleActionsMapDispatchToProps([notesActions]))(NotePartialView);
+const connectedNotePartialView = connect(mapStateToProps, multipleActionsMapDispatchToProps([notesActions, notesVerdictActions]))(NotePartialView);
 export { connectedNotePartialView as NotePartialView }; 

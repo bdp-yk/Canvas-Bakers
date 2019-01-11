@@ -103,7 +103,7 @@ const col_5 = {
 const col_6 = {
     composition: [RS],
     column_width: 4,
-    note_width: 4
+    note_width: 6
 }
 const col_7 = {
     composition: [BS],

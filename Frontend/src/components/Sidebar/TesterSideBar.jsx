@@ -6,14 +6,14 @@ import { NavLink, Link } from "react-router-dom";
 import { connect } from 'react-redux'
 
 // javascript plugin used to create scrollbars on windows
-// import PerfectScrollbar from "perfect-scrollbar";
+import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Nav, UncontrolledCollapse, UncontrolledTooltip, NavItem, Button } from "reactstrap";
 import { _dashboard_route, _workspace_link } from "../../constants";
 import { prettyDate } from "../../utils";
 
-// var ps;
+var ps;
 const slice = (str, len) => {
   return (str.slice(0, len)) + ((str.length > len) ? "..." : "")
 }
@@ -29,21 +29,19 @@ class TesterSideBar extends React.Component {
   constructor(props) {
     super(props);
   }
-  // componentDidMount() {
-  //   if (navigator.platform.indexOf("Win") > -1) {
-  //     ps = new PerfectScrollbar(this.refs.sidebar, {
-  //       suppressScrollX: true,
-  //       suppressScrollY: false
-  //     });
-  //   }
-
-
-  // }
-  // componentWillUnmount() {
-  //   if (navigator.platform.indexOf("Win") > -1) {
-  //     ps.destroy();
-  //   }
-  // }
+   componentDidMount() {
+    if (navigator.platform.indexOf("Win") > -1) {
+      ps = new PerfectScrollbar(this.refs.sidebar, {
+        suppressScrollX: true,
+        suppressScrollY: false
+      });
+    }
+  }
+  componentWillUnmount() {
+    if (navigator.platform.indexOf("Win") > -1) {
+      ps.destroy();
+    }
+  }
   linkOnClick = () => {
     document.documentElement.classList.remove("nav-open");
   };
@@ -110,7 +108,7 @@ class TesterSideBar extends React.Component {
                 <i className={"tim-icons icon-bullet-list-67"} />
                 <p>Canvas History</p>
               </NavLink>
-              <UncontrolledCollapse toggler="#canvas_history_toggler">
+              <UncontrolledCollapse isOpen={true} toggler="#canvas_history_toggler">
                 {canvas_history ? canvas.canvas_history.map((e, key) => {
                   return <NavItem key={key} >
                     <NavLink

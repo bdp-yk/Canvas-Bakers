@@ -53,14 +53,15 @@ const canvas_initial_schema = new_canvas => {
     }
 }
 
-function check_default_notes (){
+function check_default_notes() {
     return dispatch => {
         dispatch({
             type: canvasConstants.CHECK_DEFAULT_NOTES
         })
     }
 }
-function clear_default_notes (){
+
+function clear_default_notes() {
     return dispatch => {
         dispatch({
             type: canvasConstants.CLEAR_DEFAULT_NOTES_ACTION
@@ -132,17 +133,22 @@ function share_my_canvas_action(canvas_team_new_members, by_email) {
     }
 }
 
-function delete_my_canvas(canvas_id, push = true,stamp) {
+function delete_my_canvas(canvas_id, push = true, stamp) {
     return dispatch => {
         dispatch(request());
-        canvasServices.delete_canvas_by_id(canvas_id,stamp).then(
+        canvasServices.delete_canvas_by_id(canvas_id, stamp).then(
             resp => {
                 dispatch(success());
                 dispatch({
                     type: alertConstants.SUCCESS,
-                    message: "Successfully deleted the Canvas"
+                    message: "Delete operation committed successfully"
                 });
-                if (push) history.push(_dashboard_route());
+                if (push)
+                    if (stamp === -1)
+                        history.push(_dashboard_route());
+                    else
+                        history.push(_workspace_link(canvas_id));
+
             }
         ).catch(err => {
             dispatch(failure())
@@ -293,7 +299,7 @@ function commit_canvas_schema_action(payload) {
         dispatch(request());
         let canvas_schema = Object.assign({}, payload);
         // console.log(">commit_canvas_schema_action bf", canvas_schema.canvas_version_stamp);
-        canvas_schema.canvas_base_version = canvas_schema.canvas_version_stamp ;
+        canvas_schema.canvas_base_version = canvas_schema.canvas_version_stamp;
         canvas_schema.canvas_version_stamp = Date.now();
         canvas_schema.canvas_version_provider = who_am_i();
         canvasServices.upload_canvas_service(canvas_schema).then(

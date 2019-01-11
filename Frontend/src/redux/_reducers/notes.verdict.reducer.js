@@ -8,32 +8,10 @@ import {
     encode_note_content
 } from "../_actions/notes.canvas.actions";
 const verdictState = {
-    concerned_note: {
-        // "note_id": "",
-        // "note_headline": "",
-        // "note_description": "",
-        // "note_maker": "",
-        // "note_verdict_value":"",
-        // "note_verdict_message": "",
-        // "note_verdict_request": "",
-        // "note_verdict_success": "",
-        // "note_equivalent_verdict": "",
-        // "note_verdict_failure": "",
-        // "note_category": "",
-        // "note_verdict_history": [{
-        //             "note_encoded_content": "",
-        //                  // means we serialize the categorie
-        //                  // the headline and the description for 
-        //                  // giving old note version
-        //             "note_verdict_value": "",
-        //             "note_verdict_message": "",
-        //         }],
-
-    },
+    concerned_note: {},
     toggle_verdict_modal: false,
     already_satisfied_verdict_index_in_note_verdict_history: -1,
     currenct_canvas_verdict_requests_status: [
-        //{note_id:"",verdict_request_result:}
     ],
 }
 export function notesVerdict(state = verdictState, action) {
@@ -56,10 +34,8 @@ export function notesVerdict(state = verdictState, action) {
             return {
                 ...state,
                 currenct_canvas_verdict_requests_status: []
-                // currenct_canvas_verdict_requests_status: action.payload
             }
         case notesVerdictConstants.SELECT_NOTE_FOR_VERDICT:
-            // _
             _.remove(currenct_canvas_verdict_requests_status, ["note_id", action.payload.note_id])
 
             return {

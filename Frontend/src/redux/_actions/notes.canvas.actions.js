@@ -82,7 +82,6 @@ function update_note_action(payload) {
             payload
         })
     }
-
 }
 
 function delete_note_action(payload) {

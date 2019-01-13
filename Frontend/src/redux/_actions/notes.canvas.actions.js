@@ -37,12 +37,16 @@ export const notesActions = {
 //             "note_verdict_value": "",
 //             "note_verdict_message": "",
 //         }],
-
+/**
+ * 
+ * @param {object} note 
+ * @returns {string} string in format of note_category|note_headline|note_description
+ */
 export const encode_note_content = (note) => {
     // remove all what is not alphanumeric
     let _string = "";
-    ["note_headline", "note_description", "note_category"].map(e => _string += note[e])
-    return _.deburr(_string).replace(/[^a-z0-9-]/ig, "").toLowerCase()
+    ["note_category", "note_headline", "note_description"].map(e => _string += `|${note[e]}`)
+    return _.deburr(_string).replace(/[^a-z0-9-|]/ig, "").toLowerCase()
     // return _.deburr(_string).toLowerCase();
 }
 

@@ -140,8 +140,8 @@ export const toggleInArray = (arr, item) =>
 export const mergeUnique = (arr1, arr2) =>
   arr1.concat(arr2.filter(item => arr1.indexOf(item) === -1));
 
-export const prettyDate = (dateN) =>{
-  return formatRelative(new Date(dateN),new Date());
+export const prettyDate = (dateN) => {
+  return formatRelative(new Date(dateN), new Date());
 }
 
 export const isBetween = ({
@@ -197,3 +197,14 @@ export const who_am_i = () => {
     localStorage.getItem('user', null) ||
     localStorage.getItem('admin', null))
 }
+
+// for the sake of simplicity
+// export const safe_print = (property) => {
+//   let a;
+//   try {
+//     a = property;
+//   } catch (err) {
+//     a = "N/A";
+//   }
+//   return a;
+// }

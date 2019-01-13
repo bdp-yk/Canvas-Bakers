@@ -84,7 +84,25 @@ class TesterNavBar extends React.Component {
             </div>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar>
-
+ <UncontrolledDropdown nav>
+                  <DropdownToggle
+                    caret
+                    color="default"
+                    data-toggle="dropdown"
+                    nav
+                  >
+                    <div className="notification d-none d-lg-block d-xl-block" />
+                    <i className="tim-icons icon-sound-wave" />
+                    <p className="d-lg-none">Notifications</p>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-navbar" right tag="ul">
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item">
+                        Another one
+                      </DropdownItem>
+                    </NavLink>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret

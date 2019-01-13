@@ -2,6 +2,7 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from jsonschema.exceptions import SchemaError
 from app.featured.utils import strip_accents
+from ..featured.constants import classes_enum,groups_enum
 
 tester_schema = {
     "type": "object",
@@ -14,11 +15,11 @@ tester_schema = {
         },
         "group": {
             "type": "string",
-            "enum": ["A", "B", "C", "D"]
+            "enum": groups_enum
         },
         "class": {
             "type": "string",
-            "enum": ["admin", "tester", "user"]
+            "enum": classes_enum
         },
         "connected": {
             "type": "boolean"

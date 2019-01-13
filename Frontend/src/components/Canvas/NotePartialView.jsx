@@ -33,7 +33,7 @@ class NotePartialView extends React.Component {
         this.select_note_for_verdict = this.select_note_for_verdict.bind(this);
     }
     select_note_for_verdict = () => {
-        this.props.update_note_action(this.state._note);
+        // this.props.update_note_action(this.state._note);
         this.props.select_note_for_verdict_action(this.state._note);
     }
     handleChange = (event) => {

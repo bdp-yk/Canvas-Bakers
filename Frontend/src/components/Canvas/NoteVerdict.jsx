@@ -4,48 +4,11 @@ import { notesVerdictActions } from '../../redux/_actions';
 import { multipleActionsMapDispatchToProps } from '../../utils';
 import { connect } from 'react-redux'
 import { notesActions } from '../../redux/_actions/notes.canvas.actions';
-import { verdict_result_message } from '../../redux/_constants';
+// import { system_comment_text_constants } from '../../redux/_constants';
 import _ from 'lodash'
-/**
- * const verdictState = {
- *      concerned_note: {},
- *      toggle_verdict_modal: false,
- *      already_satisfied_verdict_index_in_note_verdict_history: -1,
- *      currenct_canvas_verdict_requests_status: [
- *      ],
- *  }
- */
-/**
- * Possible Actions
-    * init_canvas_verdict_requests_action
-    * select_note_for_verdict_action
-    * unselect_note_for_verdict_action
-    * ask_for_verdict_request_action
-    * ask_for_verdict_success_action
-    * ask_for_verdict_failure_action
- */
-/**
- * Reminder of Note Schema
- *  "note_id": "",
-    "note_headline": "",
-    "note_description": "",
-    "note_maker": "",
-    "note_verdict_value":"",
-    "note_verdict_message": "",
-    "note_verdict_request": "",
-    "note_verdict_success": "",
-    "note_equivalent_verdict": "",
-    "note_verdict_failure": "",
-    "note_category": "",
-    "note_verdict_history": [{
-                "note_encoded_content": "",
-                    // means we serialize the categorie
-                    // the headline and the description for 
-                    // giving old note version
-                "note_verdict_value": "",
-                "note_verdict_message": "",
-            }],
- */
+
+
+
 const sliced = (_arr) => {
     try {
         return _arr.slice(_arr.length - 5, _arr.length - 1)
@@ -69,7 +32,7 @@ class NoteVerdict extends Component {
         return (
             <>
                 <Modal isOpen={toggle_verdict_modal} toggle={this.props.unselect_note_for_verdict_action} className={this.props.className}>
-                    <ModalHeader toggle={this.toggle}>Note Verdict</ModalHeader>
+                    <ModalHeader toggle={this.toggle}>{`A ${concerned_note["note_category"]}note made by ${concerned_note["note_maker"] ? concerned_note["note_maker"]["email"] : "email"}`}</ModalHeader>
                     <ModalBody>
                         <blockquote>
                             <p className="blockquote blockquote-primary">
@@ -93,7 +56,7 @@ class NoteVerdict extends Component {
                             <Col
                             >
                                 <p className="text-success">{concerned_note["note_verdict_message"]}</p>
-                                {_.isEmpty(concerned_note["note_verdict_history"]) ? <p className="text-success">{verdict_result_message.first_validation}</p> : null}
+                                {/* {_.isEmpty(concerned_note["note_verdict_history"]) ? <p className="text-success">{system_comment_text_constants.first_validation}</p> : null} */}
 
                             </Col>
                         </Row>

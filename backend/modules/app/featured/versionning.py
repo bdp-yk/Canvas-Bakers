@@ -1,8 +1,5 @@
 from dictdiffer import diff, patch, swap, revert
 import json
-
-
-
 def update_base_by_commit(base, commit,version_provider_key="canvas_version_provider",base_version_key="canvas_base_version"):
      
     # in case of conflict, same base version but different

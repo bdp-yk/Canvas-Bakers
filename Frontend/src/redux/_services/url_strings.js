@@ -41,3 +41,10 @@ export const SHARE_CANVAS_URL = CANVAS_ENTRY_URL + "share";
 
 export const LIST_OF_USER_CANVAS_URL = CANVAS_ENTRY_URL + "list_canvas";
 export const CANVAS_HISTOR_URL = CANVAS_ENTRY_URL + "canvas_history";
+
+//
+export const VERDICT_ENTRY_URL = API_URL + "verdict/";
+export const POST_NOTE_FOR_VERDICT = VERDICT_ENTRY_URL + "post_verdict/";
+export const GET_NOTE_VERDICT = VERDICT_ENTRY_URL + "get_verdict/";
+export const GET_NOTE_VERDICT_HISTORY = VERDICT_ENTRY_URL + "get_verdict_history/";
+export const LOAD_CANVAS_REQUESTED_VERDICTS = VERDICT_ENTRY_URL + "get_canvas_requested_verdicts/";

@@ -23,3 +23,4 @@ flask-cors==3.0.7
 Flask-Mail==0.9.1
 dictdiffer==0.7.1
 flask-socketio==3.1.2
+pusher==2.1.2

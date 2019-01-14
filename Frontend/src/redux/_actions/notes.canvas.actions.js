@@ -1,5 +1,9 @@
 import {
-    notesConstants
+    notesConstants,
+    default_verdict_value,
+    default_verdict_status,
+    default_verdict_message,
+    default_verdict_comment
 } from '../_constants';
 import _ from "lodash"
 // CREATE_NOTE_ACTION
@@ -18,30 +22,21 @@ export const notesActions = {
     drag_note_action
 };
 
-// "note_id": "",
-// "note_headline": "",
-// "note_description": "",
-// "note_maker": "",
-// "note_verdict_value":"",
-// "note_verdict_message": "",
-// "note_verdict_request": "",
-// "note_verdict_success": "",
-// "note_equivalent_verdict": "",
-// "note_verdict_failure": "",
-// "note_category": "",
-// "note_verdict_history": [{
-//             "note_encoded_content": "",
-//                  // means we serialize the categorie
-//                  // the headline and the description for 
-//                  // giving old note version
-//             "note_verdict_value": "",
-//             "note_verdict_message": "",
-//         }],
 /**
+ * note_id
+ * note_headline
+ * note_description
+ * note_maker
+ * note_category
+ * note_current_verdict
+ * note_encoded_content
+ * note_verdict_value
+ * note_verdict_status
+ * note_verdict_message
+ * note_verdict_comment
  * 
- * @param {object} note 
- * @returns {string} string in format of note_category|note_headline|note_description
  */
+//
 export const encode_note_content = (note) => {
     // remove all what is not alphanumeric
     let _string = "";
@@ -57,13 +52,14 @@ const get_note_init_schema = (payload) => {
         "note_headline": "",
         "note_description": "",
         "note_maker": payload.maker,
-        "note_verdict_value": 0,
-        "note_verdict_message": "",
-        "note_verdict_request": false,
-        "note_verdict_success": false,
-        "note_verdict_failure": false,
         "note_category": payload.note_category,
-        "note_verdict_history": [],
+        "note_current_verdict": {
+            "note_encoded_content": "",
+            "note_verdict_value": default_verdict_value,
+            "note_verdict_status": default_verdict_status,
+            "note_verdict_message": default_verdict_message,
+            "note_verdict_comment": default_verdict_comment,
+        }
     };
 };
 
@@ -78,8 +74,12 @@ function init_note_action(payload) {
     }
 
 }
-
+/**
+ * 
+ * @param {Object} payload 
+ */
 function update_note_action(payload) {
+    payload["note_current_verdict"]["note_encoded_content"] = encode_note_content(payload)
     return dispatch => {
         dispatch({
             type: notesConstants.UPDATE_NOTE_ACTION,

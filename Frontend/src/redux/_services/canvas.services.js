@@ -95,7 +95,7 @@ function list_all_canvases_for_user(user) {
 }
 
 async function upload_canvas_service(canvas_schema) {
-    console.log("upload_canvas_service>>", canvas_schema.canvas_version_stamp);
+    // console.log("upload_canvas_service>>", canvas_schema.canvas_version_stamp);
 
     const requestOptions = {
         method: 'POST',

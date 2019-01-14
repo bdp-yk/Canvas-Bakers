@@ -1,7 +1,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
-
+import _ from "lodash";
 // reactstrap components
 import {
   Collapse,
@@ -17,8 +17,11 @@ import {
 
 } from "reactstrap";
 import { connect } from 'react-redux'
-import { testerActions } from "../../redux/_actions";
-import { mapDispatchToProps, who_am_i } from "../../utils";
+import { testerActions, notesVerdictActions } from "../../redux/_actions";
+import { who_am_i, multipleActionsMapDispatchToProps } from "../../utils";
+import { initPusher } from "../../featured/pusher.conf";
+// var interval;
+var pusher = initPusher(), channel;
 
 class TesterNavBar extends React.Component {
   constructor(props) {
@@ -32,7 +35,16 @@ class TesterNavBar extends React.Component {
   componentDidMount() {
     window.addEventListener("resize", this.updateColor);
   }
+  componentDidUpdate() {
+    if (!_.isEmpty(this.props.canvas.canvas_schema)) {
+      channel = pusher.subscribe(this.props.canvas.canvas_schema.canvas_id);
+      channel.bind('verdict_notification', function (data) {
+        alert(JSON.stringify(data));
+      });
+    }
+  }
   componentWillUnmount() {
+    // clearInterval(interval);
     window.removeEventListener("resize", this.updateColor);
   }
   // function that adds color white/transparent to the navbar on resize (this is for the collapse)
@@ -84,7 +96,7 @@ class TesterNavBar extends React.Component {
             </div>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar>
- <UncontrolledDropdown nav>
+                <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
                     color="default"
@@ -135,11 +147,12 @@ class TesterNavBar extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { tester } = state;
+  const { tester, canvas } = state;
   return {
-    tester
+    tester,
+    canvas
   };
 }
 
-const connectedTesterNavBar = connect(mapStateToProps, mapDispatchToProps(testerActions))(TesterNavBar);
+const connectedTesterNavBar = connect(mapStateToProps, multipleActionsMapDispatchToProps([testerActions, notesVerdictActions]))(TesterNavBar);
 export { connectedTesterNavBar as TesterNavBar };

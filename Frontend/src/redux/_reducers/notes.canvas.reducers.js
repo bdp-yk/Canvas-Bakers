@@ -7,6 +7,9 @@ import {
 import {
     find_index_by_property
 } from '../../utils/dnd_utils';
+import {
+    notesVerdict
+} from './notes.verdict.reducer';
 
 const complementary_action = action => {
     let c_type, c_payload, {
@@ -123,6 +126,6 @@ export function notes(state = canvas_init_store, action) {
             }
 
         default:
-            return state
+            return notesVerdict(state, action)
     }
 }

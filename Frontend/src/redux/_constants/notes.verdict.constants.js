@@ -1,3 +1,18 @@
+/**
+ * <NOTE SCHEMA>
+ * note_id
+ * note_headline
+ * note_description
+ * note_maker
+ * note_category
+ * note_current_verdict
+ *     note_encoded_content
+ *     note_verdict_value
+ *     note_verdict_status
+ *     note_verdict_message
+ *     note_verdict_comment
+ *  
+ */
 export const notesVerdictConstants = {
     //first we select a note => open that modal => we change "session"
     SELECT_NOTE_FOR_VERDICT: "SELECT_NOTE_FOR_VERDICT",
@@ -10,7 +25,10 @@ export const notesVerdictConstants = {
     // set state with 
     INIT_CANVAS_VERDICT_REQUESTS: "INIT_CANVAS_VERDICT_REQUESTS",
 };
-
+export const default_verdict_value = "N/A";
+export const default_verdict_status = "N/A";
+export const default_verdict_message = "new_validation";
+export const default_verdict_comment = "already_validated";
 export const verdict_status_constants = {
     request: "request",
     success: "success",
@@ -54,5 +72,5 @@ export const comment_default_text = (comment_type) => {
         Please note that the AI does not take into consideration punctuations`;
         default:
             return `N/A`;
-    };
+    }
 };

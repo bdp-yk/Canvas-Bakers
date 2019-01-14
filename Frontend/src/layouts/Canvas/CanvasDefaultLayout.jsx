@@ -109,17 +109,17 @@ class CanvasDefaultLayout extends React.Component {
     this.props.commit_canvas_schema_action(this.props.canvas.canvas_schema);
   }
   onDragStart = result => {
-    console.log("onDragStart>>", result);
+    // console.log("onDragStart>>", result);
     let { draggableId } = result;
     if (draggableId === "default_note")
       return
 
   }
   onDragEnd = result => {
-    console.log(result);
+    // console.log(result);
 
     let { destination, source } = result;
-    if (!destination || (source === destination && source.index === destination.index)) {
+    if (!destination || (_.isEqual(source, destination) && source.index === destination.index)) {
       return;
     }
     this.props.drag_note_action({

@@ -54,6 +54,11 @@ export const canvas_init_store = {
     canvas_history: [],
 
     canvas_schema: {},
+
+    // verdict handler
+    concerned_note: {},
+    toggle_verdict_modal: false,
+    canvas_requested_verdicts: [],
 }
 export function canvas(state = canvas_init_store, action) {
     switch (action.type) {
@@ -292,7 +297,7 @@ export function canvas(state = canvas_init_store, action) {
             let does_contain = false;
             if (state.canvas_schema.canvas_notes) {
                 Object.keys(state.canvas_schema.canvas_notes).forEach(e => {
-                    console.log(e,(find_exact_index_by_property(state.canvas_schema.canvas_notes[e], "default_note", "note_id")),state.canvas_schema.canvas_notes[e]);
+                    // console.log(e,(find_exact_index_by_property(state.canvas_schema.canvas_notes[e], "default_note", "note_id")),state.canvas_schema.canvas_notes[e]);
                     does_contain = does_contain || (find_exact_index_by_property(state.canvas_schema.canvas_notes[e], "default_note", "note_id") > -1);
                 });
             }

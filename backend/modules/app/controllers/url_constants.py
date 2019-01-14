@@ -1,6 +1,6 @@
-class _url():
+class _url:
     # API_URL = "http://localhost:5000/"
-    API_URL="/"
+    API_URL = "/"
 
     # sign in/out/up urls
     USER_AUTH_URL = API_URL + "user/"
@@ -25,11 +25,9 @@ class _url():
     TESTER_GET_BY_ID_URL = TESTER_AUTH_URL + "get_by_id/"
     TESTER_GET_BY_EMAIL = TESTER_AUTH_URL + "get_by_email/"
 
-
     # get all url
     GET_ALL_USERS = USER_AUTH_URL + "get_all/"
     GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/"
-
 
     # canvas urls
     CANVAS_ENTRY_URL = API_URL + "canvas/"
@@ -39,6 +37,15 @@ class _url():
     # update_one with upsert
     UPLOAD_CANVAS_URL = CANVAS_ENTRY_URL + "update"
 
-    #listing urls
+    # listing urls
     LIST_OF_USER_CANVAS_URL = CANVAS_ENTRY_URL + "list_canvas"
     CANVAS_HISTOR_URL = CANVAS_ENTRY_URL + "canvas_history"
+
+    # verdict
+    VERDICT_ENTRY_URL = API_URL + "verdict/"
+    POST_NOTE_FOR_VERDICT = VERDICT_ENTRY_URL + "post_verdict/"
+    GET_NOTE_VERDICT = VERDICT_ENTRY_URL + "get_verdict/"
+    GET_NOTE_VERDICT_HISTORY = VERDICT_ENTRY_URL + "get_verdict_history/"
+    LOAD_CANVAS_REQUESTED_VERDICTS = (
+        VERDICT_ENTRY_URL + "get_canvas_requested_verdicts/"
+    )

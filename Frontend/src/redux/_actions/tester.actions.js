@@ -27,7 +27,7 @@ function check_test_season() {
         dispatch({ type: testerConstants.TESTING_SEASON_REQUEST })
         testerServices.checktestseason().then(
             response => {
-                console.log(response);
+                // console.log(response);
 
                 if (response.ok) {
                     dispatch({ type: testerConstants.TESTING_SEASON_SUCCESS })

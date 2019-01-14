@@ -7,7 +7,7 @@ import { alert } from './alert.reducer';
 import { modal } from './modal.reducer';
 import { tester } from './tester.reducer';
 import { canvas } from './canvas.reducer';
-import { notesVerdict } from './notes.verdict.reducer';
+// import { notesVerdict } from './notes.verdict.reducer';
 
 const rootReducer = combineReducers({
   authentication,
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   modal,
   tester,
   canvas,
-  notesVerdict
+  // notesVerdict
 });
 
 export default rootReducer;

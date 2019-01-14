@@ -11,7 +11,7 @@ export const GenerateDraggable = ({ component: Component, ...rest }) => (
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                 >
-                    <Component {...rest} />
+                    <Component key={rest.index} {...rest} />
                 </div>
             )}
         </Draggable>:

@@ -5,9 +5,9 @@ import {
 import {
     userService
 } from '../_services';
-import {
-    alertActions
-} from './';
+// import {
+//     alertActions
+// } from './';
 import {
     history
 } from '../_helpers';

@@ -10,7 +10,11 @@ import {
     // testerActions
 } from '../redux/_actions';
 import { PrivateRoute } from '../_components';
-import { WelcomeLayout, CanvasDefaultLayout, AdminLayout, TesterLayout, UserLayout, DocumentationLayout } from '../layouts';
+import {
+    WelcomeLayout, CanvasDefaultLayout, AdminLayout, TesterLayout,
+    // UserLayout,
+    DocumentationLayout
+} from '../layouts';
 import { _admin_route, _user_route, _tester_route, _canvas_preview_route, _welcome_route, _document_route } from '../constants';
 
 var ps;

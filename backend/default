@@ -1,7 +1,7 @@
 server {
    listen 80 default_server;
    root /var/www/CB/build;
-   server_name http://h2793844.stratoserver.net ;
+   server_name h2793844.stratoserver.net www.h2793844.stratoserver.net ;
    index index.html index.htm;
    location / {
        try_files $uri /index.html;

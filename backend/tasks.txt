@@ -3,4 +3,5 @@ sudo cp  backend/backend.service /etc/systemd/system/backend.service
 sudo systemctl start backend
 sudo systemctl enable backend
 sudo cp -r build/ /var/www/CB
-sudo cp  ~/Canvas-Bakers/backend/default /etc/nginx/sites-available/canvas_backers
+sudo cp  ~/Canvas-Bakers/backend/default /etc/nginx/sites-available/canvas_bakers
+sudo ln -s /etc/nginx/sites-available/canvas_bakers /etc/nginx/sites-enabled

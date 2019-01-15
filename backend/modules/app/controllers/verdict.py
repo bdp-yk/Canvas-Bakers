@@ -92,9 +92,19 @@ def _POST_NOTE_FOR_VERDICT_api():
             old_v = standard_verdict(n_curr_ver["note_encoded_content"], rand_v_v)
             old_v["verdict_source"] = "admin"
             mongo.db.verdicts.insert(old_v)
+    del(old_v["_id"])
     note_schema["note_current_verdict"] = old_v
     _pusher.push_notification(canvas_id, note_schema)
-    return jsonify({"ok": True, "note_schema": note_schema}), 200
+    try:
+        resp=jsonify({"ok": True, "note_schema": note_schema})
+    except Exception as e:
+        rand_v_v = round(random.uniform(60, 80), 2)
+        old_v = standard_verdict(n_curr_ver["note_encoded_content"], rand_v_v)
+        old_v["verdict_source"] = "admin"
+        note_schema["note_current_verdict"] = old_v    
+        resp=jsonify({"ok": True, "note_schema": note_schema})
+            
+    return resp, 200
 
 
 @app.route(_url.GET_NOTE_VERDICT, methods=["GET"])

@@ -4,7 +4,7 @@ import { Route, Switch } from "react-router-dom";
 // import PerfectScrollbar from "perfect-scrollbar";
 
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
+// import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
@@ -16,6 +16,7 @@ import { Sidebar } from "../../components/Sidebar";
 import { PrivateRoute } from "../../_components";
 import { _dashboard_route } from "../../constants"; 
 import { Dashboard } from "../../views/admin";
+import { AdminNavBar } from "../../components/Navbars/AdminNavbar";
 // var ps;
 
 class Admin extends React.Component {
@@ -121,7 +122,7 @@ class Admin extends React.Component {
             ref="mainPanel"
             data={this.state.backgroundColor}
           >
-            <AdminNavbar
+            <AdminNavBar
               {...this.props}
               brandText={this.getBrandText(this.props.location.pathname)}
               toggleSidebar={this.toggleSidebar}

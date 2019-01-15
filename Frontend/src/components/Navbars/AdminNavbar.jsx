@@ -1,6 +1,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
+import { connect } from 'react-redux'
 
 // reactstrap components
 import {
@@ -19,8 +20,10 @@ import {
   Container,
   Modal
 } from "reactstrap";
+import { testerActions, notesVerdictActions } from "../../redux/_actions";
+import { multipleActionsMapDispatchToProps } from "../../utils";
 
-class AdminNavbar extends React.Component {
+class AdminNavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -186,7 +189,7 @@ class AdminNavbar extends React.Component {
                     </NavLink>
                     <DropdownItem divider tag="li" />
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item">Log out</DropdownItem>
+                      <DropdownItem onClick={this.props.logout_tester} className="nav-item">Log out</DropdownItem>
                     </NavLink>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -218,4 +221,13 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+function mapStateToProps(state) {
+  const { tester, canvas } = state;
+  return {
+    tester,
+    canvas
+  };
+}
+
+const connectedAdminNavBar = connect(mapStateToProps, multipleActionsMapDispatchToProps([testerActions, notesVerdictActions]))(AdminNavBar);
+export { connectedAdminNavBar as AdminNavBar };

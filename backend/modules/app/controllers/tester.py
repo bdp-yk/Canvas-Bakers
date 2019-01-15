@@ -52,7 +52,7 @@ def tester_quit():
     """ auth endpoint """
     data = request.get_json()
     data = validate_tester(data["user"])
-    print(data)
+    # print(data)
     if data["ok"]:
         data = data["data"]
         # print(data)

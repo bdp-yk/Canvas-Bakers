@@ -22,4 +22,4 @@ class _Pusher:
 
     def push_notification(self, canvas_id, note_schema):
         self.pusher_client.trigger(canvas_id, "verdict_notification", note_schema)
-        print(canvas_id)
+        # print(canvas_id)

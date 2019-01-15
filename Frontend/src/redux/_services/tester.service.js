@@ -57,16 +57,19 @@ function logout(remove_storage = true) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(who_am_i())
+        body: JSON.stringify({
+            "user": who_am_i()
+        })
     };
     // remove user from local storage to log user out
     return fetch(TESTER_LOGOUT_URL, requestOptions).then(() => {
         if (remove_storage)
             localStorage.removeItem('tester')
+            localStorage.removeItem('user')
     }).catch(
         (error) => {
             alert("Something bad happened, but we will log you out" + error);
-            localStorage.removeItem('tester');
+            localStorage.removeItem('user');
         }
     );
 }

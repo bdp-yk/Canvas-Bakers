@@ -83,7 +83,7 @@ class RegisterPage extends React.Component {
         }
         const { dispatch } = this.props;
         if (user.firstName && user.lastName && user.email && user.password && user.class) {
-            dispatch(userActions.register(user));
+            dispatch(userActions.user_register_action(user));
         }
     }
     swapRegLog = () => {
@@ -92,7 +92,10 @@ class RegisterPage extends React.Component {
     }
 
     render() {
-        const { registering } = this.props;
+        const { register_request,
+            // register_success,
+            // register_failure
+        } = this.props.user
         const { user, submitted, adminship } = this.state;
         return (
             <>
@@ -156,11 +159,11 @@ class RegisterPage extends React.Component {
 
                             <FormGroup>
 
-                                <Button disabled={registering} color="primary">Register</Button>
-                                {registering &&
+                                <Button disabled={register_request} color="primary">Register</Button>
+                                {register_request &&
                                     <img alt="reload" style={{ maxWidth: "15px" }} src={loadingthumbnail} />
                                 }
-                                <Button disabled={registering} onClick={() => this.swapRegLog()}>Login</Button>
+                                <Button disabled={register_request} onClick={() => this.swapRegLog()}>Login</Button>
 
                             </FormGroup>
                         </ModalFooter>
@@ -173,11 +176,13 @@ class RegisterPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { tester } = state;
-    const { registering } = state.registration;
+    const { user, tester } = state;
+
+    // const { register_request } = state.registration;
     return {
+        user,
         tester,
-        registering
+        // register_request
     };
 }
 

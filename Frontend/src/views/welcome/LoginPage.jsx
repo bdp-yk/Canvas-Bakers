@@ -80,7 +80,7 @@ class LoginPage extends React.Component {
         this.props.dispatch(modalActions.toggleRegisterModal());
     }
     render() {
-        const { loggingIn } = this.props;
+        const { login_request } = this.props.user;
         const { user, submitted, adminship } = this.state;
         const { email, password } = user;
         return (<>
@@ -125,7 +125,7 @@ class LoginPage extends React.Component {
 
                     <FormGroup className="">
                         <Button className="btn btn-primary">Login</Button>
-                        {loggingIn &&
+                        {login_request &&
                             <img alt="reload" style={{ maxWidth: "15px" }} src={loadingthumbnail} />
                         }
                         <Button onClick={() => this.swapRegLog()}>Register</Button>
@@ -139,11 +139,13 @@ class LoginPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { tester } = state;
-    const { loggingIn } = state.authentication;
+    const { user, tester } = state;
+
+    // const { register_request } = state.registration;
     return {
+        user,
         tester,
-        loggingIn
+        // register_request
     };
 }
 

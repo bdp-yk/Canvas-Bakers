@@ -13,7 +13,9 @@ import { connect } from 'react-redux';
 
 import logo from "assets/img/brand-logo.png";
 import { Sidebar } from "../../components/Sidebar";
-
+import { PrivateRoute } from "../../_components";
+import { _dashboard_route } from "../../constants"; 
+import { Dashboard } from "../../views/admin";
 // var ps;
 
 class Admin extends React.Component {
@@ -125,7 +127,10 @@ class Admin extends React.Component {
               toggleSidebar={this.toggleSidebar}
               sidebarOpened={this.state.sidebarOpened}
             />
-            <Switch>{this.getRoutes(routes)}</Switch>
+            <Switch>
+              <PrivateRoute path={_dashboard_route()} component={Dashboard} />
+
+            </Switch>
             {// we don't want the Footer to be rendered on map page
               this.props.location.pathname.indexOf("maps") !== -1 ? null : (
                 <Footer fluid />
@@ -141,10 +146,10 @@ class Admin extends React.Component {
   }
 }
 function mapStateToProps(state) {
-    const { alert } = state;
-    return {
-        alert
-    };
+  const { alert } = state;
+  return {
+    alert
+  };
 }
 
 const connectedAdmin = connect(mapStateToProps)(Admin);

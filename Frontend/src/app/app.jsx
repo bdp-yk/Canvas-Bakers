@@ -91,7 +91,7 @@ class App extends React.Component {
                         <Router history={history}>
                             <Switch>
                                 <PrivateRoute path={_admin_route} component={AdminLayout} />
-                                <PrivateRoute path={_user_route} component={UserLayout} />
+                                <PrivateRoute path={_user_route} component={TesterLayout} />
                                 <PrivateRoute path={_tester_route} component={TesterLayout} />
                                 <Route path={_canvas_preview_route} component={CanvasDefaultLayout} />
                                 <Route path={_welcome_route} component={WelcomeLayout} />

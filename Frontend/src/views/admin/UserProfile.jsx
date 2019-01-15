@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from 'react-redux'
 
 // reactstrap components
 import {
@@ -192,4 +193,14 @@ class UserProfile extends React.Component {
   }
 }
 
-export default UserProfile;
+function mapStateToProps(state) {
+  const { tester } = state;
+  const { loggingIn } = state.authentication;
+  return {
+      tester,
+      loggingIn
+  };
+}
+
+const connectedUserProfile = connect(mapStateToProps)(UserProfile);
+export { connectedUserProfile as UserProfile }; 

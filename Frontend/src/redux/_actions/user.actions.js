@@ -1,5 +1,6 @@
 import {
-    userConstants
+    userConstants,
+    alertConstants
 } from '../_constants';
 import {
     userService
@@ -26,7 +27,8 @@ export const userActions = {
     user_register_action,
     user_update_action,
     user_delete_action,
-    user_logout_action
+    user_logout_action,
+    get_all_testers_action
 };
 
 function user_auth_action(user) {
@@ -51,13 +53,24 @@ function user_login_action(user) {
 function user_get_by_id_action(user) {
     return dispatch => {
 
+
     }
 
 }
 
 function user_register_action(user) {
     return dispatch => {
-
+        userService.user_register_service(user).then(response => {
+            if (response.ok) {
+                localStorage.setItem('user', JSON.stringify(response.user))
+                history.push(_dashboard_route())
+            }
+        })
+        history.push(_dashboard_route())
+        dispatch({
+            type: alertConstants.SUCCESS,
+            message: "Welcome to Canvas Bakers"
+        })
     }
 
 }
@@ -82,6 +95,27 @@ function user_logout_action(user) {
     }
 
 }
+
+// admin actions
+
+function get_all_testers_action(user) {
+    return dispatch => {
+        dispatch({
+            type: userConstants.GETALL_REQUEST,
+            // payload: response["testers"]
+        })
+        userService.get_all_testers_service().then(response => {
+            dispatch({
+                type: userConstants.GETALL_SUCCESS,
+                payload: response["testers"]
+            })
+        })
+    }
+
+}
+
+
+
 
 
 // function login(email, password) {

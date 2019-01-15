@@ -89,7 +89,10 @@ def _USER_GET_BY_ID():
 
 @app.route(_url.USER_REGISTER_URL, methods=["POST"])
 def _USER_REGISTER():
-    return jsonify({"ok": True}), 200
+    data = request.get_json()
+    user = data["user"]
+
+    return jsonify({"ok": True, "user": user}), 200
 
 
 @app.route(_url.USER_UPDATE_URL, methods=["POST"])
@@ -100,6 +103,7 @@ def _USER_UPDATE():
 @app.route(_url.USER_DELETE_URL, methods=["POST"])
 def _USER_DELETE():
     return jsonify({"ok": True}), 200
+
 
 @app.route(_url.USER_LOGOUT_URL, methods=["POST"])
 def _USER_LOGOUT():

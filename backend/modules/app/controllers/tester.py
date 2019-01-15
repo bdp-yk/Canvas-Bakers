@@ -50,7 +50,9 @@ def tester_register():
 @app.route(_url.TESTER_LOGOUT_URL, methods=["DELETE"])
 def tester_quit():
     """ auth endpoint """
-    data = validate_tester(request.get_json())
+    data = request.get_json()
+    data = validate_tester(data["user"])
+    print(data)
     if data["ok"]:
         data = data["data"]
         # print(data)

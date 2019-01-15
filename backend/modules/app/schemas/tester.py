@@ -25,8 +25,8 @@ tester_schema = {
             "type": "boolean"
         }
     },
-    "required": ["email", "group"],
-    "additionalProperties": False
+    "required": ["email"],
+    "additionalProperties": True
 }
 
 

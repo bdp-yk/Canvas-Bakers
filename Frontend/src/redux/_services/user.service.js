@@ -9,7 +9,8 @@ import {
     USER_REGISTER_URL,
     USER_UPDATE_URL,
     USER_DELETE_URL,
-    USER_LOGOUT_URL
+    USER_LOGOUT_URL,
+    GET_ALL_TESTERS
 } from './url_strings';
 // import {
 //     handleError
@@ -23,6 +24,7 @@ export const userService = {
     user_update_service,
     user_delete_service,
     user_logout_service,
+    get_all_testers_service
 };
 // USER_AUTH_URL
 // USER_AUTH
@@ -92,6 +94,19 @@ function user_delete_service(user) {
 // USER_LOGOUT
 function user_logout_service(user) {
     return fetch(USER_LOGOUT_URL, requestOptions(user)).then(handleResponse)
+    // .catch(handleError)
+}
+
+// GET_ALL_TESTERS
+// GET_ALL_TESTERS
+function get_all_testers_service() {
+    let rO = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+    return fetch(GET_ALL_TESTERS, rO).then(handleResponse)
     // .catch(handleError)
 }
 

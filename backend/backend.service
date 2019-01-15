@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve backend
+After=network.target
+
+[Service]
+User=hhzadmin
+Group=www-data
+WorkingDirectory=/home/hhzadmin/Canvas-Bakers/backend
+Environment="PATH=/home/hhzadmin/Canvas-Bakers/backend/env/bin"
+ExecStart=/home/hhzadmin/Canvas-Bakers/backend/env/bin/uwsgi --ini backend.ini
+
+[Install]
+WantedBy=multi-user.target

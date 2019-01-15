@@ -1,6 +1,6 @@
 uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app
-nano ~/myproject/myproject.ini
-sudo nano /etc/systemd/system/myproject.service
-sudo systemctl start myproject
-sudo systemctl enable myproject
-sudo cp  ~/Canvas-Backers/backend/default /etc/nginx/sites-available/canvas_backers
+sudo cp  backend/backend.service /etc/systemd/system/backend.service
+sudo systemctl start backend
+sudo systemctl enable backend
+sudo cp -r build/ /var/www/CB
+sudo cp  ~/Canvas-Bakers/backend/default /etc/nginx/sites-available/canvas_backers

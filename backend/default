@@ -1,6 +1,6 @@
 server {
    listen 80 default_server;
-   root /home/Canvas-Bakers/Frontend/build;
+   root /var/www/CB/build;
    server_name http://h2793844.stratoserver.net ;
    index index.html index.htm;
    location / {

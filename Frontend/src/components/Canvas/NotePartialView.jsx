@@ -84,7 +84,7 @@ class NotePartialView extends React.Component {
                             {this.state.toggle_note_headline ? note.note_headline : <Input placeholder="Headline" name="note_headline" value={_note.note_headline} onChange={this.handleChange} onBlur={this.handleToggle} />}
                         </Col>
                         <Col xs={2} className="pl-1 pr-3 ml-auto">
-                            {note_is_requesting || (note.note_id == "default_note") ? null :
+                            {note_is_requesting || (note.note_id === "default_note") ? null :
                                 <UncontrolledDropdown direction="right" >
                                     <DropdownToggle tag="i">
                                         <i className="tim-icons icon-pencil" />

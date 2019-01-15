@@ -49,7 +49,7 @@ class RegisterPage extends React.Component {
         const { adminship } = this.state;
         // console.log(name, value);
         adminship[name] = value;
-        if (name == "isAdmin")
+        if (name === "isAdmin")
             adminship[name] = event.target.checked;
 
         this.setState({

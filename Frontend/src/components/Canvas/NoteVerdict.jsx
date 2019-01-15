@@ -6,7 +6,10 @@ import { connect } from 'react-redux'
 import { notesActions } from '../../redux/_actions/notes.canvas.actions';
 // import { system_comment_text_constants } from '../../redux/_constants';
 import _ from 'lodash'
-import { status_default_text, comment_default_text, verdict_status_constants } from '../../redux/_constants';
+import {
+    //  status_default_text, comment_default_text,
+    verdict_status_constants
+} from '../../redux/_constants';
 
 
 

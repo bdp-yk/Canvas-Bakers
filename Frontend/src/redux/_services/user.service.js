@@ -11,9 +11,9 @@ import {
     USER_DELETE_URL,
     USER_LOGOUT_URL
 } from './url_strings';
-import {
-    handleError
-} from '.';
+// import {
+//     handleError
+// } from '.';
 
 export const userService = {
     user_auth_service,
@@ -27,54 +27,72 @@ export const userService = {
 // USER_AUTH_URL
 // USER_AUTH
 function user_auth_service(user) {
-    return fetch(USER_AUTH_URL, requestOptions(user)).then(handleResponse).catch(handleError)
+    return fetch(USER_AUTH_URL, requestOptions(user)).then(handleResponse)
+    // .catch(handleError)
 }
 
-const requestOptions = (user) => {
-    return {
+const requestOptions = (user, auth = false) => {
+    if (auth) return {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            ...authHeader()
         },
         body: JSON.stringify({
             user
         })
     }
+    else
+        return {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user
+            })
+        }
 };
 // USER_LOGIN_URL
 // USER_LOGIN
 function user_login_service(user) {
-    return fetch(USER_LOGIN_URL, requestOptions(user)).then(handleResponse).catch(handleError)
+    return fetch(USER_LOGIN_URL, requestOptions(user)).then(handleResponse)
+    // .catch(handleError)
 }
 
 // USER_GET_BY_ID_URL
 // USER_GET_BY_ID
 function user_get_by_id_service(user) {
-    return fetch(USER_GET_BY_ID_URL, requestOptions(user)).then(handleResponse).catch(handleError)
+    return fetch(USER_GET_BY_ID_URL, requestOptions(user)).then(handleResponse)
+    // .catch(handleError)
 }
 
 // USER_REGISTER_URL
 // USER_REGISTER
 function user_register_service(user) {
-    return fetch(USER_REGISTER_URL, requestOptions(user)).then(handleResponse).catch(handleError)
+    return fetch(USER_REGISTER_URL, requestOptions(user)).then(handleResponse)
+    // .catch(handleError)
 }
 
 // USER_UPDATE_URL
 // USER_UPDATE
 function user_update_service(user) {
-    return fetch(USER_UPDATE_URL, requestOptions(user)).then(handleResponse).catch(handleError)
+    return fetch(USER_UPDATE_URL, requestOptions(user)).then(handleResponse)
+    // .catch(handleError)
 }
 
 // USER_DELETE_URL
 // USER_DELETE
 function user_delete_service(user) {
-    return fetch(USER_DELETE_URL, requestOptions(user)).then(handleResponse).catch(handleError)
+    return fetch(USER_DELETE_URL, requestOptions(user)).then(handleResponse)
+    // .catch(handleError)
 }
 
 // USER_LOGOUT_URL
 // USER_LOGOUT
 function user_logout_service(user) {
-    return fetch(USER_LOGOUT_URL, requestOptions(user)).then(handleResponse).catch(handleError)
+    return fetch(USER_LOGOUT_URL, requestOptions(user)).then(handleResponse)
+    // .catch(handleError)
 }
 
 

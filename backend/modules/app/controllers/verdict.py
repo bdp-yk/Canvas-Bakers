@@ -63,6 +63,10 @@ def _POST_NOTE_FOR_VERDICT_api():
             old_v = standard_verdict(n_curr_ver["note_encoded_content"], rand_v_v)
             old_v["verdict_source"] = "system"
             mongo.db.verdicts.insert(old_v)
+            try:
+                del(old_v["_id"])
+            except:
+                print("Could not perform that")
             # print("eee",list(mongo.db.verdicts.find(
             #     {
             #         "note_encoded_content": n_curr_ver["note_encoded_content"],

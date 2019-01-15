@@ -39,7 +39,7 @@ function get_active_canvas_verdicts(canvas_requested_verdicts) {
 
 }
 
-function post_note_for_verdict(note) {
+function post_note_for_verdict(note, canvas_id) {
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -47,7 +47,8 @@ function post_note_for_verdict(note) {
         },
         body: JSON.stringify({
             user: who_am_i(),
-            note_schema: note
+            note_schema: note,
+            canvas_id
         })
     };
 

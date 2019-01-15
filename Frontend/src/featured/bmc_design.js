@@ -1,71 +1,87 @@
+export const make_default_note = (note_headline, note_description, note_category) => {
+    return ({
+        note_id: "default_note",
+        note_headline,
+        note_description,
+        note_maker: "Canvas Bakers",
+        note_category,
+        note_current_verdict: {
+            note_encoded_content: "###",
+            note_verdict_value: 100.0,
+            note_verdict_status: "success",
+            note_verdict_message: "Made by Canvas Bakers",
+            note_verdict_comment: "That's obvious ...",
+        }
+    })
+}
 const KP = {
     category: "key-partners",
     name: "Key Partners",
     logo: "KP",
-    direction:"vertical"
+    direction: "vertical"
 };
 
 const KA = {
     category: "key-activites",
     name: "Key Activites",
     logo: "KA",
-    direction:"vertical"
+    direction: "vertical"
 };
 
 const KR = {
     category: "key-resources",
     name: "Key Ressources",
     logo: "KR",
-    direction:"vertical"
+    direction: "vertical"
 };
 
 const VP = {
     category: "value-propositions",
     name: "Value Propositions",
     logo: "VP",
-    direction:"vertical"
+    direction: "vertical"
 };
 
 const CR = {
     category: "customer-relationships",
     name: "Customer Relationships",
     logo: "CR",
-    direction:"vertical"
+    direction: "vertical"
 };
 
 const Ch = {
     category: "channels",
     name: "Channels",
     logo: "Ch",
-    direction:"vertical"
+    direction: "vertical"
 };
 
 const CSg = {
     category: "customer-segments",
     name: "Customer Segments",
     logo: "CSg",
-    direction:"vertical"
+    direction: "vertical"
 };
 
 const CSt = {
     category: "cost-structure",
     name: "Cost Structure",
     logo: "CSt",
-    direction:"horizontal"
+    direction: "horizontal"
 };
 
 const RS = {
     category: "revenue-stream",
     name: "Revenue Stream",
     logo: "RS",
-    direction:"horizontal"
+    direction: "horizontal"
 };
 
 const BS = {
     category: "brain-storm",
     name: "Brain Storm",
     logo: "BS",
-    direction:"horizontal"
+    direction: "horizontal"
 };
 
 
@@ -122,113 +138,53 @@ export const bmc_design = [
 ];
 export const bmc_schema = {
     "key-partners": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Key Partners",
-            "note_description": "Your alliances between competitors or non-competitors.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "key-partners",
-        }
+        (make_default_note("Key Partners",
+            "Your alliances between competitors or non-competitors.",
+            "key-partners"))
     ],
     "key-activites": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Key Activities Notes",
-            "note_description": "The most important activities in executing your project value proposition.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "key-activites",
-        }
+        (make_default_note("Key Activities Notes",
+            "The most important activities in executing your project value proposition.",
+            "key-activites"))
     ],
     "key-resources": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Key Ressources Notes",
-            "note_description": "The resources that are necessary to create value for the customer.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "key-resources",
-        }
+        (make_default_note("Key Ressources Notes",
+            "The resources that are necessary to create value for the customer.",
+            "key-resources"))
     ],
     "value-propositions": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Problem Notes",
-            "note_description": "Set of products and services a business offers to meet the needs of its customers.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "value-propositions",
-        }
+        (make_default_note("Problem Notes",
+            "Set of products and services a business offers to meet the needs of its customers.",
+            "value-propositions"))
     ],
     "customer-relationships": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Customer RS Notes",
-            "note_description": "Identify the type of relationship you want to create with your customer segments.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "customer-relationships",
-        }
+        (make_default_note("Customer RS Notes",
+            "Identify the type of relationship you want to create with your customer segments.",
+            "customer-relationships"))
     ],
     "channels": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Channels Notes",
-            "note_description": "How to get in touch with your customers",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "channels",
-        }
+        (make_default_note("Channels Notes",
+            "How to get in touch with your customers",
+            "channels"))
     ],
     "customer-segments": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Custumor Segment Notes",
-            "note_description": "identify which customers your project tries to serve",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "customer-segments",
-        }
+        (make_default_note("Custumor Segment Notes",
+            "identify which customers your project tries to serve",
+            "customer-segments"))
     ],
     "cost-structure": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Cost Structure Notes",
-            "note_description": "This describes the most important monetary consequences while operating under different business models.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "cost-structure",
-        }
+        (make_default_note("Cost Structure Notes",
+            "This describes the most important monetary consequences while operating under different business models.",
+            "cost-structure"))
     ],
     "revenue-stream": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Revenue Notes",
-            "note_description": "The way your project will make income from each customer segment.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "revenue-stream",
-        }
+        (make_default_note("Revenue Notes",
+            "The way your project will make income from each customer segment.",
+            "revenue-stream"))
     ],
     "brain-storm": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Brain Storming Notes",
-            "note_description": "What's on your mind but can't be classified?",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "brain-storm",
-        }
+        (make_default_note("Brain Storming Notes",
+            "What's on your mind but can't be classified?",
+            "brain-storm"))
     ]
 };

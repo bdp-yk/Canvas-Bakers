@@ -20,8 +20,6 @@ class _Pusher:
                 ssl=True,
             )
 
-    def push_notification(self, canvas_id):
-        self.pusher_client.trigger(
-            canvas_id, "verdict_notification", {"message": "hello world"}
-        )
+    def push_notification(self, canvas_id, note_schema):
+        self.pusher_client.trigger(canvas_id, "verdict_notification", note_schema)
         print(canvas_id)

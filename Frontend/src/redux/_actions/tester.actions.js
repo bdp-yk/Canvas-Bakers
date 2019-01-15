@@ -1,8 +1,20 @@
-import { testerConstants, alertConstants } from '../_constants';
-import { testerServices } from '../_services';
-import { alertActions } from './';
-import { history } from '../_helpers';
-import { _tester_route, _welcome_route } from '../../constants';
+import {
+    testerConstants,
+    alertConstants
+} from '../_constants';
+import {
+    testerServices
+} from '../_services';
+import {
+    alertActions
+} from './';
+import {
+    history
+} from '../_helpers';
+import {
+    _tester_route,
+    _welcome_route
+} from '../../constants';
 
 export const testerActions = {
     check_test_season,
@@ -12,37 +24,56 @@ export const testerActions = {
     toggle_tester_register_modal,
     assert_tester
 };
+
 function toggle_tester_register_modal() {
-    return dispatch => dispatch({ type: testerConstants.TESTER_REGISTER_TOGGLE_MODAL })
+    return dispatch => dispatch({
+        type: testerConstants.TESTER_REGISTER_TOGGLE_MODAL
+    })
 
 }
 
 function assert_tester(tester) {
     return dispatch => dispatch(success(tester));
-    function success(tester) { return { type: testerConstants.TESTER_REGISTER_SUCCESS, tester } }
+
+    function success(tester) {
+        return {
+            type: testerConstants.TESTER_REGISTER_SUCCESS,
+            tester
+        }
+    }
 
 }
+
 function check_test_season() {
     return dispatch => {
-        dispatch({ type: testerConstants.TESTING_SEASON_REQUEST })
+        dispatch({
+            type: testerConstants.TESTING_SEASON_REQUEST
+        })
         testerServices.checktestseason().then(
             response => {
                 // console.log(response);
 
                 if (response.ok) {
-                    dispatch({ type: testerConstants.TESTING_SEASON_SUCCESS })
+                    dispatch({
+                        type: testerConstants.TESTING_SEASON_SUCCESS,
+                        payload: response.admin_code
+                    })
                     // dispatch({ type: testerConstants.TESTER_REGISTER_TOGGLE_MODAL })
-                }
-                else
-                    dispatch({ type: testerConstants.TESTING_SEASON_FAILURE })
+                } else
+                    dispatch({
+                        type: testerConstants.TESTING_SEASON_FAILURE
+                    })
             }
         ).catch(
-            error => dispatch({ type: testerConstants.TESTING_SEASON_FAILURE })
+            error => dispatch({
+                type: testerConstants.TESTING_SEASON_FAILURE
+            })
         )
     }
 }
+
 function disconnect_tester() {
-    return dispatch =>{
+    return dispatch => {
         testerServices.logout(false);
     }
 }
@@ -63,21 +94,44 @@ function register_tester_action(tester) {
             }
         )
     }
-    function request(tester) { return { type: testerConstants.TESTER_REGISTER_REQUEST, tester } }
-    function success(tester) { return { type: testerConstants.TESTER_REGISTER_SUCCESS, tester } }
-    function failure() { return { type: testerConstants.TESTER_REGISTER_FAILURE } }
+
+    function request(tester) {
+        return {
+            type: testerConstants.TESTER_REGISTER_REQUEST,
+            tester
+        }
+    }
+
+    function success(tester) {
+        return {
+            type: testerConstants.TESTER_REGISTER_SUCCESS,
+            tester
+        }
+    }
+
+    function failure() {
+        return {
+            type: testerConstants.TESTER_REGISTER_FAILURE
+        }
+    }
 }
+
 function logout_tester() {
 
     return dispatch => {
         testerServices.logout().then(
             r => {
-                dispatch({ type: testerConstants.TESTER_LOGOUT })
+                dispatch({
+                    type: testerConstants.TESTER_LOGOUT
+                })
 
             }
 
         ).catch(e => {
-            dispatch({ type: alertConstants.ERROR_CLASS, message: "Something Bad Happened" })
+            dispatch({
+                type: alertConstants.ERROR_CLASS,
+                message: "Something Bad Happened"
+            })
         }).then(() => history.push(_welcome_route))
     }
 }

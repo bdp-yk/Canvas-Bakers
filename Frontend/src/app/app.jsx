@@ -43,7 +43,7 @@ class App extends React.Component {
             document.documentElement.className += " perfect-scrollbar-off";
             document.documentElement.classList.remove("perfect-scrollbar-on");
         }
-        this.props.dispatch(testerActions.logout_tester());
+        // this.props.dispatch(testerActions.logout_tester());
 
     }
     componentDidUpdate(e) {

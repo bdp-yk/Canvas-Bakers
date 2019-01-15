@@ -10,11 +10,14 @@ import {
     CardFooter,
     FormGroup,
     Form,
+    Label,
+    Collapse,
     Input,
 } from "reactstrap";
 
 import { userActions } from '../../redux/_actions';
 import { modalActions } from '../../redux/_actions/modal.actions';
+const loadingthumbnail = require("assets/img/loading.gif");
 
 class RegisterPage extends React.Component {
     constructor(props) {
@@ -25,15 +28,34 @@ class RegisterPage extends React.Component {
                 firstName: '',
                 lastName: '',
                 email: '',
-                password: ''
+                password: '',
+                class: 'user'
             },
-            submitted: false
+            submitted: false,
+            adminship: {
+                isAdmin: false,
+                admin_code: ''
+            }
         };
 
+        this.handleChangeAdminCode = this.handleChangeAdminCode.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    handleChangeAdminCode(event) {
+        // console.log(event.target);
+        const { name, value } = event.target;
+        const { adminship } = this.state;
+        // console.log(name, value);
+        adminship[name] = value;
+        if (name == "isAdmin")
+            adminship[name] = event.target.checked;
+
+        this.setState({
+            adminship
+        });
+    }
     handleChange(event) {
         const { name, value } = event.target;
         const { user } = this.state;
@@ -51,9 +73,16 @@ class RegisterPage extends React.Component {
         event.preventDefault();
 
         this.setState({ submitted: true });
-        const { user } = this.state;
+        const { user, adminship } = this.state;
+        user.class = "user"
+        if (adminship.isAdmin) {
+            user.class = "admin"
+            if (!(adminship.admin_code === this.props.tester.admin_code)) {
+                return
+            }
+        }
         const { dispatch } = this.props;
-        if (user.firstName && user.lastName && user.email && user.password) {
+        if (user.firstName && user.lastName && user.email && user.password && user.class) {
             dispatch(userActions.register(user));
         }
     }
@@ -64,7 +93,7 @@ class RegisterPage extends React.Component {
 
     render() {
         const { registering } = this.props;
-        const { user, submitted } = this.state;
+        const { user, submitted, adminship } = this.state;
         return (
             <>
                 <ModalHeader >
@@ -103,6 +132,22 @@ class RegisterPage extends React.Component {
                                     <div className="help-block">Password is required</div>
                                 }
                             </FormGroup>
+                            <FormGroup check>
+                                <Label check>
+                                    <Input style={{ "opacity": 1, "visibility": "visible" }} className="form-check-input" type="checkbox" name="isAdmin" value={adminship.isAdmin} checked={adminship.isAdmin} onChange={this.handleChangeAdminCode} />{' '}
+                                    {`Sign in as ${adminship.isAdmin ? "User" : "an Admin"}!`}
+                                </Label>
+                            </FormGroup>
+                            {/* <Button color="primary" onClick={} style={{ marginBottom: '1rem' }}>Toggle</Button> */}
+                            <Collapse isOpen={adminship.isAdmin}>
+                                <FormGroup className={(submitted && !adminship.admin_code ? ' has-error' : '')}>
+                                    <label htmlFor="admin_code">Admin Code</label>
+                                    <Input name="admin_code" value={adminship.admin_code} onChange={this.handleChangeAdminCode} />
+                                    {submitted && !(adminship.admin_code === this.props.tester.admin_code) &&
+                                        <div className="help-block">Wrong Admin Code</div>
+                                    }
+                                </FormGroup>
+                            </Collapse>
 
                         </ModalBody>
                     </CardBody>
@@ -111,11 +156,11 @@ class RegisterPage extends React.Component {
 
                             <FormGroup>
 
-                                <Button color="primary">Register</Button>
+                                <Button disabled={registering} color="primary">Register</Button>
                                 {registering &&
-                                    <img alt="reload" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                    <img alt="reload" style={{ maxWidth: "15px" }} src={loadingthumbnail} />
                                 }
-                                <Button onClick={() => this.swapRegLog()}>Login</Button>
+                                <Button disabled={registering} onClick={() => this.swapRegLog()}>Login</Button>
 
                             </FormGroup>
                         </ModalFooter>
@@ -128,8 +173,10 @@ class RegisterPage extends React.Component {
 }
 
 function mapStateToProps(state) {
+    const { tester } = state;
     const { registering } = state.registration;
     return {
+        tester,
         registering
     };
 }

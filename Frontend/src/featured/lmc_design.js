@@ -1,3 +1,7 @@
+import {
+    make_default_note
+} from "./bmc_design";
+
 const P = {
     category: "problem",
     name: "Problem",
@@ -82,80 +86,45 @@ export const lmc_design = [
 ];
 export const lmc_schema = {
     "problem": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Problem Notes",
-            "note_description": "Here you can state what are the main problem your Project may face.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "problem",
-        }
+        make_default_note("Problem Notes",
+            "Here you can state what are the main problem your Project may face.",
+            "problem",
+        )
     ],
     "solution": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Solution Notes",
-            "note_description": "Some of your project features that will help you.",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "solution",
-        }
+        make_default_note("Solution Notes",
+            "Some of your project features that will help you.",
+            "solution",
+        )
     ],
     "key-activity": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Key Activities Notes",
-            "note_description": "Your project main field of activity",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "key-activity",
-        }
+        make_default_note("Key Activities Notes",
+            "Your project main field of activity",
+            "key-activity",
+        )
     ],
     "unique-value-propositions": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Key Activities Notes",
-            "note_description": "Key Activities for a successful Business",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "unique-value-propositions",
-        }
+        make_default_note("Key Activities Notes",
+            "Key Activities for a successful Business",
+            "unique-value-propositions",
+        )
     ],
     "cost-structure": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Cost Structure Notes",
-            "note_description": "Cost of various deals within the Project",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "cost-structure",
-        }
+        make_default_note("Cost Structure Notes",
+            "Cost of various deals within the Project",
+            "cost-structure",
+        )
     ],
     "revenue": [
-        {
-            "note_id": "default_note",
-            "note_headline": "Revenu Plans",
-            "note_description": "How will you generate income",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "revenue",
-        }
+        make_default_note("Revenu Plans",
+            "How will you generate income",
+            "revenue",
+        )
     ],
     "brain-storm": [
-        {
-            "note_id": "default_note",
-            "note_headline": "BrainStorming Notes",
-            "note_description": "What's on your mind but can't be classified?",
-            "note_maker": "Canvas Bakers",
-            "note_verdict": 100,
-            "note_verdict_message": "Made by Canvas Bakers, that's obvious ...",
-            "note_category": "brain-storm",
-        }
+        make_default_note("BrainStorming Notes",
+            "What's on your mind but can't be classified?",
+            "brain-storm",
+        )
     ]
 }

@@ -11,6 +11,49 @@ export const userActions = {
     getAll,
     delete: _delete
 };
+function user_auth_action (user) {
+    return dispatch=>{
+        
+    }
+
+}
+function user_login_action (user) {
+    return dispatch=>{
+        
+    }
+
+}
+function user_get_by_id_action (user) {
+    return dispatch=>{
+        
+    }
+
+}
+function user_register_action (user) {
+    return dispatch=>{
+        
+    }
+
+}
+function user_update_action (user) {
+    return dispatch=>{
+        
+    }
+
+}
+function user_delete_action (user) {
+    return dispatch=>{
+        
+    }
+
+}
+function user_logout_action (user) {
+    return dispatch=>{
+        
+    }
+
+}
+
 
 function login(email, password) {
     return dispatch => {

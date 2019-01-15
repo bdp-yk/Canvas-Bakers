@@ -6,6 +6,9 @@ import {
     default_verdict_comment
 } from '../_constants';
 import _ from "lodash"
+import {
+    who_am_i
+} from '../../utils';
 // CREATE_NOTE_ACTION
 // UPDATE_NOTE_ACTION
 // DELETE_NOTE_ACTION
@@ -80,6 +83,10 @@ function init_note_action(payload) {
  */
 function update_note_action(payload) {
     payload["note_current_verdict"]["note_encoded_content"] = encode_note_content(payload)
+    payload["note_maker"] = who_am_i()
+    if (payload["note_id"] === "default_note") {
+        payload["note_id"] = nanoid(25);
+    }
     return dispatch => {
         dispatch({
             type: notesConstants.UPDATE_NOTE_ACTION,

@@ -29,6 +29,7 @@ export function tester(state = {}, action) {
         ...state,
         testing_season_request: false,
         testing_season_ok: true,
+        admin_code: action.payload
 
       };
     case testerConstants.TESTING_SEASON_FAILURE:

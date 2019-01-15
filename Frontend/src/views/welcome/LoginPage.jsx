@@ -8,10 +8,13 @@ import {
     FormGroup,
     Form,
     Input,
+    Label,
+    Collapse
 } from "reactstrap";
 
 import { userActions } from '../../redux/_actions';
 import { modalActions } from '../../redux/_actions/modal.actions';
+const loadingthumbnail = require("assets/img/loading.gif");
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -21,27 +24,55 @@ class LoginPage extends React.Component {
         this.props.dispatch(userActions.logout());
 
         this.state = {
-            email: '',
-            password: '',
-            submitted: false
+            user: {
+                email: '',
+                password: ''
+            },
+            submitted: false,
+            adminship: {
+                isAdmin: false,
+                admin_code: ''
+            }
         };
-
+        this.handleChangeAdminCode = this.handleChangeAdminCode.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+    handleChangeAdminCode(event) {
+        // console.log(event.target);
+        const { name, value } = event.target;
+        const { adminship } = this.state;
+        // console.log(name, value);
+        adminship[name] = value;
+        if (name == "isAdmin")
+            adminship[name] = event.target.checked;
+
+        this.setState({
+            adminship
+        });
+    }
+
 
     handleChange(e) {
         const { name, value } = e.target;
-        this.setState({ [name]: value });
+        const { user } = this.state
+        user[name] = value
+        this.setState({ user });
     }
     handleSubmit(e) {
         e.preventDefault();
-
         this.setState({ submitted: true });
-        const { email, password } = this.state;
+        const { user, adminship } = this.state;
         const { dispatch } = this.props;
-        if (email && password) {
-            dispatch(userActions.login(email, password));
+        user.class = "user"
+        if (adminship.isAdmin) {
+            user.class = "admin"
+            if (!(adminship.admin_code === this.props.tester.admin_code)) {
+                return
+            }
+        }
+        if (user.email && user.password) {
+            dispatch(userActions.login(user));
         }
     }
     swapRegLog = () => {
@@ -50,7 +81,8 @@ class LoginPage extends React.Component {
     }
     render() {
         const { loggingIn } = this.props;
-        const { email, password, submitted } = this.state;
+        const { user, submitted, adminship } = this.state;
+        const { email, password } = user;
         return (<>
             <ModalHeader>
                 <CardHeader>
@@ -74,13 +106,31 @@ class LoginPage extends React.Component {
                             <div className="help-block">Password is required</div>
                         }
                     </FormGroup>
+                    <FormGroup check>
+                        <Label check>
+                            <Input style={{ "opacity": 1, "visibility": "visible" }} className="form-check-input" type="checkbox" name="isAdmin" value={adminship.isAdmin} checked={adminship.isAdmin} onChange={this.handleChangeAdminCode} />{' '}
+                            {`Sign in as ${adminship.isAdmin ? "User" : "an Admin"}!`}
+                        </Label>
+                    </FormGroup>
+                    {/* <Button color="primary" onClick={} style={{ marginBottom: '1rem' }}>Toggle</Button> */}
+                    <Collapse isOpen={adminship.isAdmin}>
+                        <FormGroup className={(submitted && !adminship.admin_code ? ' has-error' : '')}>
+                            <label htmlFor="admin_code">Admin Code</label>
+                            <Input name="admin_code" value={adminship.admin_code} onChange={this.handleChangeAdminCode} />
+                            {submitted && !(adminship.admin_code === this.props.tester.admin_code) &&
+                                <div className="help-block">Wrong Admin Code</div>
+                            }
+                        </FormGroup>
+                    </Collapse>
+
                     <FormGroup className="">
                         <Button className="btn btn-primary">Login</Button>
                         {loggingIn &&
-                            <img alt="reload" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                            <img alt="reload" style={{ maxWidth: "15px" }} src={loadingthumbnail} />
                         }
                         <Button onClick={() => this.swapRegLog()}>Register</Button>
                     </FormGroup>
+
                 </Form>
             </ModalBody>
         </>
@@ -89,8 +139,10 @@ class LoginPage extends React.Component {
 }
 
 function mapStateToProps(state) {
+    const { tester } = state;
     const { loggingIn } = state.authentication;
     return {
+        tester,
         loggingIn
     };
 }

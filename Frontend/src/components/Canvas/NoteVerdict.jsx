@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { notesActions } from '../../redux/_actions/notes.canvas.actions';
 // import { system_comment_text_constants } from '../../redux/_constants';
 import _ from 'lodash'
-import { status_default_text, comment_default_text } from '../../redux/_constants';
+import { status_default_text, comment_default_text, verdict_status_constants } from '../../redux/_constants';
 
 
 
@@ -45,33 +45,13 @@ class NoteVerdict extends Component {
     pretty_modal_title = () => {
         let { concerned_note } = this.props.canvas;
         if (!_.isEmpty(concerned_note))
-            return `A ${concerned_note["note_category"]} note made by ${concerned_note["note_maker"] ? concerned_note["note_maker"]["email"] : "email"}`
+            return `A ${concerned_note["note_category"]} note made by ${concerned_note["note_maker"] ? concerned_note["note_maker"]["email"] ? concerned_note["note_maker"]["email"] : concerned_note["note_maker"] : "email"}`
         return "Note Verdict"
     }
     ask_for_verdict_request = () => {
-        // this.props.update_note_action(this.props.canvas.concerned_note);
-        this.props.ask_for_verdict_request_action();
-        // this.props.unselect_note_for_verdict_action();
-        //     setTimeout(() => {
-        //         this.props.receive_verdict_request_action({
-        //             note_category: 'key-partners',
-        //             note_current_verdict: {
-        //                 note_encoded_content: '|key-partners|azeazeaz|wxccwx',
-        //                 note_verdict_comment: 'new_validation',
-        //                 note_verdict_message: 'Cute AF',
-        //                 note_verdict_status: 'N/A',
-        //                 note_verdict_value: 99.99
-        //             },
-        //             note_description: 'wxccwx',
-        //             note_headline: 'azeazeaz',
-        //             note_id: 'hanQ-62kkvgf421axmxWMe6f6',
-        //             note_maker: {
-        //                 'class': 'tester',
-        //                 email: 'ky94@live.com',
-        //                 group: 'A'
-        //             }
-        //         })
-        //     }, 3000);
+        let { concerned_note, canvas_schema } = this.props.canvas;
+        if (!_.isEmpty(concerned_note.note_headline))
+            this.props.ask_for_verdict_request_action(concerned_note, canvas_schema.canvas_id);
     }
     render() {
         const { concerned_note,
@@ -92,23 +72,23 @@ class NoteVerdict extends Component {
                         </blockquote>
 
                         <br />
-                        {<Row className="mx-3">
+                        {_.isEmpty(concerned_note["note_current_verdict"]) ? null : <Row className="mx-3">
                             <Col
                                 className="my-auto"
-                                lg="3"
-                                md="3"
                                 sm="4"
                             >
-                                <h1 className="text-success">{concerned_note["note_current_verdict"]["note_verdict_value"]}</h1>
-                                <h1 className="text-success">{concerned_note["note_current_verdict"]["note_verdict_status"]}</h1>
+                                <h1 className="d-inline text-success">{concerned_note["note_current_verdict"]["note_verdict_value"]}</h1><small className="text-muted">/100</small>
+                                <h2 className="col-xs-12 text-success">{concerned_note["note_current_verdict"]["note_verdict_status"]}</h2>
 
                             </Col>
                             <Col
                             >
-                                <p className="text-success">{status_default_text(concerned_note["note_current_verdict"]["note_verdict_message"])}</p>
-                                <p className="text-success">{comment_default_text(concerned_note["note_current_verdict"]["note_verdict_comment"])}</p>
+                                <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_message"])}</p>
+                                <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_comment"])}</p>
                                 {/* {_.isEmpty(concerned_note["current_verdict"]["note_verdict_history"]) ? <p className="text-success">{system_comment_text_constants.first_validation}</p> : null} */}
+                                {/* <p className="text-success">{status_default_text(concerned_note["note_current_verdict"]["note_verdict_message"])}</p> */}
 
+                                {/* <p className="text-success">{comment_default_text(concerned_note["note_current_verdict"]["note_verdict_comment"])}</p> */}
                             </Col>
                         </Row>}
                         {/* {_.isEmpty(concerned_note["current_verdict"]["note_verdict_history"]) ? null : <> <Row className="mx-3">
@@ -124,7 +104,7 @@ class NoteVerdict extends Component {
                             </Row></>} */}
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.ask_for_verdict_request}>Validate My Note</Button>{' '}
+                        <Button color="primary" disabled={concerned_note.note_id === "default_note" || concerned_note.note_current_verdict.note_verdict_status === verdict_status_constants.request} onClick={this.ask_for_verdict_request}>Validate My Note</Button>{' '}
                         <Button color="secondary" onClick={this.props.unselect_note_for_verdict_action}>Close</Button>
                     </ModalFooter>
                 </Modal>

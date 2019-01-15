@@ -29,17 +29,23 @@ class TesterNavBar extends React.Component {
     this.state = {
       collapseOpen: false,
       modalSearch: false,
-      color: "navbar-transparent"
+      color: "navbar-transparent",
+      notification_elements: []
     };
   }
   componentDidMount() {
     window.addEventListener("resize", this.updateColor);
   }
-  componentDidUpdate() {
-    if (!_.isEmpty(this.props.canvas.canvas_schema)) {
+  componentDidUpdate(prevProps) {
+    if (!_.isEmpty(this.props.canvas.canvas_schema) && (this.props.canvas.canvas_schema !== prevProps.canvas.canvas_schema)) {
       channel = pusher.subscribe(this.props.canvas.canvas_schema.canvas_id);
-      channel.bind('verdict_notification', function (data) {
-        alert(JSON.stringify(data));
+      channel.bind('verdict_notification', (data) => {
+        let { notification_elements } = this.state;
+        notification_elements.unshift(data);
+        notification_elements = _.uniqBy(notification_elements, e => e.note_id)
+        this.setState({
+          notification_elements
+        })
       });
     }
   }
@@ -67,6 +73,8 @@ class TesterNavBar extends React.Component {
     return name.split(/[^a-z]+/ig)[0]
   }
   render() {
+    const { notification_elements } = this.state
+    let empty_verdicts = _.isEmpty(notification_elements);
     return (
       <>
         <Navbar
@@ -103,16 +111,22 @@ class TesterNavBar extends React.Component {
                     data-toggle="dropdown"
                     nav
                   >
-                    <div className="notification d-none d-lg-block d-xl-block" />
+                    {empty_verdicts ? null : <div className="notification d-none d-lg-block d-xl-block" />}
                     <i className="tim-icons icon-sound-wave" />
                     <p className="d-lg-none">Notifications</p>
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    <NavLink tag="li">
+                    {notification_elements.map((e, ind) => <NavLink
+                      key={ind}
+                      onClick={() => this.props.select_note_for_verdict_action(e)}
+                      tag="li">
                       <DropdownItem className="nav-item">
-                        Another one
+                        {`Your Request for ${e.note_headline.slice(0, 10)}.. Judgement is ready`}
                       </DropdownItem>
-                    </NavLink>
+                    </NavLink>)}
+                    {(_.isEmpty(notification_elements)) && <DropdownItem className="nav-item">
+                      No requested Verdict
+                      </DropdownItem>}
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <UncontrolledDropdown nav>

@@ -42,12 +42,12 @@ function unselect_note_for_verdict_action() {
     }
 }
 
-function ask_for_verdict_request_action(payload) {
+function ask_for_verdict_request_action(payload,canvas_id) {
     return dispatch => {
         dispatch({
             type: notesVerdictConstants.ASK_FOR_VERDICT_REQUEST
         });
-        verdictServices.post_note_for_verdict(payload).then(
+        verdictServices.post_note_for_verdict(payload,canvas_id).then(
             response => {
                 if (response["ok"]) {
                     let pl = response["note_schema"]

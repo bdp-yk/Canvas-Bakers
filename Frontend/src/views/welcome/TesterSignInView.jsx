@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
     Form,
+    Button,
     Input,
     DropdownToggle,
     DropdownMenu,
@@ -32,6 +33,7 @@ class TesterSignInView extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.join_tester = this.join_tester.bind(this);
         this.launchTest = this.launchTest.bind(this);
     }
 
@@ -59,36 +61,47 @@ class TesterSignInView extends React.Component {
 
         this.props.register_tester_action(this.state.tester)
     }
+    join_tester = () => {
+        const { host_group } = this.props
+        const { tester } = this.state;
+        tester.group = host_group;
+        this.props.register_tester_action(tester, false)
+    }
 
     render() {
+        const { joinable } = this.props
         const { tester } = this.state;
         return (
             <Form name="form" onSubmit={this.handleSubmit}>
                 <Card className="mb-0">
                     {/* Bad request parameters: 'email' is a required property Failed validating 'required' in schema: {'additionalProperties': False, 'properties': {'connected': {'type': 'boolean'}, 'group': {'enum': ['A', 'B', 'C', 'D'], 'type': 'string'}, 'email': {'type': 'string'}}, 'required': ['email', 'group'], 'type': 'object'} On instance: {} */}
                     <CardHeader>
-                        Tester information
+                        User information
                     </CardHeader>
                     <CardBody>
-                        <Input name="email" id="FormInputGroup" onChange={this.handleChange} value={tester.email} placeholder="Tester Name" type="text" />
+                        <Input name="email" id="FormInputGroup" onChange={this.handleChange} value={tester.email} placeholder="User Name" type="text" />
 
                     </CardBody>
                     <CardFooter>
-                        <UncontrolledDropdown setActiveFromChild
-                            className="text-center ml-0"  >
-                            <DropdownToggle tag="button" className="btn btn-block" caret>
-                                Set Group and Launch Test
+                        {joinable ?
+                            <Button className="text-center " block onClick={this.join_tester}>Join this Canvas Workspace</Button>
+
+                            :
+                            <UncontrolledDropdown setActiveFromChild
+                                className="text-center ml-0"  >
+                                <DropdownToggle tag="button" className="btn btn-block" caret>
+                                    Set Group and Launch Test
                             </DropdownToggle>
-                            <DropdownMenu right>
-                                {["A", "B", "C", "D"].map(
-                                    (e, key) => {
-                                        return <DropdownItem key={key} name={e} onClick={this.launchTest}>
-                                            Group {e}
-                                        </DropdownItem>
-                                    }
-                                )}
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
+                                <DropdownMenu right>
+                                    {["A", "B", "C", "D"].map(
+                                        (e, key) => {
+                                            return <DropdownItem key={key} name={e} onClick={this.launchTest}>
+                                                Group {e}
+                                            </DropdownItem>
+                                        }
+                                    )}
+                                </DropdownMenu>
+                            </UncontrolledDropdown>}
                     </CardFooter>
 
 

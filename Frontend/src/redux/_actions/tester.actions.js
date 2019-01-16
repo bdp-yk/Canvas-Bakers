@@ -78,13 +78,17 @@ function disconnect_tester() {
     }
 }
 
-function register_tester_action(tester) {
+function register_tester_action(tester, push = true) {
     return dispatch => {
         dispatch(request(tester))
         testerServices.register_tester(tester).then(
             response => {
                 dispatch(success(tester));
-                history.push(_tester_route);
+                console.log("!Joinable",push)
+                if (push)
+                    history.push(_tester_route);
+                else
+                    window.location.reload()
             }
 
         ).catch(

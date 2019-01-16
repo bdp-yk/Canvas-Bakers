@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { who_am_i } from '../utils';
-import { alertActions } from '../redux/_actions';
+import { alertActions, canvasActions } from '../redux/_actions';
 import { Button, Modal } from "reactstrap";
 import { TesterSignInView } from '../views/welcome';
-
+import _ from "lodash";
 class ReadOnlyLayout extends Component {
   constructor(props) {
     super(props);
@@ -28,23 +28,42 @@ class ReadOnlyLayout extends Component {
       dispatch(alertActions.error("Sign in required!"))
     }
   }
+  componentDidUpdate(prevProps) {
+    if (!_.isEqual(prevProps, this.props)) {
+      const { canvas } = this.props
+      if (canvas) {
+        const { canvas_schema } = canvas
+        if (canvas_schema) {
+          const { canvas_team } = canvas_schema
+          if (!_.isEmpty(canvas_team))
+            this.setState({
+              host_group: canvas_team[0].group,
+              canvas_id: canvas_schema.canvas_id
+            })
+        }
+      }
+    }
+  }
   render() {
     const readonly = true;
     const joinable = Boolean(who_am_i());
+    const { _tester_modal, host_group, canvas_id } = this.state
+    // const { canvas_id } = this.props.match.params;
+    console.log("canvas_team", host_group);
+
     const { component: Component, ...rest } = this.props;
-    const { _tester_modal } = this.state
 
     return (<>
       {
         joinable ?
-          <div><p> Do you want to <Button>join</Button> this Workspace</p></div> :
+          <div><p><Button onClick={()=>this.props.dispatch(canvasActions.join_canvas_team(canvas_id))}>Join</Button> this Workspace team!</p></div> :
 
           <Modal
             modalClassName="modal "
             isOpen={_tester_modal}
             toggle={this.toggle_tester_modal}
           >
-            {<TesterSignInView />}
+            {<TesterSignInView host_group={host_group} joinable={true} />}
           </Modal>
       }
       <Component
@@ -59,9 +78,10 @@ class ReadOnlyLayout extends Component {
 }
 
 function mapStateToProps(state) {
-  const { alert } = state;
+  const { alert, canvas } = state;
   return {
-    alert
+    alert,
+    canvas
   };
 }
 

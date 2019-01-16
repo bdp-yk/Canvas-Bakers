@@ -48,3 +48,6 @@ export const POST_NOTE_FOR_VERDICT = VERDICT_ENTRY_URL + "post_verdict/";
 export const GET_NOTE_VERDICT = VERDICT_ENTRY_URL + "get_verdict/";
 export const GET_NOTE_VERDICT_HISTORY = VERDICT_ENTRY_URL + "get_verdict_history/";
 export const LOAD_CANVAS_REQUESTED_VERDICTS = VERDICT_ENTRY_URL + "get_canvas_requested_verdicts/";
+
+// join Canvas url
+export const JOIN_WORKSPACE = CANVAS_ENTRY_URL + "join_workspace/";

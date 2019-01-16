@@ -32,7 +32,8 @@ export const canvasActions = {
     approve_team_mate,
     update_canvas_schema,
     share_my_canvas_action,
-    clear_default_notes
+    clear_default_notes,
+    join_canvas_team
 };
 
 const nanoid = require('nanoid');
@@ -387,5 +388,27 @@ function clear_canvas_schema_action() {
         dispatch({
             type: canvasConstants.CLEAR_CANVAS_SCHEMA
         })
+    }
+}
+
+function join_canvas_team(canvas_id) {
+    return dispatch => {
+        dispatch({
+            type: canvasConstants.JOIN_WORK_SPACE_REQUEST
+        })
+        canvasServices.join_canvas_team_service(canvas_id).then(
+            response => {
+                if (response.ok) {
+                    history.push(_workspace_link(canvas_id))
+                    dispatch({
+                        type: alertConstants.SUCCESS,
+                        message: ('Successfully added this canvas to yours!')
+                    })
+                } else dispatch({
+                    type: alertConstants.ERROR,
+                    message: "Could not join this workspace!"
+                })
+            }
+        )
     }
 }

@@ -5,8 +5,14 @@ import {
     notes
 } from './notes.canvas.reducers';
 import {
-    find_index_by_property, find_exact_index_by_property
+    find_index_by_property,
+    find_exact_index_by_property
 } from '../../utils/dnd_utils';
+import _ from "lodash";
+import {
+    who_am_i
+} from '../../utils';
+
 
 export const canvas_init_store = {
     init_canvas_request: false,
@@ -280,17 +286,19 @@ export function canvas(state = canvas_init_store, action) {
                 update_canvas_schema_failure: true
             }
         case canvasConstants.CLEAR_DEFAULT_NOTES_ACTION:
-            let {canvas_notes}=state.canvas_schema;
+            let {
+                canvas_notes
+            } = state.canvas_schema;
             Object.keys(canvas_notes).forEach(e => {
                 let i = find_index_by_property(canvas_notes[e], "default_note", "note_id");
-                canvas_notes[e].splice(i, 1) 
+                canvas_notes[e].splice(i, 1)
                 return canvas_notes;
             });
             return {
                 ...state,
                 canvas_notes,
                 contains_default_notes: false,
-                update_canvas_schema_success:true
+                update_canvas_schema_success: true
 
             }
         case canvasConstants.CHECK_DEFAULT_NOTES:
@@ -305,6 +313,20 @@ export function canvas(state = canvas_init_store, action) {
                 ...state,
                 contains_default_notes: does_contain
 
+            }
+        case canvasConstants.JOIN_WORK_SPACE_REQUEST:
+            let {
+                canvas_schema
+            } = state, canvas_team;
+            if (!(_.isEmpty(canvas_schema))) {
+                canvas_team = [...canvas_schema.canvas_team, who_am_i()]
+            }
+            return {
+                ...state,
+                canvas_schema: {
+                    ...state.canvas_schema,
+                    canvas_team
+                }
             }
 
         default:

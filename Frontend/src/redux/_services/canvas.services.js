@@ -6,7 +6,8 @@ import {
     LOAD_CANVAS_URL,
     DELETE_CANVAS_URL,
     TESTER_GET_BY_EMAIL,
-    SHARE_CANVAS_URL
+    SHARE_CANVAS_URL,
+    JOIN_WORKSPACE
 } from './url_strings';
 import {
     who_am_i
@@ -18,8 +19,24 @@ export const canvasServices = {
     load_canvas_with_id,
     delete_canvas_by_id,
     fetch_team_mate_service,
-    share_my_canvas_service
+    share_my_canvas_service,
+    join_canvas_team_service
 };
+
+function join_canvas_team_service(canvas_id) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            user: who_am_i(),
+            canvas_id: canvas_id,
+            join_date: Date.now()
+        })
+    };
+    return fetch(JOIN_WORKSPACE, requestOptions).then(handleResponse);
+}
 
 function fetch_team_mate_service(email) {
 
@@ -51,7 +68,7 @@ function share_my_canvas_service(canvas_team_new_members, by_email) {
 }
 
 
-function delete_canvas_by_id(canvas_id,canvas_version_stamp) {
+function delete_canvas_by_id(canvas_id, canvas_version_stamp) {
     const requestOptions = {
         method: 'DELETE',
         headers: {

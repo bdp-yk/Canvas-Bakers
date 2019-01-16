@@ -1,5 +1,5 @@
-export const API_URL = "http://localhost:5000/";
-// export const API_URL="http://h2793844.stratoserver.net:5000/";
+// export const API_URL = "http://localhost:5000/";
+export const API_URL="http://h2793844.stratoserver.net:5000/";
 
 // sign in/out/up urls
 export const USER_AUTH_URL = API_URL + "user/";
@@ -48,6 +48,10 @@ export const POST_NOTE_FOR_VERDICT = VERDICT_ENTRY_URL + "post_verdict/";
 export const GET_NOTE_VERDICT = VERDICT_ENTRY_URL + "get_verdict/";
 export const GET_NOTE_VERDICT_HISTORY = VERDICT_ENTRY_URL + "get_verdict_history/";
 export const LOAD_CANVAS_REQUESTED_VERDICTS = VERDICT_ENTRY_URL + "get_canvas_requested_verdicts/";
+
+
+export const ADMIN_LOAD_ALL_REQUESTED_VERDICTS_URL = VERDICT_ENTRY_URL + "admin_load_all_verdict/";
+export const ADMIN_SUBMIT_VERDICT = VERDICT_ENTRY_URL + "admin_submit_verdict/";
 
 // join Canvas url
 export const JOIN_WORKSPACE = CANVAS_ENTRY_URL + "join_workspace/";

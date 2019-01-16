@@ -260,7 +260,7 @@ class CanvasDefaultLayout extends React.Component {
     const { detailed_note, share_dropdown_open, is_share, _canvas_team, delete_dropdown_open } = this.state
     // const {canvas} = this.props;
     const { canvas_schema, load_canvas_success, load_canvas_request } = this.props.canvas;
-    const { readonly, joinable } = this.props;
+    const { readonly } = this.props;
     let get_canvas_design = [];
     let render_canvas_team = [];
     if (canvas_schema && canvas_schema.canvas_type) {

@@ -39,10 +39,10 @@ class TesterNavBar extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (!_.isEmpty(this.props.canvas.canvas_schema) && (this.props.canvas.canvas_schema !== prevProps.canvas.canvas_schema)) {
-      console.log('subscribed!');
+    // console.log('subscribed!');
       channel = pusher.subscribe(this.props.canvas.canvas_schema.canvas_id);
       channel.bind('verdict_notification', (data) => {
-        console.log('verdict_notification', (data));
+      // console.log('verdict_notification', (data));
         this.props.update_note_action(data);
         let { notification_elements } = this.state;
         notification_elements.unshift(data);

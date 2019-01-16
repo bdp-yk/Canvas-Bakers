@@ -84,7 +84,7 @@ function register_tester_action(tester, push = true) {
         testerServices.register_tester(tester).then(
             response => {
                 dispatch(success(tester));
-                console.log("!Joinable",push)
+              // console.log("!Joinable",push)
                 if (push)
                     history.push(_tester_route);
                 else

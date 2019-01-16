@@ -49,7 +49,7 @@ class ReadOnlyLayout extends Component {
     const joinable = Boolean(who_am_i());
     const { _tester_modal, host_group, canvas_id } = this.state
     // const { canvas_id } = this.props.match.params;
-    console.log("canvas_team", host_group);
+    // console.log("canvas_team", host_group);
 
     const { component: Component, ...rest } = this.props;
 

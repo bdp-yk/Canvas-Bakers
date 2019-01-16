@@ -7,8 +7,8 @@ export const AUTH_TOKEN_KEY = 'canvas-baker-auth-token';
 // The key for our local-storage content
 export const LOCAL_STORAGE_REDUX_DATA_KEY = 'canvas-baker-redux-data';
 //Application URL
-export const APP_URL = 'http://127.0.0.1';
-// export const APP_URL = 'http://h2793844.stratoserver.net';
+// export const APP_URL = 'http://127.0.0.1';
+export const APP_URL = 'http://h2793844.stratoserver.net:3000';
 
 // The Api Providing Server adress
 export const BASE_URL = 'http://127.0.0.1:5000/';

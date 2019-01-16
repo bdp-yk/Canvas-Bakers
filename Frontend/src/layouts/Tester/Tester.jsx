@@ -91,6 +91,7 @@ class Tester extends React.Component {
 
             <Route path={_dashboard_route()} component={Dashboard} />
             <Route path={_workspace_route()} component={CanvasDefaultLayout} />
+            <Route path="/" exact component={Dashboard} />
             {/* <Redirect from="/" exact to={_dashboard_route()} /> */}
           {/* </div>
         </div> */}

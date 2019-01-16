@@ -1,44 +1,54 @@
 import React from "react";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 import {
-  UncontrolledCarousel,
+  // UncontrolledCarousel,
   Modal,
-  Card
+  Jumbotron,
+  Button,
+  Col,
+  Row,
+  Card,
+  CardTitle,
+  CardText
 } from 'reactstrap';
 import { connect } from 'react-redux';
 
-import brandfull_1 from "assets/img/brand-semi-1.png";
-import brandfull_2 from "assets/img/brand-semi-2.png";
-import brandfull_3 from "assets/img/brand-semi-3.png";
+// import brandfull_1 from "assets/img/brand-semi-1.png";
+// import brandfull_2 from "assets/img/brand-semi-2.png";
+// import brandfull_3 from "assets/img/brand-semi-3.png";
 import { LoginPage } from "../../views/welcome/LoginPage";
 import { RegisterPage } from "../../views/welcome/RegisterPage";
 import { modalConstants } from "../../redux/_constants";
 import { WelcomeNavBar } from "../../components/Navbars";
 import { modalActions } from "../../redux/_actions/modal.actions";
-import { who_am_i } from "../../utils";
+import { who_am_i, multipleActionsMapDispatchToProps } from "../../utils";
 import { history } from "../../redux/_helpers";
 import { _dashboard_route } from "../../constants";
+import { testerActions } from "../../redux/_actions";
 
-const items = [
-  {
-    src: brandfull_1,
-    altText: 'Se',
-    header: ' ',
-    caption: " "
-  },
-  {
-    src: brandfull_2,
-    altText: 'brandfull_2',
-    header: ' ',
-    caption: ' '
-  },
-  {
-    src: brandfull_3,
-    altText: 'brandfull_3',
-    header: ' ',
-    caption: ' '
-  }
-];
+// const items = [
+//   {
+//     src: brandfull_1,
+//     altText: 'Se',
+//     header: ' ',
+//     className:"ea",
+//     caption: " "
+//   },
+//   {
+//     src: brandfull_2,
+//     altText: 'brandfull_2',
+//     header: ' ',
+//     className:"ea",
+//     caption: ' '
+//   },
+//   {
+//     src: brandfull_3,
+//     altText: 'brandfull_3',
+//     header: ' ',
+//     className:"ea",
+//     caption: ' '
+//   }
+// ];
 
 
 class Welcome extends React.Component {
@@ -84,10 +94,49 @@ class Welcome extends React.Component {
           toggleSidebar={this.toggleSidebar}
           sidebarOpened={this.state.sidebarOpened}
         />
-        <UncontrolledCarousel items={items} />
+        <div className="m-5 p-5">
+          <Jumbotron>
+            <h1 className="display-3">Welcome to Canvas Bakers!</h1>
+            <p className="lead">
+              Canvas Bakers is a modern Canvas Making App, Create your own canvas and manage them .
+            </p>
+
+            <Row>
+              <p className="mx-auto lead">
+                <Button className="mr-auto"
+                  onClick={this.props.toggle_tester_register_modal}
+                  color="primary">Maker your own Canvas</Button>
+              </p>
+            </Row>
+            <hr className="my-2" />
+            <Row>
+              <Col xs="4">
+                <Card body>
+                  <CardTitle>Your new Working Space</CardTitle>
+                  <CardText>Featuring smooth Drag and Drop .</CardText>
+                  {/* <Button>Go somewhere</Button> */}
+                </Card>
+              </Col>
+              <Col xs="4">
+                <Card body>
+                  <CardTitle>Work as a Team</CardTitle>
+                  <CardText>With sharing and version control utilities.</CardText>
+                  {/* <Button>Go somewhere</Button> */}
+                </Card>
+              </Col>
+              <Col xs="4">
+                <Card body>
+                  <CardTitle>AI evaluation</CardTitle>
+                  <CardText>Introducing AI based helpers.</CardText>
+                  {/* <Button>Go somewhere</Button> */}
+                </Card>
+              </Col>
+            </Row>
+          </Jumbotron>
+        </div>
 
         {/* LOGIN AND SIGNUP MODALS */}
-        <Modal isOpen={this.props.modal.open} toggle={() => this.props.dispatch(modalActions.toggle())}>
+        <Modal isOpen={this.props.modal.open} toggle={() => this.props.toggle()}>
           <Card className="mb-0">
 
             {modal && this.renderModal()}
@@ -109,5 +158,5 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedWelcome = connect(mapStateToProps)(Welcome);
+const connectedWelcome = connect(mapStateToProps, multipleActionsMapDispatchToProps([modalActions, testerActions]))(Welcome);
 export { connectedWelcome as WelcomeLayout };

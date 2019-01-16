@@ -36,8 +36,8 @@ class NotePartialView extends React.Component {
     }
     select_note_for_verdict = () => {
         // this.props.update_note_action(this.state._note);
-        console.log("select_note_for_verdict",this.state._note,this.props.note);
-        
+        console.log("select_note_for_verdict", this.state._note, this.props.note);
+
         this.props.select_note_for_verdict_action(this.props.note);
     }
     handleChange = (event) => {
@@ -74,7 +74,7 @@ class NotePartialView extends React.Component {
 
     render() {
         const { _note, toggle_note_description } = this.state
-        const { detailed_note, note } = this.props;
+        const { detailed_note, note, readonly } = this.props;
         let note_is_requesting = this.props.note.note_current_verdict.note_verdict_status === "request";
         // console.log(this.state.toggle_note_headline, toggle_note_headline, toggle_note_description);
 
@@ -86,7 +86,7 @@ class NotePartialView extends React.Component {
                             {this.state.toggle_note_headline ? note.note_headline : <Input placeholder="Headline" name="note_headline" value={_note.note_headline} onChange={this.handleChange} onBlur={this.handleToggle} />}
                         </Col>
                         <Col xs={2} className="pl-1 pr-3 ml-auto">
-                            {note_is_requesting || (note.note_id === "default_note") ? null :
+                            {note_is_requesting || (note.note_id === "default_note") || readonly ? null :
                                 <UncontrolledDropdown direction="right" >
                                     <DropdownToggle tag="i">
                                         <i className="tim-icons icon-pencil" />
@@ -106,10 +106,10 @@ class NotePartialView extends React.Component {
                     <CardText className="font-italic" >
                         {toggle_note_description ? note.note_description : <Input placeholder="Description" name="note_description" value={_note.note_description} onChange={this.handleChange} onBlur={this.handleToggle} />}
                     </CardText>
-                    <CardText>
+                    {readonly ? null : <CardText>
                         <Button block onClick={this.select_note_for_verdict} size="small" className="togglers px-0 d-lg-none" >+</Button>
                         <Button block onClick={this.select_note_for_verdict} className={this.getOptionsStyle()} >Options  </Button>
-                    </CardText>
+                    </CardText>}
                 </>}
             </Card>
         );

@@ -111,7 +111,7 @@ class TesterNavBar extends React.Component {
                   <span className="navbar-toggler-bar bar3" />
                 </button>
               </div>
-              <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
+              <NavbarBrand href="#" onClick={e => e.preventDefault()}>
                 Hello, {this.getTesterInfo()}
               </NavbarBrand>
             </div>
@@ -151,7 +151,7 @@ class TesterNavBar extends React.Component {
                     onClick={e => e.preventDefault()}
                   >
                     <div className="photo">
-                      <img alt="..." src={require("assets/img/anime3.png")} />
+                      <img alt="..." src={require("assets/img/default-avatar.png")} />
                     </div>
                     <b className="caret d-none d-lg-block d-xl-block" />
                   </DropdownToggle>

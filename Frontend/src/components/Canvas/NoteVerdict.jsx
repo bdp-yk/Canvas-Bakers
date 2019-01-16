@@ -57,6 +57,7 @@ class NoteVerdict extends Component {
             this.props.ask_for_verdict_request_action(concerned_note, canvas_schema.canvas_id);
     }
     render() {
+        const { readonly } = this.props
         const { concerned_note,
             toggle_verdict_modal } = this.props.canvas;
         // console.log(concerned_note);
@@ -107,7 +108,7 @@ class NoteVerdict extends Component {
                             </Row></>} */}
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" disabled={concerned_note.note_id === "default_note" || concerned_note.note_current_verdict.note_verdict_status === verdict_status_constants.request} onClick={this.ask_for_verdict_request}>Validate My Note</Button>{' '}
+                        {readonly ? null : <Button color="primary" disabled={concerned_note.note_id === "default_note" || concerned_note.note_current_verdict.note_verdict_status === verdict_status_constants.request} onClick={this.ask_for_verdict_request}>Validate My Note</Button>}
                         <Button color="secondary" onClick={this.props.unselect_note_for_verdict_action}>Close</Button>
                     </ModalFooter>
                 </Modal>

@@ -16,6 +16,7 @@ import {
     DocumentationLayout
 } from '../layouts';
 import { _admin_route, _user_route, _tester_route, _canvas_preview_route, _welcome_route, _document_route } from '../constants';
+import { ReadOnlyLayout } from '../_components/ReadOnlyLayout';
 
 var ps;
 
@@ -98,7 +99,8 @@ class App extends React.Component {
                                 <PrivateRoute path={_admin_route} component={AdminLayout} />
                                 <PrivateRoute path={_user_route} component={TesterLayout} />
                                 <PrivateRoute path={_tester_route} component={TesterLayout} />
-                                <Route path={_canvas_preview_route} component={CanvasDefaultLayout} />
+                                {/* <Route path={_canvas_preview_route} component={CanvasDefaultLayout} /> */}
+                                <Route path={_canvas_preview_route} render={(props) => <ReadOnlyLayout {...props} component={CanvasDefaultLayout}/>} />
                                 <Route path={_welcome_route} component={WelcomeLayout} />
                                 <Route path={_document_route} component={DocumentationLayout} />
                                 <Redirect from="/*" to={_welcome_route} />

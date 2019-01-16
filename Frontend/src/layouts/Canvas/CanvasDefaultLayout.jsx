@@ -49,7 +49,7 @@ class CanvasDefaultLayout extends React.Component {
     this.commit_canvas_schema = this.commit_canvas_schema.bind(this);
     this.handleClearDefaultNotes = this.handleClearDefaultNotes.bind(this);
   }
-  smooth_column = (canvas_notes, column, index, collapse, is_share) => {
+  smooth_column = (canvas_notes, column, index, collapse, is_share, readonly) => {
 
     return <Col key={index} xs={column.column_width}>
 
@@ -66,9 +66,9 @@ class CanvasDefaultLayout extends React.Component {
                 <CardHeader>
                   <CardTitle tag="h4">
                     {exact_column.name}
-                    <Button onClick={() => this.add_note_to_category(payload)} close aria-label="Cancel">
+                    {readonly ? null : <Button onClick={() => this.add_note_to_category(payload)} close aria-label="Cancel">
                       <span aria-hidden>+</span>
-                    </Button>
+                    </Button>}
                   </CardTitle>
                 </CardHeader>
                 <Droppable droppableId={exact_column.category} direction={exact_column.direction}>
@@ -86,7 +86,9 @@ class CanvasDefaultLayout extends React.Component {
                             return <Col key={ind} xs={column.note_width}>
                               {<GenerateDraggable index={ind} draggableId={note.note_id}
                                 detailed_note={collapse}
-                                is_share={is_share} note={note}
+                                is_share={is_share}
+                                readonly={readonly}
+                                note={note}
                                 component={NotePartialView} />}
                             </Col>
 
@@ -258,6 +260,7 @@ class CanvasDefaultLayout extends React.Component {
     const { detailed_note, share_dropdown_open, is_share, _canvas_team, delete_dropdown_open } = this.state
     // const {canvas} = this.props;
     const { canvas_schema, load_canvas_success, load_canvas_request } = this.props.canvas;
+    const { readonly, joinable } = this.props;
     let get_canvas_design = [];
     let render_canvas_team = [];
     if (canvas_schema && canvas_schema.canvas_type) {
@@ -271,70 +274,70 @@ class CanvasDefaultLayout extends React.Component {
           break;
       }
       render_canvas_team = canvas_schema.canvas_team;
-    }
+    };
 
     return (
       <>
-        <div className="content">
-          <NoteVerdict />
-
-          {load_canvas_success && <>
-            <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `}</h4>
-            <span className="text-muted px-3" >
-              {`Changes made by ${canvas_schema.canvas_version_provider.email} `}
-              <TimeAgo datetime={canvas_schema.canvas_version_stamp} />
-            </span>
-          </>}
-          {load_canvas_success ?
-            <Row>
-              <ButtonGroup className="px-3 ">
-                {(this.props.location.pathname === _quickstart_route) && <Button onClick={() => history.push("/welcome")}>Home</Button>
-                }
-                {this.props.canvas.contains_default_notes ? <Button onClick={this.handleClearDefaultNotes} size="sm">Delete Default Notes</Button> : null}
-                <Button onClick={this.handle_undo} disabled={this.props.canvas.canvas_undo_list.length === 0} size="sm">&#9668;</Button>
-                <Button onClick={this.handle_redo} disabled={this.props.canvas.canvas_redo_list.length === 0} size="sm">&#9658;</Button>&nbsp;
+        <div className={readonly ? "p-3" : "content"}>
+          <NoteVerdict readonly={readonly} />
+          {readonly ? null : <>
+            {load_canvas_success && <>
+              <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `}</h4>
+              <span className="text-muted px-3" >
+                {`Changes made by ${canvas_schema.canvas_version_provider.email} `}
+                <TimeAgo datetime={canvas_schema.canvas_version_stamp} />
+              </span>
+            </>}
+            {load_canvas_success ?
+              <Row>
+                <ButtonGroup className="px-3 ">
+                  {(this.props.location.pathname === _quickstart_route) && <Button onClick={() => history.push("/welcome")}>Home</Button>
+                  }
+                  {this.props.canvas.contains_default_notes ? <Button onClick={this.handleClearDefaultNotes} size="sm">Delete Default Notes</Button> : null}
+                  <Button onClick={this.handle_undo} disabled={this.props.canvas.canvas_undo_list.length === 0} size="sm">&#9668;</Button>
+                  <Button onClick={this.handle_redo} disabled={this.props.canvas.canvas_redo_list.length === 0} size="sm">&#9658;</Button>&nbsp;
                 <Button onClick={this.commit_canvas_schema} disabled={!(this.props.canvas.update_canvas_schema_success) || (this.props.canvas.upload_canvas_request) || _.isEmpty(this.props.canvas.canvas_undo_list)} size="sm">&#10004;</Button>
 
-              </ButtonGroup>
-              {(!is_share) && <ButtonGroup className="px-3 ml-auto">
-                <Button onClick={this.toggle_detailed_note}>Toggle Note Details</Button>
-                <ButtonDropdown isOpen={share_dropdown_open} toggle={this.toggle_share_dropdown_open}>
-                  <DropdownToggle caret>
-                    Share Canvas
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    {<DropdownItem onClick={() => this.share_this_canvas(true)} >Share Canvas</DropdownItem>}
-                    <DropdownItem onClick={this.copy_canvas_link}  >Copy Canvas Link</DropdownItem>
-                    {<DropdownItem divider />}
-                    {<DropdownItem>Share it via Email </DropdownItem>}
-                  </DropdownMenu>
-                </ButtonDropdown>
-                {<>
-
-                  <ButtonDropdown isOpen={delete_dropdown_open} toggle={this.toggle_delete_dropdown_open}>
+                </ButtonGroup>
+                {(!is_share) && <ButtonGroup className="px-3 ml-auto">
+                  <Button onClick={this.toggle_detailed_note}>Toggle Note Details</Button>
+                  <ButtonDropdown isOpen={share_dropdown_open} toggle={this.toggle_share_dropdown_open}>
                     <DropdownToggle caret>
-                      Delete
+                      Share Canvas
                   </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem onClick={() => this.delete_this_canvas(true, true)} >Delete This Version</DropdownItem>
-                      <DropdownItem onClick={() => this.delete_this_canvas(true, false)}  >Delete Canvas</DropdownItem>
+                      {<DropdownItem onClick={() => this.share_this_canvas(true)} >Share Canvas</DropdownItem>}
+                      <DropdownItem onClick={this.copy_canvas_link}  >Copy Canvas Link</DropdownItem>
+                      {<DropdownItem divider />}
+                      {<DropdownItem>Share it via Email </DropdownItem>}
                     </DropdownMenu>
                   </ButtonDropdown>
-                </>
+                  {<>
 
-                }
-              </ButtonGroup>}
-            </Row> :
-            "Loading Canvas..."}
+                    <ButtonDropdown isOpen={delete_dropdown_open} toggle={this.toggle_delete_dropdown_open}>
+                      <DropdownToggle caret>
+                        Delete
+                  </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem onClick={() => this.delete_this_canvas(true, true)} >Delete This Version</DropdownItem>
+                        <DropdownItem onClick={() => this.delete_this_canvas(true, false)}  >Delete Canvas</DropdownItem>
+                      </DropdownMenu>
+                    </ButtonDropdown>
+                  </>
+
+                  }
+                </ButtonGroup>}
+              </Row> :
+              "Loading Canvas..."}
+          </>}
           <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
             {load_canvas_success ? <Row>
               {get_canvas_design.map((e, index) => {
-                return this.smooth_column(canvas_schema.canvas_notes, e, index, detailed_note, is_share)
+                return this.smooth_column(canvas_schema.canvas_notes, e, index, detailed_note, is_share, readonly)
               })}
             </Row> : null}
           </DragDropContext>
           {LoaderGif(load_canvas_request, "Canvas")}
-
         </div>
         <Modal isOpen={this.state.open_delete_modal} fade={false} backdrop={false} toggle={() => this.delete_this_canvas(true, true)}  >
           <ModalHeader toggle={this.toggle}>Canvas Delete Options</ModalHeader>

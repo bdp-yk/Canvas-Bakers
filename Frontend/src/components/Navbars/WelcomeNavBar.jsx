@@ -19,7 +19,7 @@ import { modalActions } from "../../redux/_actions/modal.actions";
 import { TesterSignInView } from "../../views/welcome";
 import { multipleActionsMapDispatchToProps } from "../../utils";
 import { testerActions } from "../../redux/_actions";
-import { history } from "../../redux/_helpers";
+// import { history } from "../../redux/_helpers";
 
 class WelcomeNavBar extends React.Component {
   constructor(props) {
@@ -50,7 +50,15 @@ class WelcomeNavBar extends React.Component {
             <Collapse navbar isOpen={this.state.collapseOpen}>
 
               <Nav className="ml-auto" navbar>
-                <UncontrolledDropdown nav >
+                <NavItem
+                  onClick={this.props.toggle_tester_register_modal}
+                  disabled={!this.props.tester.testing_season_ok}>
+                  <NavLink href="#">
+                    Create your Canvas
+                    </NavLink>
+
+                </NavItem>
+                {/* <UncontrolledDropdown nav >
                   <DropdownToggle nav caret>
                     Quick Start
                   </DropdownToggle>
@@ -68,7 +76,7 @@ class WelcomeNavBar extends React.Component {
                       Quick Canvas
                     </DropdownItem>
                   </DropdownMenu>
-                </UncontrolledDropdown>
+                </UncontrolledDropdown> */}
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Join Canvas Bakers
@@ -84,7 +92,7 @@ class WelcomeNavBar extends React.Component {
                 </UncontrolledDropdown>
 
                 <NavItem>
-                  <NavLink href="/documentation/">Documentation</NavLink>
+                  <NavLink href="#">Documentation</NavLink>
                 </NavItem>
               </Nav>
             </Collapse>

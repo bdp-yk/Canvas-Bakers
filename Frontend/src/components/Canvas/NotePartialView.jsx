@@ -36,7 +36,9 @@ class NotePartialView extends React.Component {
     }
     select_note_for_verdict = () => {
         // this.props.update_note_action(this.state._note);
-        this.props.select_note_for_verdict_action(this.state._note);
+        console.log("select_note_for_verdict",this.state._note,this.props.note);
+        
+        this.props.select_note_for_verdict_action(this.props.note);
     }
     handleChange = (event) => {
         let { name, value } = event.target;
@@ -65,7 +67,7 @@ class NotePartialView extends React.Component {
         if (this.props.note.note_current_verdict.note_verdict_status === "request") {
             styl += " disabled"
         }
-        console.log(styl);
+        // console.log(styl);
 
         return styl
     }

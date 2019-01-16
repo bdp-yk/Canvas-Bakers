@@ -22,6 +22,7 @@ var ps;
 class App extends React.Component {
     constructor(props) {
         super(props);
+        document.body.classList.add("white-content");
 
         const { dispatch } = this.props;
         history.listen((location, action) => {

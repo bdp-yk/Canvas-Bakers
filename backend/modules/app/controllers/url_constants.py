@@ -49,3 +49,8 @@ class _url:
     LOAD_CANVAS_REQUESTED_VERDICTS = (
         VERDICT_ENTRY_URL + "get_canvas_requested_verdicts/"
     )
+
+    # DL MODULE
+    AI_SERVER_URL = "http://localhost:8000/"
+    AI_VALIDATION_URL = AI_SERVER_URL + "ai_validation"
+

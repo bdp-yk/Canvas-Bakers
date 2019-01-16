@@ -8,7 +8,7 @@ export * from './canvas.services';
 export * from './notes.verdict.services';
 
 export function handleResponse(response) {
-    console.log("resp>",response);
+    // console.log("resp>",response);
     
     return response.text().then(text => {
         const data = text && JSON.parse(text);

@@ -2,16 +2,11 @@ import pusher
 
 
 class _Pusher:
-    pusher_client = pusher.Pusher(
-        app_id="690424",
-        key="4f777716babc57b94acb",
-        secret="c8d32002130396a8d12a",
-        cluster="eu",
-        ssl=True,
-    )
+    pusher_client = {}
 
     def __init__(self, env="development"):
         if env == "production":
+            print("PROD")
             self.pusher_client = pusher.Pusher(
                 app_id="690426",
                 key="badc896ad3819312d807",
@@ -19,7 +14,16 @@ class _Pusher:
                 cluster="eu",
                 ssl=True,
             )
+        else:
+            print("DEV")
+            self.pusher_client = pusher.Pusher(
+                app_id="690424",
+                key="4f777716babc57b94acb",
+                secret="c8d32002130396a8d12a",
+                cluster="eu",
+                ssl=True,
+            )
 
     def push_notification(self, canvas_id, note_schema):
         self.pusher_client.trigger(canvas_id, "verdict_notification", note_schema)
-        # print(canvas_id)
+        # print("Pushed", canvas_id)

@@ -66,9 +66,9 @@ class NoteVerdict extends Component {
                 <Modal isOpen={toggle_verdict_modal} toggle={this.props.unselect_note_for_verdict_action} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>{this.pretty_modal_title()}</ModalHeader>
                     <ModalBody>
-                        <blockquote>
+                        <blockquote className="col-xs-12">
                             <p className="blockquote blockquote-primary">
-                                <small>{concerned_note["note_headline"]}</small>
+                                <small style={{ wordWrap: "break-word" }}>{concerned_note["note_headline"]}</small>
                                 <br />
                                 {concerned_note["note_description"]}
                             </p>
@@ -80,14 +80,14 @@ class NoteVerdict extends Component {
                                 className="my-auto"
                                 sm="4"
                             >
-                                <h1 className="d-inline text-success">{concerned_note["note_current_verdict"]["note_verdict_value"]}</h1><small className="text-muted">/100</small>
+                                <h1 className="d-inline text-success">{isNaN(concerned_note["note_current_verdict"]["note_verdict_value"]) ? concerned_note["note_current_verdict"]["note_verdict_value"] : concerned_note["note_current_verdict"]["note_verdict_value"].toFixed(2)}</h1><small className="text-muted">/100</small>
                                 <h2 className="col-xs-12 text-success">{concerned_note["note_current_verdict"]["note_verdict_status"]}</h2>
 
                             </Col>
                             <Col
                             >
-                                <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_message"])}</p>
-                                <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_comment"])}</p>
+                                {/* <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_message"])}</p>
+                                <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_comment"])}</p> */}
                                 {/* {_.isEmpty(concerned_note["current_verdict"]["note_verdict_history"]) ? <p className="text-success">{system_comment_text_constants.first_validation}</p> : null} */}
                                 {/* <p className="text-success">{status_default_text(concerned_note["note_current_verdict"]["note_verdict_message"])}</p> */}
 

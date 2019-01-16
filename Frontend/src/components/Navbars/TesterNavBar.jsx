@@ -20,8 +20,9 @@ import { connect } from 'react-redux'
 import { testerActions, notesVerdictActions } from "../../redux/_actions";
 import { who_am_i, multipleActionsMapDispatchToProps } from "../../utils";
 import { initPusher } from "../../featured/pusher.conf";
+import { notesActions } from "../../redux/_actions/notes.canvas.actions";
 // var interval;
-var pusher = initPusher(), channel;
+var pusher = initPusher("dev"), channel;
 
 class TesterNavBar extends React.Component {
   constructor(props) {
@@ -38,8 +39,11 @@ class TesterNavBar extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (!_.isEmpty(this.props.canvas.canvas_schema) && (this.props.canvas.canvas_schema !== prevProps.canvas.canvas_schema)) {
+      console.log('subscribed!');
       channel = pusher.subscribe(this.props.canvas.canvas_schema.canvas_id);
       channel.bind('verdict_notification', (data) => {
+        console.log('verdict_notification', (data));
+        this.props.update_note_action(data);
         let { notification_elements } = this.state;
         notification_elements.unshift(data);
         notification_elements = _.uniqBy(notification_elements, e => e.note_id)
@@ -65,6 +69,15 @@ class TesterNavBar extends React.Component {
       });
     }
   };
+  displayNote = (e) => {
+    this.props.select_note_for_verdict_action(e);
+    this.props.update_note_action(e);
+    let { notification_elements } = this.state;
+    _.remove(notification_elements, x => x.note_id === e.note_id)
+    this.setState({
+      notification_elements
+    })
+  }
 
   getTesterInfo = () => {
     let name = "";
@@ -118,7 +131,7 @@ class TesterNavBar extends React.Component {
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     {notification_elements.map((e, ind) => <NavLink
                       key={ind}
-                      onClick={() => this.props.select_note_for_verdict_action(e)}
+                      onClick={() => this.displayNote(e)}
                       tag="li">
                       <DropdownItem className="nav-item">
                         {`Your Request for ${e.note_headline.slice(0, 10)}.. Judgement is ready`}
@@ -168,5 +181,5 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedTesterNavBar = connect(mapStateToProps, multipleActionsMapDispatchToProps([testerActions, notesVerdictActions]))(TesterNavBar);
+const connectedTesterNavBar = connect(mapStateToProps, multipleActionsMapDispatchToProps([testerActions, notesActions, notesVerdictActions]))(TesterNavBar);
 export { connectedTesterNavBar as TesterNavBar };

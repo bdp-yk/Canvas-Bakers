@@ -1,5 +1,5 @@
-// export const API_URL = "http://localhost:5000/";
-export const API_URL="http://h2793844.stratoserver.net:5000/";
+export const API_URL = "http://localhost:5000/";
+// export const API_URL="http://h2793844.stratoserver.net:5000/";
 
 // sign in/out/up urls
 export const USER_AUTH_URL = API_URL + "user/";

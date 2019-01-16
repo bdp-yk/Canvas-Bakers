@@ -1,5 +1,5 @@
 server {
-   listen 80 default_server;
+   listen 80 ;
    root /var/www/CB/build;
    server_name h2793844.stratoserver.net www.h2793844.stratoserver.net ;
    index index.html index.htm;

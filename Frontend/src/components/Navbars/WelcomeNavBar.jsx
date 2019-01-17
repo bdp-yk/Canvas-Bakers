@@ -92,7 +92,7 @@ class WelcomeNavBar extends React.Component {
                 </UncontrolledDropdown>
 
                 <NavItem>
-                  <NavLink href="#">Documentation</NavLink>
+                  <NavLink target="_blank" href="https://www.startplatz.de/startup-wiki/business-model-canvas/">Documentation</NavLink>
                 </NavItem>
               </Nav>
             </Collapse>

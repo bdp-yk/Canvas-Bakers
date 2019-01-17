@@ -19,7 +19,10 @@ import {
     _welcome_route,
     _dashboard_route
 } from '../../constants';
-
+// import {
+//     isUndefined
+// } from 'util';
+import _ from "lodash";
 export const canvasActions = {
     init_canvas_action,
     commit_canvas_schema_action,
@@ -102,16 +105,26 @@ function approve_team_mate() {
 }
 
 
-function share_my_canvas_action(canvas_team_new_members, by_email, canvas = "", canvas_id = "") {
+function share_my_canvas_action(canvas_team_new_members,
+    by_email,
+    canvas = "",
+    canvas_id = "") {
     return dispatch => {
         dispatch({
             type: canvasConstants.SHARE_MY_CANVAS_REQUEST
         });
         canvasServices.share_my_canvas_service(canvas_team_new_members, by_email, canvas, canvas_id).then(response => {
+            dispatch({
+                type: canvasConstants.SHARE_MY_CANVAS_SUCCESS
+            });
             if (response["ok"]) {
-                dispatch({
-                    type: canvasConstants.SHARE_MY_CANVAS_SUCCESS
-                });
+                if (!_.isEmpty(response["not_emails"])) {
+                    dispatch({
+                        type: alertConstants.ERROR,
+                        message: `No valid email was found for : ${response["not_emails"].reduce((a,v)=>{return a+v},"")} !.`
+                    });
+
+                }
                 dispatch({
                     type: alertConstants.SUCCESS,
                     message: `${canvas_team_new_members.reduce((a,v)=>{return a+v.email},"")} joined this Workspace team successfully.`

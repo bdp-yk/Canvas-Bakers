@@ -12,6 +12,7 @@ import {
   NavbarBrand,
   Navbar,
   NavLink,
+  NavItem,
   Nav,
   Container
 
@@ -124,6 +125,9 @@ class TesterNavBar extends React.Component {
             </div>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <NavLink target="_blank" href="https://www.startplatz.de/startup-wiki/business-model-canvas/">Documentation</NavLink>
+                </NavItem>
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret

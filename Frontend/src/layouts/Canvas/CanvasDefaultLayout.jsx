@@ -35,7 +35,8 @@ class CanvasDefaultLayout extends React.Component {
       open_share_modal: false,
       _canvas_team: [],
       i_want_to_delete_a_commit: true,
-      this_is_not_a_joke: false
+      this_is_not_a_joke: false,
+      mail_this_canvas: false
     }
     this.toggle_detailed_note = this.toggle_detailed_note.bind(this);
     this.toggle_share_dropdown_open = this.toggle_share_dropdown_open.bind(this);
@@ -48,6 +49,7 @@ class CanvasDefaultLayout extends React.Component {
     this.onDragStart = this.onDragStart.bind(this);
     this.commit_canvas_schema = this.commit_canvas_schema.bind(this);
     this.handleClearDefaultNotes = this.handleClearDefaultNotes.bind(this);
+    this.ok_mail_this_canvas = this.ok_mail_this_canvas.bind(this);
   }
   smooth_column = (canvas_notes, column, index, collapse, is_share, readonly) => {
 
@@ -223,6 +225,12 @@ class CanvasDefaultLayout extends React.Component {
       this.props.approve_team_mate();
     }
   }
+  ok_mail_this_canvas = () => {
+    this.setState({
+      mail_this_canvas: true
+    })
+    this.share_this_canvas()
+  }
   share_this_canvas = (ask_user = true) => {
     if (!ask_user) {
       let canvas_team = [...this.props.canvas.canvas_schema.canvas_team, ...this.state._canvas_team]
@@ -230,12 +238,13 @@ class CanvasDefaultLayout extends React.Component {
 
       this.props.update_canvas_schema({ canvas_team })
       // this.commit_canvas_schema()
-      this.props.share_my_canvas_action(this.state._canvas_team, true, this.props.canvas.canvas_schema.canvas_name, this.props.canvas.canvas_schema.canvas_id)
+      this.props.share_my_canvas_action(this.state._canvas_team, this.state.mail_this_canvas, this.props.canvas.canvas_schema.canvas_name, this.props.canvas.canvas_schema.canvas_id)
       this.share_this_canvas()
     }
     this.setState({
       open_share_modal: !this.state.open_share_modal,
-      _canvas_team: []
+      _canvas_team: [],
+      mail_this_canvas: false
     })
   }
   handle_undo = () => {
@@ -300,15 +309,18 @@ class CanvasDefaultLayout extends React.Component {
 
                 </ButtonGroup>
                 {(!is_share) && <ButtonGroup className="px-3 ml-auto">
-                  <CanvasSummary/>
+                  <CanvasSummary />
                   <Button onClick={this.toggle_detailed_note}>Toggle Note Details</Button>
                   <ButtonDropdown isOpen={share_dropdown_open} toggle={this.toggle_share_dropdown_open}>
                     <DropdownToggle caret>
                       Share Canvas
                   </DropdownToggle>
                     <DropdownMenu>
-                      {<DropdownItem onClick={() => this.share_this_canvas(true)} >Share Canvas</DropdownItem>}
+                      <DropdownItem onClick={() => this.share_this_canvas(true)} >Share Canvas</DropdownItem>
                       <DropdownItem onClick={this.copy_canvas_link}  >Copy Canvas Link</DropdownItem>
+                      <DropdownItem divider />
+                      <DropdownItem onClick={() => this.ok_mail_this_canvas()}>Share it via Email </DropdownItem>
+
                     </DropdownMenu>
                   </ButtonDropdown>
                   {<>
@@ -360,7 +372,7 @@ class CanvasDefaultLayout extends React.Component {
           </ModalFooter>
         </Modal>
         <Modal isOpen={this.state.open_share_modal} fade={false} toggle={() => this.share_this_canvas(true)}  >
-          <ModalHeader toggle={this.toggle}>Canvas Sharing (new members will receive mail)</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Canvas Sharing {this.state.mail_this_canvas?"(New members will receive mail)":"(Canvas will be added to their Dashboard)"}</ModalHeader>
           <ModalBody >
             <Card>
               {render_canvas_team.map((_t_mate, ind) => {

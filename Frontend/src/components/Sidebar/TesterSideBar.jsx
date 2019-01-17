@@ -28,8 +28,16 @@ const format_provider = (e) => {
 class TesterSideBar extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      open_c_h: true
+    }
+    this.toggle_canvas_history = this.toggle_canvas_history.bind(this)
   }
-   componentDidMount() {
+  toggle_canvas_history() {
+    this.setState({ open_c_h: !this.state.open_c_h })
+
+  }
+  componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.sidebar, {
         suppressScrollX: true,
@@ -47,6 +55,7 @@ class TesterSideBar extends React.Component {
   };
   render() {
     let { bgColor, canvas } = this.props;
+    const { open_c_h } = this.state;  
     let { canvas_schema, load_canvas_success, canvas_history } = canvas;
     let canvas_version_stamp = canvas_schema.canvas_version_stamp;
     return (
@@ -104,11 +113,12 @@ class TesterSideBar extends React.Component {
                 to="#"
                 className="nav-link"
                 id="canvas_history_toggler"
+                onClick={this.toggle_canvas_history}
               >
                 <i className={"tim-icons icon-bullet-list-67"} />
                 <p>Canvas History</p>
               </NavLink>
-              <UncontrolledCollapse isOpen={true} toggler="#canvas_history_toggler">
+              <UncontrolledCollapse isOpen={this.state.open_c_h} toggler="#canvas_history_toggler">
                 {canvas_history ? canvas.canvas_history.map((e, key) => {
                   return <NavItem key={key} >
                     <NavLink
@@ -118,7 +128,7 @@ class TesterSideBar extends React.Component {
 
                     >
                       {/* {console.log(, ">>stamp")} */}
-                      <i  id={`UncontrolledTooltipExample${key}`} className={"tim-icons icon-tag "} />
+                      <i id={`UncontrolledTooltipExample${key}`} className={"tim-icons icon-tag "} />
                       <small className="py-0">{`#${canvas.canvas_history.length - key} ${format_provider(e["canvas_version_provider"])}`}</small><br />
                       <UncontrolledTooltip placement="left" target={`UncontrolledTooltipExample${key}`}>
                         {`${prettyDate(e["canvas_version_stamp"])}`}
@@ -128,7 +138,8 @@ class TesterSideBar extends React.Component {
                 }
                 ) : null}
               </UncontrolledCollapse>
-
+              {/* https://www.startplatz.de/startup-wiki/business-model-canvas/ */}
+              
             </>}
           </Nav>
 

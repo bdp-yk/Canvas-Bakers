@@ -15,7 +15,7 @@ import { CANVAS_ID_LENGHT, _canvas_preview_route, _canvas_preview_path, APP_URL,
 import { multipleActionsMapDispatchToProps, who_am_i } from "../../utils";
 import { canvasActions, testerActions, alertActions } from "../../redux/_actions";
 import { notesActions } from "../../redux/_actions/notes.canvas.actions";
-import { NoteVerdict, NotePartialView } from "../../components/Canvas";
+import { NoteVerdict, NotePartialView, CanvasSummary } from "../../components/Canvas";
 //dnd
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { GenerateDraggable } from "../../_components";
@@ -300,6 +300,7 @@ class CanvasDefaultLayout extends React.Component {
 
                 </ButtonGroup>
                 {(!is_share) && <ButtonGroup className="px-3 ml-auto">
+                  <CanvasSummary/>
                   <Button onClick={this.toggle_detailed_note}>Toggle Note Details</Button>
                   <ButtonDropdown isOpen={share_dropdown_open} toggle={this.toggle_share_dropdown_open}>
                     <DropdownToggle caret>

@@ -14,6 +14,48 @@ export const make_default_note = (note_headline, note_description, note_category
         }
     })
 }
+export const short_bmc_view = [{
+        category: "key-partners",
+        name: "Key Partners",
+    },
+    {
+        category: "key-activites",
+        name: "Key Activites",
+    },
+    {
+        category: "key-resources",
+        name: "Key Ressources",
+    },
+    {
+        category: "value-propositions",
+        name: "Value Propositions",
+    },
+    {
+        category: "customer-relationships",
+        name: "Customer Relationships",
+    },
+    {
+        category: "channels",
+        name: "Channels",
+    },
+    {
+        category: "customer-segments",
+        name: "Customer Segments",
+    },
+    {
+        category: "cost-structure",
+        name: "Cost Structure",
+    },
+    {
+        category: "revenue-stream",
+        name: "Revenue Stream",
+    }
+    // ,
+    // {
+    //     category: "brain-storm",
+    //     name: "Brain Storm",
+    // },
+]
 const KP = {
     category: "key-partners",
     name: "Key Partners",

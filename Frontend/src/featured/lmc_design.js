@@ -1,6 +1,30 @@
 import {
     make_default_note
 } from "./bmc_design";
+export const short_lmc_view = [{
+    category: "problem",
+    name: "Problem",
+}, {
+    category: "solution",
+    name: "Solution",
+}, {
+    category: "key-activity",
+    name: "Key Activity",
+}, {
+    category: "unique-value-propositions",
+    name: "Unique Value"
+}, {
+    category: "cost-structure",
+    name: "Cost Structure",
+}, {
+    category: "revenue",
+    name: "Revenue",
+}
+// , {
+//     category: "brain-storm",
+//     name: "Brain Storm"
+// }
+]
 
 const P = {
     category: "problem",

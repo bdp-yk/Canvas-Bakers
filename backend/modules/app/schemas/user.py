@@ -13,8 +13,8 @@ user_schema = {
         "class": {"type": "string", "enum": classes_enum},
         "connected": {"type": "boolean"},
     },
-    "required": ["email", "group"],
-    "additionalProperties": False,
+    "required": ["email"],
+    "additionalProperties": True,
 }
 
 

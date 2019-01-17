@@ -102,12 +102,12 @@ function approve_team_mate() {
 }
 
 
-function share_my_canvas_action(canvas_team_new_members, by_email) {
+function share_my_canvas_action(canvas_team_new_members, by_email, canvas = "", canvas_id = "") {
     return dispatch => {
         dispatch({
             type: canvasConstants.SHARE_MY_CANVAS_REQUEST
         });
-        canvasServices.share_my_canvas_service(canvas_team_new_members, by_email).then(response => {
+        canvasServices.share_my_canvas_service(canvas_team_new_members, by_email, canvas, canvas_id).then(response => {
             if (response["ok"]) {
                 dispatch({
                     type: canvasConstants.SHARE_MY_CANVAS_SUCCESS

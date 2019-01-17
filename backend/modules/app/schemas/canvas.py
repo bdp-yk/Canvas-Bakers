@@ -25,7 +25,7 @@ canvas_schema = {
         "canvas_version_stamp": {"type": ["integer", "string"]},
     },
     "required": ["canvas_id"],
-    "additionalProperties": False,
+    "additionalProperties": True,
 }
 
 

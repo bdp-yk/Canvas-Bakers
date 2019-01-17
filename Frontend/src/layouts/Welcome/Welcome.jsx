@@ -90,15 +90,15 @@ class Welcome extends React.Component {
       <>
         <WelcomeNavBar
           {...this.props}
-          brandText="Canvas Bakers"
+          brandText="Smart Canvas"
           toggleSidebar={this.toggleSidebar}
           sidebarOpened={this.state.sidebarOpened}
         />
         <div className="m-5 p-5">
           <Jumbotron>
-            <h1 className="display-3">Welcome to Canvas Bakers!</h1>
+            <h1 className="display-3">Welcome to Smart Canvas!</h1>
             <p className="lead">
-              Canvas Bakers is a modern Canvas Making App, Create your own canvas and manage them .
+              Smart Canvas is a modern Canvas Making App, Create your own canvas and manage them .
             </p>
 
             <Row>

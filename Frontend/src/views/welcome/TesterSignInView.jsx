@@ -16,6 +16,7 @@ import {
 
 import { mapDispatchToProps } from '../../utils';
 import { testerActions } from '../../redux/_actions';
+import { TESTING_GROUPS } from '../../constants';
 
 
 class TesterSignInView extends React.Component {
@@ -93,7 +94,7 @@ class TesterSignInView extends React.Component {
                                     Set Group and Launch Test
                             </DropdownToggle>
                                 <DropdownMenu right>
-                                    {["A", "B", "C", "D"].map(
+                                    {TESTING_GROUPS().map(
                                         (e, key) => {
                                             return <DropdownItem key={key} name={e} onClick={this.launchTest}>
                                                 Group {e}

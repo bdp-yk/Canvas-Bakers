@@ -58,6 +58,11 @@ def _POST_NOTE_FOR_VERDICT_api():
     canvas_id = data["canvas_id"]
     note_schema = data["note_schema"]
     push_done = True
+    rand_v_v = round(random.uniform(60, 80), 2)
+    response_schema = {
+        "verdict_value": round(random.uniform(60, 80), 2),
+        "verdict_message": "success",
+    }
     """ 
     request_schema
         note_headline_description
@@ -99,11 +104,7 @@ def _POST_NOTE_FOR_VERDICT_api():
                 response_schema = response_schema["response_schema"]
 
             except Exception as ex:
-                LOG.debug("Exception while performing system judgement " + ex)
-                response_schema = {
-                    "verdict_value": round(random.uniform(60, 80), 2),
-                    "verdict_message": "success",
-                }
+                LOG.debug("Exception while performing system judgement " + str(ex))
 
             finally:
                 new_v = {}
@@ -145,17 +146,18 @@ def _POST_NOTE_FOR_VERDICT_api():
             #     del (old_v["_id"])
             # except:
             #     print("Could not perform that")
-            new_v = standard_verdict(
-                n_curr_ver["note_encoded_content"], rand_v_v, "request"
-            )
+            new_v = standard_verdict(n_curr_ver["note_encoded_content"], 0, "request")
+            # mongo.db.verdicts.insert(new_v)
             mongo.db.verdicts.insert(new_v)
-            old_v = mongo.db.verdicts.find_one(
-                {
-                    "note_encoded_content": n_curr_ver["note_encoded_content"],
-                    "verdict_source": "admin",
-                },
-                {"_id": 0},
-            )
+            # keep requested verdict
+            old_v = n_curr_ver
+            vr_to_admin = {
+                "user": user,
+                "canvas_id": canvas_id,
+                "note_schema": note_schema,
+            }
+            mongo.db.adminverdicts.insert(vr_to_admin)
+
             push_done = False
 
     # RETURN THE RESULT
@@ -166,7 +168,6 @@ def _POST_NOTE_FOR_VERDICT_api():
     try:
         resp = jsonify({"ok": True, "note_schema": note_schema})
     except Exception as e:
-        rand_v_v = round(random.uniform(60, 80), 2)
         old_v = standard_verdict(n_curr_ver["note_encoded_content"], rand_v_v)
         old_v["verdict_source"] = "admin"
         note_schema["note_current_verdict"] = old_v

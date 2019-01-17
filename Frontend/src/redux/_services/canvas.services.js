@@ -52,15 +52,18 @@ function fetch_team_mate_service(email) {
     return fetch(TESTER_GET_BY_EMAIL, requestOptions).then(handleResponse);
 }
 
-function share_my_canvas_service(canvas_team_new_members, by_email) {
+function share_my_canvas_service(canvas_team_new_members, by_email, canvas = "", canvas_id = "") {
     const requestOptions = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+            user: who_am_i()["email"],
             canvas_team_new_members,
-            by_email
+            by_email,
+            canvas,
+            canvas_id
         })
     };
     return fetch(SHARE_CANVAS_URL, requestOptions).then(handleResponse);

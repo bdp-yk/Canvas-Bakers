@@ -1,4 +1,3 @@
-
 // The key for our auth token, stored in a cookie
 // TODO: Dedupe with the value in server/config/defaults.json
 // As well as in webpackDevServer.config
@@ -9,7 +8,9 @@ export const LOCAL_STORAGE_REDUX_DATA_KEY = 'canvas-baker-redux-data';
 //Application URL
 // export const APP_URL = 'http://127.0.0.1';
 export const APP_URL = 'http://h2793844.stratoserver.net:3000';
-
+export const TESTING_GROUPS = () => {
+    return ["A", "B", "C", "D", "E", "F"]
+}
 // The Api Providing Server adress
 export const BASE_URL = 'http://127.0.0.1:5000/';
 export const API_URL = BASE_URL + 'api/v1/';

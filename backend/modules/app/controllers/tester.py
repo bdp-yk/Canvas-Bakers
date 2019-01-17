@@ -13,6 +13,7 @@ import logger
 from .url_constants import _url
 from flask_mail import Mail, Message
 from app.featured.utils import strip_accents
+from app.featured.email_template import make_email
 
 # http://localhost:5000/tester/check_test_season/
 ROOT_PATH = os.environ.get("ROOT_PATH")
@@ -96,16 +97,19 @@ def tester_by_email():
 def share_canvas_by_email():
     try:
         req = request.get_json()
+        sender= req["user"]
+        canvas_id= req["canvas_id"]
+        canvas= req["canvas"]
         canvas_team_new_members = req["canvas_team_new_members"]
         msg = Message(
             "Invitation for a new Canvas Workspace",
             sender="CanvasBakers@gmail.com",
             recipients=[c["email"] for c in canvas_team_new_members],
         )
-        msg.html = "Check your Dashboard for new Invitations"
+        msg.html = make_email(sender,canvas,canvas_id)
         mail.send(msg)
 
-        by_email = req["by_email"]
+        # by_email = req["by_email"]
         return jsonify({"ok": True}), 200
     except:
         return jsonify({"ok": False}), 500

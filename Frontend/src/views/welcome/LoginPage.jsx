@@ -72,7 +72,7 @@ class LoginPage extends React.Component {
             }
         }
         if (user.email && user.password) {
-            dispatch(userActions.login(user));
+            dispatch(userActions.user_login_action(user));
         }
     }
     swapRegLog = () => {

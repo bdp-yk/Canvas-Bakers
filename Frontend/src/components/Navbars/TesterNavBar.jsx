@@ -39,10 +39,10 @@ class TesterNavBar extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (!_.isEmpty(this.props.canvas.canvas_schema) && (this.props.canvas.canvas_schema !== prevProps.canvas.canvas_schema)) {
-    // console.log('subscribed!');
+      // console.log('subscribed!');
       channel = pusher.subscribe(this.props.canvas.canvas_schema.canvas_id);
       channel.bind('verdict_notification', (data) => {
-      // console.log('verdict_notification', (data));
+        // console.log('verdict_notification', (data));
         this.props.update_note_action(data);
         let { notification_elements } = this.state;
         notification_elements.unshift(data);
@@ -85,6 +85,12 @@ class TesterNavBar extends React.Component {
       name = who_am_i()["email"];
     return name.split(/[^a-z]+/ig)[0]
   }
+  getTesterGroupInfo = () => {
+    let name = "";
+    if (Boolean(who_am_i()) && who_am_i()["group"])
+      name = who_am_i()["group"];
+    return name.split(/[^a-z]+/ig)[0]
+  }
   render() {
     const { notification_elements } = this.state
     let empty_verdicts = _.isEmpty(notification_elements);
@@ -112,7 +118,8 @@ class TesterNavBar extends React.Component {
                 </button>
               </div>
               <NavbarBrand href="#" onClick={e => e.preventDefault()}>
-                Hello, {this.getTesterInfo()}
+                Hello, {this.getTesterInfo()}<br />
+                <small className="my-0 py-0 text-muted font-italic">{`Group ${this.getTesterGroupInfo()}`}</small>
               </NavbarBrand>
             </div>
             <Collapse navbar isOpen={this.state.collapseOpen}>

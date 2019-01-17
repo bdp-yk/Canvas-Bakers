@@ -230,7 +230,7 @@ class CanvasDefaultLayout extends React.Component {
 
       this.props.update_canvas_schema({ canvas_team })
       // this.commit_canvas_schema()
-      // this.props.share_my_canvas_action(this.state._canvas_team, true)
+      this.props.share_my_canvas_action(this.state._canvas_team, true, this.props.canvas.canvas_schema.canvas_name, this.props.canvas.canvas_schema.canvas_id)
       this.share_this_canvas()
     }
     this.setState({
@@ -284,7 +284,7 @@ class CanvasDefaultLayout extends React.Component {
             {load_canvas_success && <>
               <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `}</h4>
               <span className="text-muted px-3" >
-                {`Changes made by ${canvas_schema.canvas_version_provider.email} `}
+                {canvas_schema.canvas_version_provider.email ? `Changes made by ${canvas_schema.canvas_version_provider.email} ` : canvas_schema.canvas_version_provider}
                 <TimeAgo datetime={canvas_schema.canvas_version_stamp} />
               </span>
             </>}
@@ -308,8 +308,6 @@ class CanvasDefaultLayout extends React.Component {
                     <DropdownMenu>
                       {<DropdownItem onClick={() => this.share_this_canvas(true)} >Share Canvas</DropdownItem>}
                       <DropdownItem onClick={this.copy_canvas_link}  >Copy Canvas Link</DropdownItem>
-                      {<DropdownItem divider />}
-                      {<DropdownItem>Share it via Email </DropdownItem>}
                     </DropdownMenu>
                   </ButtonDropdown>
                   {<>
@@ -361,7 +359,7 @@ class CanvasDefaultLayout extends React.Component {
           </ModalFooter>
         </Modal>
         <Modal isOpen={this.state.open_share_modal} fade={false} toggle={() => this.share_this_canvas(true)}  >
-          <ModalHeader toggle={this.toggle}>Canvas Sharing</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Canvas Sharing (new members will receive mail)</ModalHeader>
           <ModalBody >
             <Card>
               {render_canvas_team.map((_t_mate, ind) => {

@@ -41,9 +41,16 @@ function user_auth_action(user) {
 function user_login_action(user) {
     return dispatch => {
         userService.user_login_service(user).then(response => {
+            console.log(response.ok);
+
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(response.user))
                 history.push(_dashboard_route())
+            } else {
+                dispatch({
+                    type: alertConstants.ERROR,
+                    message: "Wrong Credentials!"
+                })
             }
         })
     }
@@ -64,12 +71,16 @@ function user_register_action(user) {
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(response.user))
                 history.push(_dashboard_route())
+                dispatch({
+                    type: alertConstants.SUCCESS,
+                    message: "Welcome to Smart Canvas"
+                })
+            } else {
+                dispatch({
+                    type: alertConstants.ERROR,
+                    message: response.message
+                })
             }
-        })
-        history.push(_dashboard_route())
-        dispatch({
-            type: alertConstants.SUCCESS,
-            message: "Welcome to Canvas Bakers"
         })
     }
 

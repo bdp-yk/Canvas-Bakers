@@ -13,7 +13,8 @@ import logger
 from .url_constants import _url
 import time
 
-from app.featured.versionning import update_base_by_commit
+# from app.featured.versionning import update_conflict_base_and_commit,update_base_by_commit
+from app.featured.versionning import update_conflict_base_and_commit
 
 # http://localhost:5000/tester/check_test_season/
 ROOT_PATH = os.environ.get("ROOT_PATH")
@@ -113,10 +114,19 @@ def _UPLOAD_CANVAS_URL():
                 )
             else:
                 mrv_stamp = most_recent_version["canvas_version_stamp"]
-                final_version = update_base_by_commit(most_recent_version, data)
+                final_version = update_conflict_base_and_commit(
+                    most_recent_version, data
+                )
+                # final_version = update_base_by_commit(most_recent_version, data)
+
                 final_version["canvas_base_version"] = data["canvas_version_stamp"]
                 final_version["canvas_version_stamp"] += 1
                 final_version["canvas_version_provider"] = "Canvas Bakers"
+                del (final_version["_id"])
+                fv = {}
+                fv.update(final_version)
+                print(fv.keys())
+                mongo.db.canvas.insert_one(fv)
                 message = "Successfully Merged the Conflict {} version.\nSee Canvas History for more details.".format(
                     str(data["canvas_base_version"])[:5:]
                     + "<->"
@@ -166,7 +176,9 @@ def _JOIN_WORKSPACE():
         )
         most_recent_version = most_recent_version[0]
         most_recent_version["canvas_team"].append(user)
-        most_recent_version["canvas_base_version"] = most_recent_version["canvas_version_stamp"]
+        most_recent_version["canvas_base_version"] = most_recent_version[
+            "canvas_version_stamp"
+        ]
         most_recent_version["canvas_version_stamp"] = join_date
         most_recent_version["canvas_version_provider"] = "{} Joined!".format(
             user["email"]

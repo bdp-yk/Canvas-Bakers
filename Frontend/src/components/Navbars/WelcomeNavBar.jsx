@@ -79,7 +79,7 @@ class WelcomeNavBar extends React.Component {
                 </UncontrolledDropdown> */}
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
-                    Join Canvas Bakers
+                    Join Smart Canvas
                   </DropdownToggle>
                   <DropdownMenu right className="bg-white">
                     <DropdownItem onClick={() => this.props.toggleLoginModal()}>

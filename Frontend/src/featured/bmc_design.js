@@ -3,13 +3,13 @@ export const make_default_note = (note_headline, note_description, note_category
         note_id: "default_note",
         note_headline,
         note_description,
-        note_maker: "Canvas Bakers",
+        note_maker: "Smart Canvas",
         note_category,
         note_current_verdict: {
             note_encoded_content: "###",
             note_verdict_value: 100.0,
             note_verdict_status: "success",
-            note_verdict_message: "Made by Canvas Bakers",
+            note_verdict_message: "Made by Smart Canvas",
             note_verdict_comment: "That's obvious ...",
         }
     })

@@ -82,83 +82,83 @@ def _POST_NOTE_FOR_VERDICT_api():
     n_curr_ver = note_schema["note_current_verdict"]
 
     # Normal Testers
-    if user["group"] in ["A", "B"]:
-        """
-        seek in mongo.db for system equivalent
-        """
-        old_v = mongo.db.verdicts.find_one(
-            {
-                "note_encoded_content": n_curr_ver["note_encoded_content"],
-                "verdict_source": "system",
-            },
-            {"_id": 0},
-        )
+    # if user["group"] in ["A", "B"]:
+    """
+    seek in mongo.db for system equivalent
+    """
+    old_v = mongo.db.verdicts.find_one(
+        {
+            "note_encoded_content": n_curr_ver["note_encoded_content"],
+            "verdict_source": "system",
+        },
+        {"_id": 0},
+    )
 
-        if old_v == None:
-            try:
-                res = API_REQ.post(
-                    _url.AI_VALIDATION_URL, json={"request_schema": request_schema}
-                )
-                response_schema = res.json()
-                print(response_schema)
-                response_schema = response_schema["response_schema"]
+    if old_v == None:
+        try:
+            res = API_REQ.post(
+                _url.AI_VALIDATION_URL, json={"request_schema": request_schema}
+            )
+            response_schema = res.json()
+            print(response_schema)
+            response_schema = response_schema["response_schema"]
 
-            except Exception as ex:
-                LOG.debug("Exception while performing system judgement " + str(ex))
+        except Exception as ex:
+            LOG.debug("Exception while performing system judgement " + str(ex))
 
-            finally:
-                new_v = {}
-                new_v.update(note_schema["note_current_verdict"])
-                new_v["note_verdict_value"] = response_schema["verdict_value"]
-                new_v["note_verdict_message"] = response_schema["verdict_message"]
-                new_v["note_verdict_status"] = "success"
-                new_v["verdict_source"] = "system"
-                mongo.db.verdicts.insert(new_v)
+        finally:
+            new_v = {}
+            new_v.update(note_schema["note_current_verdict"])
+            new_v["note_verdict_value"] = response_schema["verdict_value"]
+            new_v["note_verdict_message"] = response_schema["verdict_message"]
+            new_v["note_verdict_status"] = "success"
+            new_v["verdict_source"] = "system"
+            mongo.db.verdicts.insert(new_v)
 
-                old_v = mongo.db.verdicts.find_one(
-                    {
-                        "note_encoded_content": n_curr_ver["note_encoded_content"],
-                        "verdict_source": "system",
-                    },
-                    {"_id": 0},
-                )
+            old_v = mongo.db.verdicts.find_one(
+                {
+                    "note_encoded_content": n_curr_ver["note_encoded_content"],
+                    "verdict_source": "system",
+                },
+                {"_id": 0},
+            )
 
     # Placeboe Testers
-    else:
-        """
-        seek in mongo.db for admin equivalent
-        """
-        old_v = mongo.db.verdicts.find_one(
-            {
-                "note_encoded_content": n_curr_ver["note_encoded_content"],
-                "verdict_source": "admin",
-            },
-            {"_id": 0},
-        )
+    # else:
+    #     """
+    #     seek in mongo.db for admin equivalent
+    #     """
+    #     old_v = mongo.db.verdicts.find_one(
+    #         {
+    #             "note_encoded_content": n_curr_ver["note_encoded_content"],
+    #             "verdict_source": "admin",
+    #         },
+    #         {"_id": 0},
+    #     )
 
-        # print("old_v admin", old_v)
-        if old_v == None:
-            # rand_v_v = round(random.uniform(60, 80), 2)
-            # old_v = standard_verdict(n_curr_ver["note_encoded_content"], rand_v_v)
-            # old_v["verdict_source"] = "admin"
-            # mongo.db.verdicts.insert(old_v)
-            # try:
-            #     del (old_v["_id"])
-            # except:
-            #     print("Could not perform that")
-            new_v = standard_verdict(n_curr_ver["note_encoded_content"], 0, "request")
-            # mongo.db.verdicts.insert(new_v)
-            mongo.db.verdicts.insert(new_v)
-            # keep requested verdict
-            old_v = n_curr_ver
-            vr_to_admin = {
-                "user": user,
-                "canvas_id": canvas_id,
-                "note_schema": note_schema,
-            }
-            mongo.db.adminverdicts.insert(vr_to_admin)
+    #     # print("old_v admin", old_v)
+    #     if old_v == None:
+    #         # rand_v_v = round(random.uniform(60, 80), 2)
+    #         # old_v = standard_verdict(n_curr_ver["note_encoded_content"], rand_v_v)
+    #         # old_v["verdict_source"] = "admin"
+    #         # mongo.db.verdicts.insert(old_v)
+    #         # try:
+    #         #     del (old_v["_id"])
+    #         # except:
+    #         #     print("Could not perform that")
+    #         new_v = standard_verdict(n_curr_ver["note_encoded_content"], 0, "request")
+    #         # mongo.db.verdicts.insert(new_v)
+    #         mongo.db.verdicts.insert(new_v)
+    #         # keep requested verdict
+    #         old_v = n_curr_ver
+    #         vr_to_admin = {
+    #             "user": user,
+    #             "canvas_id": canvas_id,
+    #             "note_schema": note_schema,
+    #         }
+    #         mongo.db.adminverdicts.insert(vr_to_admin)
 
-            push_done = False
+    #         push_done = False
 
     # RETURN THE RESULT
     note_schema["note_current_verdict"] = old_v

@@ -14,7 +14,11 @@ from .url_constants import _url
 from flask_mail import Mail, Message
 from app.featured.utils import strip_accents
 from app.featured.email_template import make_email
-
+import re
+def ismail(email):
+	if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+ 		return False
+	return True
 # http://localhost:5000/tester/check_test_season/
 ROOT_PATH = os.environ.get("ROOT_PATH")
 LOG = logger.get_root_logger(__name__, filename=os.path.join(ROOT_PATH, "output.log"))
@@ -104,13 +108,14 @@ def share_canvas_by_email():
         msg = Message(
             "Invitation for a new Canvas Workspace",
             sender="CanvasBakers@gmail.com",
-            recipients=[c["email"] for c in canvas_team_new_members],
+            recipients=[c["email"] for c in canvas_team_new_members if ismail(c["email"]) ],
         )
         msg.html = make_email(sender,canvas,canvas_id)
         mail.send(msg)
 
         # by_email = req["by_email"]
         return jsonify({"ok": True}), 200
-    except:
+    except Exception as ex:
+        print(ex)
         return jsonify({"ok": False}), 500
 

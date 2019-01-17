@@ -125,9 +125,7 @@ function share_my_canvas_action(canvas_team_new_members, by_email, canvas = "", 
         }).catch(err => {
             dispatch({
                 type: alertConstants.ERROR,
-                message: `${err}Sorry, we couldn't invite ${canvas_team_new_members.map(element => {
-                return element.email+" "
-            })}.`
+                message: `Sorry, we couldn't invite all users by E-MAIL! Save Current Workspace to validate their join!`
             });
         })
 

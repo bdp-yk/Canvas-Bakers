@@ -288,7 +288,7 @@ function update_canvas_schema(payload) {
             })
             dispatch({
                 type: alertConstants.SUCCESS,
-                message: "update local copy"
+                message: "Successfully updated local copy, Save it to persist modifications!"
             })
             dispatch({
                 type: canvasConstants.CHECK_DEFAULT_NOTES
@@ -310,7 +310,7 @@ function commit_canvas_schema_action(payload) {
     return dispatch => {
         dispatch(request());
         let canvas_schema = Object.assign({}, payload);
-        // console.log(">commit_canvas_schema_action bf", canvas_schema.canvas_version_stamp);
+        console.log(">commit_canvas_schema_action team", canvas_schema.canvas_team);
         canvas_schema.canvas_base_version = canvas_schema.canvas_version_stamp;
         canvas_schema.canvas_version_stamp = Date.now();
         canvas_schema.canvas_version_provider = who_am_i();

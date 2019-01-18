@@ -229,7 +229,7 @@ class CanvasDefaultLayout extends React.Component {
     this.setState({
       mail_this_canvas: true
     })
-    this.share_this_canvas()
+    this.share_this_canvas(false)
   }
   share_this_canvas = (ask_user = true) => {
     if (!ask_user) {

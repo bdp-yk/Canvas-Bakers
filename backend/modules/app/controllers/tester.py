@@ -13,7 +13,7 @@ import logger
 from .url_constants import _url
 from flask_mail import Mail, Message
 from app.featured.utils import strip_accents
-from app.featured.email_template import make_email
+from app.featured.email_template import make_email, safe_mail
 import re
 
 
@@ -110,14 +110,24 @@ def share_canvas_by_email():
         canvas = req["canvas"]
         by_email = req["by_email"]
         canvas_team_new_members = req["canvas_team_new_members"]
+        print("EMAIL PARAMS:",sender, canvas_id, canvas, by_email, canvas_team_new_members)
         if by_email:
             pure_emails = [
                 c["email"] for c in canvas_team_new_members if ismail(c["email"])
             ]
             impure_emails = [
-                c["email"] for c in canvas_team_new_members if (not (ismail(c["email"])))
+                c["email"]
+                for c in canvas_team_new_members
+                if (not (ismail(c["email"])))
             ]
-            print("will email >>",pure_emails,impure_emails)
+            print("will email >>", pure_emails, impure_emails)
+            msg = Message(
+                "Invitation for a new Canvas Workspace",
+                sender="CanvasBakers@gmail.com",
+                recipients=pure_emails,
+            )
+            msg.html = safe_mail(sender, canvas, canvas_id)
+            mail.send(msg)
             if len(pure_emails) > 0:
                 msg = Message(
                     "Invitation for a new Canvas Workspace",
@@ -133,13 +143,16 @@ def share_canvas_by_email():
         print(ex)
         return jsonify({"ok": False}), 500
 
-@app.route("/pingmail",methods=["GET"])
+
+@app.route("/pingmail", methods=["GET"])
 def pingm():
-    msg = Message(
-        "TESTING IF WORK",
-        sender="CanvasBakers@gmail.com",
-        recipients=["yassinkisrawi42@gmail.com"],
-    )
-    msg.html = "HELLO WORLD"
+    pure = [
+        c["email"]
+        for c in [{"email": "yassinkisrawi42@gmail.com"}]
+        if ismail(c["email"])
+    ]
+    msg = Message("TESTING IF WORK", sender="CanvasBakers@gmail.com", recipients=pure)
+    msg.html = safe_mail("AAAA", "HELLO WORLD", "EEE")
     mail.send(msg)
-    return jsonify({"ok":True})
+    return jsonify({"ok": True})
+

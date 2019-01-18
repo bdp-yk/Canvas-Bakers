@@ -21,20 +21,20 @@ ROOT_PATH = os.environ.get("ROOT_PATH")
 LOG = logger.get_root_logger(__name__, filename=os.path.join(ROOT_PATH, "output.log"))
 
 
-@app.route("/boom", methods=["GET"])
-def boom_():
-    return jsonify(
-        {
-            "canvas": list(
-                mongo.db.canvas.find({}, {"_id": 0}).sort("canvas_version_stamp", -1)
-            )
-        }
-    )
+# @app.route("/boom", methods=["GET"])
+# def boom_():
+#     return jsonify(
+#         {
+#             "canvas": list(
+#                 mongo.db.canvas.find({}, {"_id": 0}).sort("canvas_version_stamp", -1)
+#             )
+#         }
+#     )
 
 
-@app.route("/vroom", methods=["GET"])
-def vroom():
-    return jsonify({"canvas": list(mongo.db.canvas.remove({}))})
+# @app.route("/vroom", methods=["GET"])
+# def vroom():
+#     return jsonify({"canvas": list(mongo.db.canvas.remove({}))})
 
 
 @app.route(_url.LIST_OF_USER_CANVAS_URL, methods=["POST"])

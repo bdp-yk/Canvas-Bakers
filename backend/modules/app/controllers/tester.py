@@ -133,3 +133,13 @@ def share_canvas_by_email():
         print(ex)
         return jsonify({"ok": False}), 500
 
+@app.route("/pingmail",methods=["GET"])
+def pingm():
+    msg = Message(
+        "TESTING IF WORK",
+        sender="CanvasBakers@gmail.com",
+        recipients=["yassinkisrawi42@gmail.com"],
+    )
+    msg.html = "HELLO WORLD"
+    mail.send(msg)
+    return jsonify({"ok":True})

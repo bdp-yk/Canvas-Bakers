@@ -115,8 +115,9 @@ def share_canvas_by_email():
                 c["email"] for c in canvas_team_new_members if ismail(c["email"])
             ]
             impure_emails = [
-                c["email"] for c in canvas_team_new_members if not (ismail(c["email"]))
+                c["email"] for c in canvas_team_new_members if (not (ismail(c["email"])))
             ]
+            print("will email >>",pure_emails,impure_emails)
             if len(pure_emails) > 0:
                 msg = Message(
                     "Invitation for a new Canvas Workspace",

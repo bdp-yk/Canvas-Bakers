@@ -110,40 +110,40 @@ def share_canvas_by_email():
         canvas = req["canvas"]
         by_email = req["by_email"]
         canvas_team_new_members = req["canvas_team_new_members"]
-        print(
-            "EMAIL PARAMS:",
-            sender,
-            canvas_id,
-            canvas,
-            by_email,
-            canvas_team_new_members,
-        )
-        pure_emails = [
-            c["email"] for c in canvas_team_new_members if ismail(c["email"])
-        ]
-        impure_emails = [
-            c["email"]
-            for c in canvas_team_new_members
-            if (not (ismail(c["email"])))
-        ]
-        print("will email >>", pure_emails, impure_emails)
-        msg = Message(
-            "Invitation for a new Canvas Workspace",
-            sender="CanvasBakers@gmail.com",
-            recipients=pure_emails,
-        )
-        msg.html = safe_mail(sender, canvas, canvas_id)
-        mail.send(msg)
-        if len(pure_emails) > 0:
-            msg = Message(
-                "Invitation for a new Canvas Workspace",
-                sender="CanvasBakers@gmail.com",
-                recipients=pure_emails,
-            )
-            msg.html = make_email(sender, canvas, canvas_id)
-            mail.send(msg)
-        else:
-            return jsonify({"ok": True, "not_emails": impure_emails}), 200
+        # print(
+        #     "EMAIL PARAMS:",
+        #     sender,
+        #     canvas_id,
+        #     canvas,
+        #     by_email,
+        #     canvas_team_new_members,
+        # )
+        # pure_emails = [
+        #     c["email"] for c in canvas_team_new_members if ismail(c["email"])
+        # ]
+        # impure_emails = [
+        #     c["email"]
+        #     for c in canvas_team_new_members
+        #     if (not (ismail(c["email"])))
+        # ]
+        # print("will email >>", pure_emails, impure_emails)
+        # msg = Message(
+        #     "Invitation for a new Canvas Workspace",
+        #     sender="CanvasBakers@gmail.com",
+        #     recipients=pure_emails,
+        # )
+        # msg.html = safe_mail(sender, canvas, canvas_id)
+        # mail.send(msg)
+        # if len(pure_emails) > 0:
+        #     msg = Message(
+        #         "Invitation for a new Canvas Workspace",
+        #         sender="CanvasBakers@gmail.com",
+        #         recipients=pure_emails,
+        #     )
+        #     msg.html = make_email(sender, canvas, canvas_id)
+        #     mail.send(msg)
+        # else:
+        #     return jsonify({"ok": True, "not_emails": impure_emails}), 200
         return jsonify({"ok": True}), 200
     except Exception as ex:
         print(ex)

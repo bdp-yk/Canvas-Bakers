@@ -37,9 +37,9 @@ import { verdictServices } from '../../redux/_services';
  *     note_current_verdict. note_verdict_comment
  *  
  */
-function suggest_description(field) {
-    verdictServices.suggest_description(field)
-}
+// function suggest_description(field) {
+//     verdictServices.suggest_description(field)
+// }
 class NoteVerdict extends Component {
     constructor(props) {
         super(props)

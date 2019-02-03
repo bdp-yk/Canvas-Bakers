@@ -25,7 +25,8 @@ import { notesActions } from "../../redux/_actions/notes.canvas.actions";
 import { history } from "../../redux/_helpers";
 import { _settings_route } from "../../constants";
 // var interval;
-var pusher = initPusher("dev"), channel;
+// var pusher = initPusher("dev"), channel;
+var pusher = initPusher("prod"), channel;
 
 class TesterNavBar extends React.Component {
   constructor(props) {

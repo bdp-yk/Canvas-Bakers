@@ -23,7 +23,7 @@ import { testerServices } from "../../redux/_services";
 // const ag = get_available_groups();
 class UserProfile extends React.Component {
   constructor(props) {
-    console.log("props.tester.available_groups", props.tester);
+    // console.log("props.tester.available_groups", props.tester);
     super(props);
     this.state = {
       _user: {
@@ -43,7 +43,7 @@ class UserProfile extends React.Component {
   }
   handle_submit = event => {
     const { _user } = this.state
-    if (_user.confirm_new_password != _user.new_password || _.isEmpty(_user.new_password)) {
+    if (_user.confirm_new_password !== _user.new_password || _.isEmpty(_user.new_password)) {
       this.setState({
         match_error: true,
       })
@@ -153,7 +153,7 @@ class UserProfile extends React.Component {
                           />
                         </FormGroup>
                       </Col>
-                      {plan_type == "tester" ? <Col className="pl-md-1" md="2">
+                      {plan_type === "tester" ? <Col className="pl-md-1" md="2">
                         <FormGroup>
                           <label>Group {group}</label>
                           {/* <Input
@@ -175,7 +175,7 @@ class UserProfile extends React.Component {
                       </Col> : null}
                     </Row>
 
-                    {plan_type != "tester" ? <Row>
+                    {plan_type !== "tester" ? <Row>
                       <Col className="pr-md-1" md="4">
                         <FormGroup>
                           <label>Old Password</label>

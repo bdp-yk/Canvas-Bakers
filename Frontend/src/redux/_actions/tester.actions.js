@@ -12,7 +12,7 @@ import {
     history
 } from '../_helpers';
 import {
-    _tester_route,
+    // _tester_route,
     _welcome_route,
     _dashboard_route
 } from '../../constants';

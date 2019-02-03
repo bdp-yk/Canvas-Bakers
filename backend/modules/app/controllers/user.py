@@ -17,6 +17,14 @@ ROOT_PATH = os.environ.get("ROOT_PATH")
 LOG = logger.get_root_logger(__name__, filename=os.path.join(ROOT_PATH, "output.log"))
 
 
+@app.route("/hotfix", methods=["GET"])
+def hf():
+    mongo.db.users.update_many({}, {"$rename": {"class": "plan_type"}})
+    mongo.db.testers.update_many({}, {"$rename": {"class": "plan_type"}})
+
+    return ("done", 200)
+
+
 # @app.route("/register", methods=["POST"])
 # def register():
 #     """ register user endpoint """
@@ -133,7 +141,7 @@ def _USER_REGISTER():
             mongo.db.users.insert_one(data)
             user = mongo.db.users.find_one({"email": data["email"]}, {"_id": 0})
             del (user["password"])
-            print(user)
+            # print(user)
             # access_token = create_access_token(identity=data)
             # refresh_token = create_refresh_token(identity=data)
             # user["token"] = access_token
@@ -162,7 +170,68 @@ def _USER_REGISTER():
 
 @app.route(_url.USER_UPDATE_URL, methods=["POST"])
 def _USER_UPDATE():
-    return jsonify({"ok": True}), 200
+    user = request.get_json()
+    user = user["user"]
+    if user["plan_type"] in "admin":
+        data = mongo.db.admins.find_one({"email": user["email"]}, {"_id": 0})
+        if user and not flask_bcrypt.check_password_hash(
+            data["password"], user["old_password"]
+        ):
+            return jsonify({"ok": False}), 203
+
+        user["password"] = flask_bcrypt.generate_password_hash(user["new_password"])
+        del (user["new_password"])
+        del (user["old_password"])
+        del (user["confirm_new_password"])
+        mongo.db.admins.update_one(
+            {"email": user["email"]},
+            {
+                "$set": {
+                    # 'email': user["email"],
+                    "password": user["password"],
+                    "firstName": user["firstName"],
+                    # "group": user["group"],
+                    "lastName": user["lastName"],
+                }
+            },
+        )
+    elif user["plan_type"] == "tester":
+        mongo.db.testers.update_one(
+            {"email": user["email"]},
+            {
+                "$set": {
+                    "firstName": user["firstName"],
+                    "lastName": user["lastName"],
+                    "group": user["group"],
+                }
+            },
+            upsert=True,
+        )
+    elif user["plan_type"] == "user":
+        data = mongo.db.users.find_one({"email": user["email"]}, {"_id": 0})
+        if user and not flask_bcrypt.check_password_hash(
+            data["password"], user["old_password"]
+        ):
+            return jsonify({"ok": False}), 203
+
+        user["password"] = flask_bcrypt.generate_password_hash(user["new_password"])
+        del (user["new_password"])
+        del (user["old_password"])
+        del (user["confirm_new_password"])
+        mongo.db.users.update_one(
+            {"email": user["email"]},
+            {
+                "$set": {
+                    # "email": user["email"],
+                    "password": user["password"],
+                    "firstName": user["firstName"],
+                    # "group": user["group"],
+                    "lastName": user["lastName"],
+                }
+            },
+        )
+    del (user["password"])
+    return jsonify({"ok": True, "user": user}), 200
 
 
 @app.route(_url.USER_DELETE_URL, methods=["POST"])

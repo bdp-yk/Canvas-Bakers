@@ -2,3 +2,4 @@
 backend/output\.log
 
 frontend/src/sample/
+backend/\.vs/

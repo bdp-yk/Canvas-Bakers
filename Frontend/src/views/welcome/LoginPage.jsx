@@ -64,9 +64,9 @@ class LoginPage extends React.Component {
         this.setState({ submitted: true });
         const { user, adminship } = this.state;
         const { dispatch } = this.props;
-        user.class = "user"
+        user.plan_type = "user"
         if (adminship.isAdmin) {
-            user.class = "admin"
+            user.plan_type = "admin"
             if (!(adminship.admin_code === this.props.tester.admin_code)) {
                 return
             }

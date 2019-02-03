@@ -241,7 +241,7 @@ class CanvasDefaultLayout extends React.Component {
       // this.props.update_canvas_schema({ canvas_team })
       // this.commit_canvas_schema()
       // console.log("after>>", this.props.canvas.canvas_schema.canvas_team);
-      
+
       this.props.share_my_canvas_action(this.state._canvas_team, this.state.mail_this_canvas, this.props.canvas.canvas_schema.canvas_name, this.props.canvas.canvas_schema.canvas_id)
       this.props.commit_canvas_schema_action(canvas_schema);
       // this.share_this_canvas()

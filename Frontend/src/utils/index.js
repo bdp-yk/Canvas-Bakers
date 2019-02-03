@@ -18,7 +18,8 @@ import {
 
 //Redux Util for connect function
 export const mapStateToProps = state => {
-  const { ...rest
+  const {
+    ...rest
   } = state;
   return rest;
 }
@@ -197,14 +198,7 @@ export const who_am_i = () => {
     localStorage.getItem('user', null) ||
     localStorage.getItem('admin', null))
 }
-
-// for the sake of simplicity
-// export const safe_print = (property) => {
-//   let a;
-//   try {
-//     a = property;
-//   } catch (err) {
-//     a = "N/A";
-//   }
-//   return a;
-// }
+export const createOption = (label) => ({
+  label,
+  value: label.toUpperCase().replace(/\W/g, ''),
+});

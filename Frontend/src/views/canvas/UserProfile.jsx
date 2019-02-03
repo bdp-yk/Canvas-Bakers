@@ -1,5 +1,7 @@
 import React from "react";
-
+import { connect } from 'react-redux'
+import CreatableSelect from 'react-select/lib/Creatable';
+import _ from "lodash"
 // reactstrap components
 import {
   Button,
@@ -7,16 +9,89 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardText,
   FormGroup,
   Form,
   Input,
   Row,
   Col
 } from "reactstrap";
-
+import { mapDispatchToProps, who_am_i, createOption } from "../../utils";
+import { userActions } from "../../redux/_actions";
+import { testerServices } from "../../redux/_services";
+// import Axios from "axios";
+// import { GET_All_GROUPS } from "../../redux/_services";
+// const ag = get_available_groups();
 class UserProfile extends React.Component {
+  constructor(props) {
+    console.log("props.tester.available_groups", props.tester);
+    super(props);
+    this.state = {
+      _user: {
+        ...who_am_i(),
+        old_password: "",
+        new_password: "",
+        confirm_new_password: "",
+      },
+      match_error: false,
+      old_password_error: false,
+      available_groups: []
+    }
+    this.handle_change_group = this.handle_change_group.bind(this)
+    this.handle_change = this.handle_change.bind(this)
+    this.handle_submit = this.handle_submit.bind(this)
+    this.handle_create_option = this.handle_create_option.bind(this)
+  }
+  handle_submit = event => {
+    const { _user } = this.state
+    if (_user.confirm_new_password != _user.new_password || _.isEmpty(_user.new_password)) {
+      this.setState({
+        match_error: true,
+      })
+      return
+    }
+    this.props.user_update_action(_user)
+
+  }
+  handle_create_option = new_group => {
+    testerServices.add_new_group(new_group).then(
+      this.setState({
+        available_groups: [...this.state.available_groups, new_group],
+        _user: {
+          ...this.state._user,
+          group: new_group
+        }
+      })
+    )
+  }
+  handle_change_group = event => {
+    let value = (_.isEmpty(event)) ? '' : event.value
+
+    this.setState({
+      _user: {
+        ...this.state._user,
+        group: value
+      }
+    })
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(nextProps.tester.available_groups, this.props.tester.available_groups))
+      this.setState({
+        available_groups: nextProps.tester.available_groups
+      })
+  }
+  handle_change = event => {
+    if (_.isEmpty(event)) return
+    let { value, name } = event.target
+    this.setState({
+      _user: {
+        ...this.state._user,
+        [name]: value
+      }
+    })
+  }
   render() {
+    let { available_groups, match_error, old_password_error } = this.state
+    const { email, group, plan_type, old_password, new_password, confirm_new_password, firstName, lastName } = this.state._user
     return (
       <>
         <div className="content">
@@ -24,164 +99,125 @@ class UserProfile extends React.Component {
             <Col md="8">
               <Card>
                 <CardHeader>
-                  <h5 className="title">Edit Profile</h5>
+                  <h5 className="title">Edit Your Profile</h5>
                 </CardHeader>
                 <CardBody>
-                  <Form>
+                  {/* email group first name last name */}
+                  <Form >
+                    <Row>
+                      <Col className="pr-md-1" md="8">
+                        <FormGroup>
+                          <label>{"Email"}</label>
+                          <Input
+                            value={email}
+                            disabled
+                            name="email"
+                            onChange={this.handle_change}
+                            type="text"
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md="4">
+                        <FormGroup>
+                          <label>Your Current Plan:</label>
+                          <Input
+                            value={plan_type}
+                            disabled
+                            type="text"
+                            name="plan_type"
+                            onChange={this.handle_change}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
                     <Row>
                       <Col className="pr-md-1" md="5">
                         <FormGroup>
-                          <label>Company (disabled)</label>
-                          <Input
-                            defaultValue="Creative Code Inc."
-                            disabled
-                            placeholder="Company"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="px-md-1" md="3">
-                        <FormGroup>
-                          <label>Email</label>
-                          <Input
-                            defaultValue="michael23"
-                            placeholder="Email"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-md-1" md="4">
-                        <FormGroup>
-                          <label htmlFor="exampleInputEmail1">
-                            Email address
-                          </label>
-                          <Input placeholder="mike@email.com" type="email" />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="pr-md-1" md="6">
-                        <FormGroup>
                           <label>First Name</label>
                           <Input
-                            defaultValue="Mike"
-                            placeholder="Company"
+                            value={firstName}
                             type="text"
+                            name="firstName"
+                            onChange={this.handle_change}
                           />
                         </FormGroup>
                       </Col>
-                      <Col className="pl-md-1" md="6">
+                      <Col className="pl-md-1" md="5">
                         <FormGroup>
                           <label>Last Name</label>
                           <Input
-                            defaultValue="Andrew"
-                            placeholder="Last Name"
+                            value={lastName}
                             type="text"
+                            name="lastName"
+                            onChange={this.handle_change}
                           />
                         </FormGroup>
                       </Col>
-                    </Row>
-                    <Row>
-                      <Col md="12">
+                      {plan_type == "tester" ? <Col className="pl-md-1" md="2">
                         <FormGroup>
-                          <label>Address</label>
-                          <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            placeholder="Home Address"
+                          <label>Group {group}</label>
+                          {/* <Input
+                            value={group}
+                            name="group"
+                            onChange={this.handle_change}
                             type="text"
+                          /> */}
+                          <CreatableSelect
+                            isClearable
+                            value={createOption(group)}
+                            // isDisabled={isLoading}
+                            // isLoading={isLoading}
+                            onChange={this.handle_change_group}
+                            onCreateOption={this.handle_create_option}
+                            options={_.isEmpty(available_groups) ? [] : available_groups.map(createOption)}
                           />
                         </FormGroup>
-                      </Col>
+                      </Col> : null}
                     </Row>
-                    <Row>
+
+                    {plan_type != "tester" ? <Row>
                       <Col className="pr-md-1" md="4">
                         <FormGroup>
-                          <label>City</label>
+                          <label>Old Password</label>
                           <Input
-                            defaultValue="Mike"
-                            placeholder="City"
-                            type="text"
+                            value={old_password}
+                            type="password"
+                            name="old_password"
+                            onChange={this.handle_change}
                           />
+                          {old_password_error ? <div className="help-block text-danger">Wrong Password!</div> : null}
                         </FormGroup>
                       </Col>
-                      <Col className="px-md-1" md="4">
+                      <Col className="pr-md-1" md="4">
                         <FormGroup>
-                          <label>Country</label>
+                          <label>New Password</label>
                           <Input
-                            defaultValue="Andrew"
-                            placeholder="Country"
-                            type="text"
+                            value={new_password}
+                            type="password"
+                            name="new_password"
+                            onChange={this.handle_change}
                           />
                         </FormGroup>
                       </Col>
                       <Col className="pl-md-1" md="4">
-                        <FormGroup>
-                          <label>Postal Code</label>
-                          <Input placeholder="ZIP Code" type="number" />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="8">
-                        <FormGroup>
-                          <label>About Me</label>
+                        <FormGroup >
+                          <label >Confirm New Password</label>
                           <Input
-                            cols="80"
-                            defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                            that two seat Lambo."
-                            placeholder="Here can be your description"
-                            rows="4"
-                            type="textarea"
+                            value={confirm_new_password}
+                            type="password"
+                            name="confirm_new_password"
+                            onChange={this.handle_change}
                           />
+                          {match_error ? <div className="help-block text-danger">Does not match!</div> : null}
                         </FormGroup>
                       </Col>
-                    </Row>
+                    </Row> : null}
                   </Form>
                 </CardBody>
                 <CardFooter>
-                  <Button className="btn-fill" color="primary" type="submit">
+                  <Button onClick={this.handle_submit} className="btn-fill" color="primary" type="submit">
                     Save
                   </Button>
-                </CardFooter>
-              </Card>
-            </Col>
-            <Col md="4">
-              <Card className="card-user">
-                <CardBody>
-                  <CardText />
-                  <div className="author">
-                    <div className="block block-one" />
-                    <div className="block block-two" />
-                    <div className="block block-three" />
-                    <div className="block block-four" />
-                    <a href="#pablo" onClick={e => e.preventDefault()}>
-                      <img
-                        alt="..."
-                        className="avatar"
-                        src={require("assets/img/emilyz.jpg")}
-                      />
-                      <h5 className="title">Mike Andrew</h5>
-                    </a>
-                    <p className="description">Ceo/Co-Founder</p>
-                  </div>
-                  <div className="card-description">
-                    Do not be scared of the truth because we need to restart the
-                    human foundation in truth And I love you like Kanye loves
-                    Kanye I love Rick Owens’ bed design but the back is...
-                  </div>
-                </CardBody>
-                <CardFooter>
-                  <div className="button-container">
-                    <Button className="btn-icon btn-round" color="facebook">
-                      <i className="fab fa-facebook" />
-                    </Button>
-                    <Button className="btn-icon btn-round" color="twitter">
-                      <i className="fab fa-twitter" />
-                    </Button>
-                    <Button className="btn-icon btn-round" color="google">
-                      <i className="fab fa-google-plus" />
-                    </Button>
-                  </div>
                 </CardFooter>
               </Card>
             </Col>
@@ -192,4 +228,13 @@ class UserProfile extends React.Component {
   }
 }
 
-export default UserProfile;
+function mapStateToProps(state) {
+  const { canvas, tester } = state;
+  return {
+    canvas,
+    tester
+  };
+}
+
+const connectedUserProfile = connect(mapStateToProps, mapDispatchToProps(userActions))(UserProfile);
+export { connectedUserProfile as UserProfile };

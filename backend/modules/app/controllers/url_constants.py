@@ -28,6 +28,8 @@ class _url:
     # get all url
     GET_ALL_USERS = USER_AUTH_URL + "get_all/"
     GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/"
+    GET_All_GROUPS = TESTER_AUTH_URL + "get_groups/"
+    ADD_GROUP = TESTER_AUTH_URL + "add_group/"
 
     # canvas urls
     CANVAS_ENTRY_URL = API_URL + "canvas/"
@@ -49,10 +51,18 @@ class _url:
     LOAD_CANVAS_REQUESTED_VERDICTS = (
         VERDICT_ENTRY_URL + "get_canvas_requested_verdicts/"
     )
-    # join a member 
+    # join a member
     JOIN_WORKSPACE = CANVAS_ENTRY_URL + "join_workspace/"
+
+    ADMIN_LOAD_ALL_REQUESTED_VERDICTS_URL = (
+        VERDICT_ENTRY_URL + "admin_load_all_verdict/"
+    )
+    ADMIN_SUBMIT_VERDICT = VERDICT_ENTRY_URL + "admin_submit_verdict/"
+
+    GET_SUGGESTIONS = VERDICT_ENTRY_URL + "get_suggestion/"
     
     # DL MODULE
     AI_SERVER_URL = "http://localhost:8000/"
     AI_VALIDATION_URL = AI_SERVER_URL + "ai_validation"
+    AI_GET_SUGGESTION = AI_SERVER_URL + "optimize_text"
 

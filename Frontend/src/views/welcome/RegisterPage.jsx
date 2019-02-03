@@ -25,10 +25,10 @@ class RegisterPage extends React.Component {
 
         this.state = {
             user: {
-                name: '',
+                firstName: '',
                 email: '',
                 password: '',
-                class: 'user'
+                plan_type: 'user'
             },
             submitted: false,
             adminship: {
@@ -73,15 +73,15 @@ class RegisterPage extends React.Component {
 
         this.setState({ submitted: true });
         const { user, adminship } = this.state;
-        user.class = "user"
+        user.plan_type = "user"
         if (adminship.isAdmin) {
-            user.class = "admin"
+            user.plan_type = "admin"
             if (!(adminship.admin_code === this.props.tester.admin_code)) {
                 return
             }
         }
         const { dispatch } = this.props;
-        if (user.name && user.email && user.password && user.class) {
+        if (user.firstName && user.email && user.password && user.plan_type) {
             dispatch(userActions.user_register_action(user));
         }
     }
@@ -106,10 +106,10 @@ class RegisterPage extends React.Component {
 
                         <ModalBody>
 
-                            <FormGroup className={(submitted && !user.name ? ' has-error' : '')}>
+                            <FormGroup className={(submitted && !user.firstName ? ' has-error' : '')}>
                                 <label htmlFor="name">First Name</label>
-                                <Input type="text" name="name" value={user.name} onChange={this.handleChange} />
-                                {submitted && !user.name &&
+                                <Input type="text" name="firstName" value={user.firstName} onChange={this.handleChange} />
+                                {submitted && !user.firstName &&
                                     <div className="help-block">First Name is required</div>
                                 }
                             </FormGroup>

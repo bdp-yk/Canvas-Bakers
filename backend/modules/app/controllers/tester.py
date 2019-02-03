@@ -30,7 +30,16 @@ LOG = logger.get_root_logger(__name__, filename=os.path.join(ROOT_PATH, "output.
 
 @app.route(_url.CHECK_TEST_SEASON_URL, methods=["GET"])
 def CHECK_TEST_SEASON():
-    return jsonify({"ok": True, "admin_code": "I AM ADMIN"}), 200
+    return (
+        jsonify(
+            {
+                "ok": True,
+                "admin_code": "I AM ADMIN",
+                "groups": [i["group_name"] for i in list(mongo.db.groups.find({}))],
+            }
+        ),
+        200,
+    )
 
 
 @app.route(_url.TESTER_REGISTER_URL, methods=["POST"])
@@ -104,49 +113,50 @@ def tester_by_email():
 @app.route(_url.SHARE_CANVAS_URL, methods=["POST"])
 def share_canvas_by_email():
     try:
-        req = request.get_json() 
-        sender = req["user"] 
-        canvas_id = req["canvas_id"] 
-        canvas = req["canvas"] 
-        by_email = req["by_email"] 
-        canvas_team_new_members = req["canvas_team_new_members"] 
-        print( 
-            "EMAIL PARAMS:", 
-            sender, 
-            canvas_id, 
-            canvas, 
-            by_email, 
-            canvas_team_new_members, 
-        ) 
-        pure_emails = [ 
-            c["email"] for c in canvas_team_new_members if ismail(c["email"]) 
-        ] 
-        impure_emails = [ 
-            c["email"] for c in canvas_team_new_members if (not (ismail(c["email"]))) 
-        ] 
-        print("will email >>", pure_emails, impure_emails) 
-        msg = Message( 
-            "Invitation for a new Canvas Workspace", 
-            sender="CanvasBakers@gmail.com", 
-            recipients=pure_emails, 
-        ) 
-        msg.html = safe_mail(sender, canvas, canvas_id) 
-        mail.send(msg) 
-        if len(pure_emails) > 0: 
-            msg = Message( 
-                "Invitation for a new Canvas Workspace",  
-                sender="CanvasBakers@gmail.com", 
-                recipients=pure_emails, 
-            ) 
-            msg.html = make_email(sender, canvas, canvas_id) 
-            mail.send(msg) 
-        else: 
-            return jsonify({"ok": True, "not_emails": impure_emails}), 200 
- 
-        return jsonify({"ok": True}), 200 
+        req = request.get_json()
+        sender = req["user"]
+        canvas_id = req["canvas_id"]
+        canvas = req["canvas"]
+        by_email = req["by_email"]
+        canvas_team_new_members = req["canvas_team_new_members"]
+        print(
+            "EMAIL PARAMS:",
+            sender,
+            canvas_id,
+            canvas,
+            by_email,
+            canvas_team_new_members,
+        )
+        pure_emails = [
+            c["email"] for c in canvas_team_new_members if ismail(c["email"])
+        ]
+        impure_emails = [
+            c["email"] for c in canvas_team_new_members if (not (ismail(c["email"])))
+        ]
+        print("will email >>", pure_emails, impure_emails)
+        msg = Message(
+            "Invitation for a new Canvas Workspace",
+            sender="smartcanvas2019@gmail.com",
+            recipients=pure_emails,
+        )
+        msg.html = safe_mail(sender, canvas, canvas_id)
+        mail.send(msg)
+        if len(pure_emails) > 0:
+            msg = Message(
+                "Invitation for a new Canvas Workspace",
+                sender="smartcanvas2019@gmail.com",
+                recipients=pure_emails,
+            )
+            msg.html = make_email(sender, canvas, canvas_id)
+            mail.send(msg)
+        else:
+            return jsonify({"ok": True, "not_emails": impure_emails}), 200
+
+        return jsonify({"ok": True}), 200
     except Exception as ex:
         print(ex)
         return jsonify({"ok": False}), 500
+
 
 @app.route("/pingmail", methods=["GET"])
 def pingm():
@@ -155,8 +165,26 @@ def pingm():
         for c in [{"email": "yassinkisrawi42@gmail.com"}]
         if ismail(c["email"])
     ]
-    msg = Message("TESTING IF WORK", sender="CanvasBakers@gmail.com", recipients=pure)
-    msg.html = safe_mail("AAAA", "HELLO WORLD", "EEE")
+    msg = Message("TESTING IF WORK", sender="SmartCanvas@gmail.com", recipients=pure)
+    msg.html = make_email("AAAA", "HELLO WORLD", "EEE")
     mail.send(msg)
+    return jsonify({"ok": True})
+
+
+@app.route(_url.GET_All_GROUPS, methods=["GET"])
+def GET_All_GROUPS_api():
+    return jsonify(
+        {
+            "ok": True,
+            "groups": [i["group_name"] for i in list(mongo.db.groups.find({}))],
+        }
+    )
+
+
+@app.route(_url.ADD_GROUP, methods=["POST"])
+def ADD_GROUP_api():
+    group_name = request.get_json()
+    group_name = group_name["group_name"]
+    mongo.db.groups.insert_one({"group_name": group_name})
     return jsonify({"ok": True})
 

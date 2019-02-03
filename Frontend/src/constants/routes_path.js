@@ -29,6 +29,7 @@ export const _workspace_route = () => _auth_route() + "/workspace/:canvas_id/:st
 export const _workspace_link = (canvas_id, stamp = "") => {
     return _workspace_path() + `${canvas_id}/${stamp}`
 };
+export const _settings_route = () => _auth_route() + "/settings";
 
 //public Routes
 export const _quickstart_route = "/quickstart";

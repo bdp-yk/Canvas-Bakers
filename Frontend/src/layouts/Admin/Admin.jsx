@@ -8,17 +8,17 @@ import { Route, Switch } from "react-router-dom";
 import Footer from "components/Footer/Footer.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
-import routes from "routes.js";
+// import routes from "routes.js";
 import { connect } from 'react-redux';
 
 import logo from "assets/img/brand-logo.png";
 import { Sidebar } from "../../components/Sidebar";
 import { PrivateRoute } from "../../_components";
-import { _dashboard_route } from "../../constants"; 
+import { _dashboard_route } from "../../constants";
 import { Dashboard } from "../../views/admin";
 import { AdminNavBar } from "../../components/Navbars/AdminNavbar";
 // var ps;
-
+let routes = [];
 class Admin extends React.Component {
   constructor(props) {
     super(props);

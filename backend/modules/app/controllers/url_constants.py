@@ -64,5 +64,5 @@ class _url:
     # DL MODULE
     AI_SERVER_URL = "http://localhost:8000/"
     AI_VALIDATION_URL = AI_SERVER_URL + "ai_validation"
-    AI_GET_SUGGESTION = AI_SERVER_URL + "optimize_text"
+    AI_GET_SUGGESTION = AI_SERVER_URL + "suggest_description"
 

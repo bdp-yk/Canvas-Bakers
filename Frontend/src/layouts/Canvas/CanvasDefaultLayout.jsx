@@ -233,13 +233,18 @@ class CanvasDefaultLayout extends React.Component {
   }
   share_this_canvas = (ask_user = true) => {
     if (!ask_user) {
+      let canvas_schema = this.props.canvas.canvas_schema;
       let canvas_team = [...this.props.canvas.canvas_schema.canvas_team, ...this.state._canvas_team]
       // console.log(canvas_team);
-
-      this.props.update_canvas_schema({ canvas_team })
+      canvas_schema.canvas_team = canvas_team
+      console.log("before>>", this.props.canvas.canvas_schema.canvas_team);
+      // this.props.update_canvas_schema({ canvas_team })
       // this.commit_canvas_schema()
+      // console.log("after>>", this.props.canvas.canvas_schema.canvas_team);
+      
       this.props.share_my_canvas_action(this.state._canvas_team, this.state.mail_this_canvas, this.props.canvas.canvas_schema.canvas_name, this.props.canvas.canvas_schema.canvas_id)
-      this.share_this_canvas()
+      this.props.commit_canvas_schema_action(canvas_schema);
+      // this.share_this_canvas()
     }
     this.setState({
       open_share_modal: !this.state.open_share_modal,
@@ -372,7 +377,7 @@ class CanvasDefaultLayout extends React.Component {
           </ModalFooter>
         </Modal>
         <Modal isOpen={this.state.open_share_modal} fade={false} toggle={() => this.share_this_canvas(true)}  >
-          <ModalHeader toggle={this.toggle}>Canvas Sharing {this.state.mail_this_canvas?"(New members will receive mail)":"(Canvas will be added to their Dashboard)"}</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Canvas Sharing {this.state.mail_this_canvas ? "(New members will receive mail)" : "(Canvas will be added to their Dashboard)"}</ModalHeader>
           <ModalBody >
             <Card>
               {render_canvas_team.map((_t_mate, ind) => {

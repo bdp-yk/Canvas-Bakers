@@ -13,7 +13,8 @@ import {
 } from '../_helpers';
 import {
     _tester_route,
-    _welcome_route
+    _welcome_route,
+    _dashboard_route
 } from '../../constants';
 
 export const testerActions = {
@@ -94,7 +95,7 @@ function register_tester_action(tester, push = true) {
                 dispatch(success(tester));
                 // console.log("!Joinable",push)
                 if (push)
-                    history.push(_tester_route);
+                    history.push(_dashboard_route());
                 else
                     window.location.reload()
             }
@@ -117,7 +118,10 @@ function register_tester_action(tester, push = true) {
     function success(tester) {
         return {
             type: testerConstants.TESTER_REGISTER_SUCCESS,
-            tester
+            payload: {
+                tester,
+                available_groups: []
+            }
         }
     }
 

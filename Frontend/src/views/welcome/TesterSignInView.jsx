@@ -60,7 +60,7 @@ class TesterSignInView extends React.Component {
             tester
         });
 
-        this.props.register_tester_action(this.state.tester)
+        this.props.register_tester_action(tester)
     }
     join_tester = () => {
         const { host_group } = this.props

@@ -16,7 +16,6 @@ import {
 
 import { mapDispatchToProps } from '../../utils';
 import { testerActions } from '../../redux/_actions';
-import { TESTING_GROUPS } from '../../constants';
 
 
 class TesterSignInView extends React.Component {
@@ -27,8 +26,9 @@ class TesterSignInView extends React.Component {
             tester: {
                 email: "",
                 group: "",
-                class: "tester"
+                plan_type: "tester"
             },
+            available_groups: props.tester.available_groups,
             submitted: false
         };
 
@@ -71,7 +71,8 @@ class TesterSignInView extends React.Component {
 
     render() {
         const { joinable } = this.props
-        const { tester } = this.state;
+        const { tester, available_groups } = this.state;
+
         return (
             <Form name="form" onSubmit={this.handleSubmit}>
                 <Card className="mb-0">
@@ -94,7 +95,7 @@ class TesterSignInView extends React.Component {
                                     Set Group and Launch Test
                             </DropdownToggle>
                                 <DropdownMenu right>
-                                    {TESTING_GROUPS().map(
+                                    {available_groups.map(
                                         (e, key) => {
                                             return <DropdownItem key={key} name={e} onClick={this.launchTest}>
                                                 Group {e}

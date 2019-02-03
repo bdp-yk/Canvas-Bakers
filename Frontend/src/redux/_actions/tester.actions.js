@@ -33,13 +33,17 @@ function toggle_tester_register_modal() {
 }
 
 function assert_tester(tester) {
-    return dispatch => dispatch(success(tester));
+    return dispatch => {
+        testerServices.get_all_groups().then(
+            response => dispatch({
+                type: testerConstants.TESTER_REGISTER_SUCCESS,
+                payload: {
+                    tester,
+                    available_groups: response.groups
+                }
+            })
+        )
 
-    function success(tester) {
-        return {
-            type: testerConstants.TESTER_REGISTER_SUCCESS,
-            tester
-        }
     }
 
 }
@@ -56,7 +60,11 @@ function check_test_season() {
                 if (response.ok) {
                     dispatch({
                         type: testerConstants.TESTING_SEASON_SUCCESS,
-                        payload: response.admin_code
+                        payload: {
+                            admin_code: response.admin_code,
+                            groups: response.groups
+                        }
+
                     })
                     // dispatch({ type: testerConstants.TESTER_REGISTER_TOGGLE_MODAL })
                 } else
@@ -84,7 +92,7 @@ function register_tester_action(tester, push = true) {
         testerServices.register_tester(tester).then(
             response => {
                 dispatch(success(tester));
-              // console.log("!Joinable",push)
+                // console.log("!Joinable",push)
                 if (push)
                     history.push(_tester_route);
                 else

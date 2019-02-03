@@ -1,4 +1,6 @@
-import { testerConstants } from '../_constants';
+import {
+  testerConstants
+} from '../_constants';
 
 // state = {
 //   testing_season_request: false,
@@ -29,7 +31,8 @@ export function tester(state = {}, action) {
         ...state,
         testing_season_request: false,
         testing_season_ok: true,
-        admin_code: action.payload
+        admin_code: action.payload.admin_code,
+        available_groups: action.payload.groups
 
       };
     case testerConstants.TESTING_SEASON_FAILURE:
@@ -60,7 +63,8 @@ export function tester(state = {}, action) {
     case testerConstants.TESTER_REGISTER_SUCCESS:
       return {
         ...state,
-        tester: action.tester,
+        tester: action.payload.tester,
+        available_groups: action.payload.available_groups,
         tester_register_request: false,
         tester_register_success: true,
         tester_register_failure: false,

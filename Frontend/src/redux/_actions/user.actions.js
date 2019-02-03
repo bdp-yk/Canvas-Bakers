@@ -14,6 +14,9 @@ import {
 import {
     _dashboard_route
 } from '../../constants';
+import {
+    who_am_i
+} from '../../utils';
 
 export const userActions = {
     // login,
@@ -87,8 +90,23 @@ function user_register_action(user) {
 }
 
 function user_update_action(user) {
-    return dispatch => {
+    // console.log(user);
 
+    return dispatch => {
+        userService.user_update_service(user).then(
+            response => {
+                if (response.ok) {
+                    let _user = who_am_i()
+                    localStorage.setItem(_user.plan_type, JSON.stringify(response.user))
+                    window.location.reload()
+                } else {
+                    dispatch({
+                        type: alertConstants.ERROR,
+                        message: "Can not update your profile!, Wrong Credentials"
+                    })
+                }
+            }
+        )
     }
 
 }

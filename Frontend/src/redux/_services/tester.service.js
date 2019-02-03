@@ -9,7 +9,9 @@ import {
     TESTER_DELETE_URL,
     TESTER_UPDATE_URL,
     TESTER_GET_BY_ID_URL,
-    CHECK_TEST_SEASON_URL
+    CHECK_TEST_SEASON_URL,
+    GET_All_GROUPS,
+    ADD_GROUP
 } from './url_strings';
 import {
     who_am_i
@@ -22,7 +24,9 @@ export const testerServices = {
     getById,
     update,
     checktestseason,
-    delete: _delete
+    get_all_groups,
+    delete: _delete,
+    add_new_group
 };
 
 function register_tester(tester) {
@@ -50,6 +54,19 @@ function checktestseason() {
     return fetch(CHECK_TEST_SEASON_URL, requestOptions).then(handleResponse);
 }
 
+function add_new_group(group_name) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "group_name": group_name
+        })
+    };
+    return fetch(ADD_GROUP, requestOptions).then(handleResponse);
+}
+
 function logout(remove_storage = true) {
 
     const requestOptions = {
@@ -65,7 +82,7 @@ function logout(remove_storage = true) {
     return fetch(TESTER_LOGOUT_URL, requestOptions).then(() => {
         if (remove_storage)
             localStorage.removeItem('tester')
-            localStorage.removeItem('user')
+        localStorage.removeItem('user')
     }).catch(
         (error) => {
             alert("Something bad happened, but we will log you out" + error);
@@ -96,7 +113,8 @@ function getById(id) {
 function update(user) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(),
+        headers: {
+            ...authHeader(),
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
@@ -113,6 +131,15 @@ function _delete(id) {
     };
 
     return fetch(TESTER_DELETE_URL + id, requestOptions).then(handleResponse);
+}
+
+function get_all_groups() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(GET_All_GROUPS, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

@@ -5,7 +5,8 @@ import {
     POST_NOTE_FOR_VERDICT,
     GET_NOTE_VERDICT_HISTORY,
     GET_NOTE_VERDICT,
-    LOAD_CANVAS_REQUESTED_VERDICTS
+    LOAD_CANVAS_REQUESTED_VERDICTS,
+    GET_SUGGESTIONS
 } from "./url_strings";
 import {
     who_am_i
@@ -15,7 +16,21 @@ export const verdictServices = {
     get_active_canvas_verdicts,
     post_note_for_verdict,
     get_note_verdict_history,
-    get_note_verdict
+    get_note_verdict,
+    suggest_description
+}
+
+function suggest_description(canvas_field) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            canvas_field
+        })
+    };
+    return fetch(GET_SUGGESTIONS, requestOptions).then(handleResponse)
 }
 
 /**

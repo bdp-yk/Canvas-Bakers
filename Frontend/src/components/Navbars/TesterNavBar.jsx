@@ -22,12 +22,15 @@ import { testerActions, notesVerdictActions } from "../../redux/_actions";
 import { who_am_i, multipleActionsMapDispatchToProps } from "../../utils";
 import { initPusher } from "../../featured/pusher.conf";
 import { notesActions } from "../../redux/_actions/notes.canvas.actions";
+import { history } from "../../redux/_helpers";
+import { _settings_route } from "../../constants";
 // var interval;
 var pusher = initPusher("dev"), channel;
 
 class TesterNavBar extends React.Component {
   constructor(props) {
     super(props);
+    this.redirect_to_settings = this.redirect_to_settings.bind(this)
     this.state = {
       collapseOpen: false,
       modalSearch: false,
@@ -59,6 +62,10 @@ class TesterNavBar extends React.Component {
     window.removeEventListener("resize", this.updateColor);
   }
   // function that adds color white/transparent to the navbar on resize (this is for the collapse)
+  redirect_to_settings = () => {
+    history.push(_settings_route())
+  }
+
   updateColor = () => {
     if (window.innerWidth < 993 && this.state.collapseOpen) {
       this.setState({
@@ -81,16 +88,19 @@ class TesterNavBar extends React.Component {
   }
 
   getTesterInfo = () => {
-    let name = "";
-    if (Boolean(who_am_i()))
-      name = who_am_i()["email"];
-    return name.split(/[^a-z]+/ig)[0]
+    let name = "User", _user = who_am_i();
+
+    if (!_.isEmpty(_user)) {
+      name = _.isEmpty(_user.firstName) ? _user.email.split('@')[0].slice(0, 10) : _user.firstName
+    }
+    return name
   }
   getTesterGroupInfo = () => {
-    let name = "";
-    if (Boolean(who_am_i()) && who_am_i()["group"])
-      name = who_am_i()["group"];
-    return name.split(/[^a-z]+/ig)[0]
+    let name = "User", _user = who_am_i();
+    if (!_.isEmpty(_user)) {
+      name = _.isEmpty(_user.group) ? _user.plan_type : 'Tester Group:'+_user.group
+    }
+    return name
   }
   render() {
     const { notification_elements } = this.state
@@ -120,7 +130,7 @@ class TesterNavBar extends React.Component {
               </div>
               <NavbarBrand href="#" onClick={e => e.preventDefault()}>
                 Hello, {this.getTesterInfo()}<br />
-                <small className="my-0 py-0 text-muted font-italic">{`Group ${this.getTesterGroupInfo()}`}</small>
+                <small className="my-0 py-0 text-muted font-italic">{`${this.getTesterGroupInfo()}`}</small>
               </NavbarBrand>
             </div>
             <Collapse navbar isOpen={this.state.collapseOpen}>
@@ -170,6 +180,7 @@ class TesterNavBar extends React.Component {
 
                     {/* <DropdownItem divider tag="li" /> */}
                     <NavLink tag="li">
+                      <DropdownItem onClick={this.redirect_to_settings} className="nav-item">Settings</DropdownItem>
                       <DropdownItem onClick={this.props.logout_tester} className="nav-item">Log out</DropdownItem>
                     </NavLink>
                   </DropdownMenu>

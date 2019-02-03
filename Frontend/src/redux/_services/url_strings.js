@@ -26,8 +26,11 @@ export const TESTER_GET_BY_EMAIL = TESTER_AUTH_URL + "get_by_email/";
 
 
 // get all url
-export const GET_ALL_USERS = USER_AUTH_URL + "get_all/"
-export const GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/"
+export const GET_ALL_USERS = USER_AUTH_URL + "get_all/"; 
+export const GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/";
+
+export const GET_All_GROUPS = TESTER_AUTH_URL + "get_groups/";
+export const ADD_GROUP = TESTER_AUTH_URL + "add_group/";
 
 
 // canvas urls
@@ -49,9 +52,10 @@ export const GET_NOTE_VERDICT = VERDICT_ENTRY_URL + "get_verdict/";
 export const GET_NOTE_VERDICT_HISTORY = VERDICT_ENTRY_URL + "get_verdict_history/";
 export const LOAD_CANVAS_REQUESTED_VERDICTS = VERDICT_ENTRY_URL + "get_canvas_requested_verdicts/";
 
-
 export const ADMIN_LOAD_ALL_REQUESTED_VERDICTS_URL = VERDICT_ENTRY_URL + "admin_load_all_verdict/";
 export const ADMIN_SUBMIT_VERDICT = VERDICT_ENTRY_URL + "admin_submit_verdict/";
+
+export const GET_SUGGESTIONS = VERDICT_ENTRY_URL + "get_suggestion/";
 
 // join Canvas url
 export const JOIN_WORKSPACE = CANVAS_ENTRY_URL + "join_workspace/";

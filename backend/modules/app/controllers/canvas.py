@@ -121,7 +121,7 @@ def _UPLOAD_CANVAS_URL():
 
                 final_version["canvas_base_version"] = data["canvas_version_stamp"]
                 final_version["canvas_version_stamp"] += 1
-                final_version["canvas_version_provider"] = "Canvas Bakers"
+                final_version["canvas_version_provider"] = "Canvas Makers"
                 del (final_version["_id"])
                 fv = {}
                 fv.update(final_version)

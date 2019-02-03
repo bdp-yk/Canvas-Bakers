@@ -10,6 +10,7 @@ import {
     //  status_default_text, comment_default_text,
     verdict_status_constants
 } from '../../redux/_constants';
+import { verdictServices } from '../../redux/_services';
 
 
 
@@ -36,20 +37,56 @@ import {
  *     note_current_verdict. note_verdict_comment
  *  
  */
-
+function suggest_description(field) {
+    verdictServices.suggest_description(field)
+}
 class NoteVerdict extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            suggestions: "N/A",
+            suggestions_loading: false,
+            suggestions_success: false,
+            suggestions_failure: false,
+        }
         this.ask_for_verdict_request = this.ask_for_verdict_request.bind(this)
+        this.handle_apply_suggestion = this.handle_apply_suggestion.bind(this)
+        this.handle_generate = this.handle_generate.bind(this)
     }
     componentDidMount() {
         // this.props.routine_verdict_check_action()
+    }
+    handle_apply_suggestion = () => {
+        let { concerned_note } = this.props.canvas;
+        
+        concerned_note.note_description = this.state.suggestions
+        // console.log(concerned_note);
+        this.props.update_note_action(concerned_note);
     }
     pretty_modal_title = () => {
         let { concerned_note } = this.props.canvas;
         if (!_.isEmpty(concerned_note))
             return `A ${concerned_note["note_category"]} note made by ${concerned_note["note_maker"] ? concerned_note["note_maker"]["email"] ? concerned_note["note_maker"]["email"] : concerned_note["note_maker"] : "email"}`
         return "Note Verdict"
+    }
+    handle_generate = () => {
+        this.setState({
+            suggestions: "Looking for descriptions...",
+            suggestions_loading: true,
+            suggestions_success: false,
+            suggestions_failure: false,
+        })
+        verdictServices.suggest_description(this.props.canvas.concerned_note.note_category).then(response => this.setState({
+            suggestions: response.suggestions,
+            suggestions_loading: false,
+            suggestions_success: true,
+            suggestions_failure: false,
+        })).catch(err => this.setState({
+            suggestions: "Oups! Could not do that!",
+            suggestions_loading: false,
+            suggestions_success: false,
+            suggestions_failure: true,
+        }))
     }
     ask_for_verdict_request = () => {
         let { concerned_note, canvas_schema } = this.props.canvas;
@@ -61,6 +98,10 @@ class NoteVerdict extends Component {
         const { concerned_note,
             toggle_verdict_modal } = this.props.canvas;
         // console.log(concerned_note);
+        const { suggestions,
+            suggestions_loading,
+            suggestions_success,
+            suggestions_failure } = this.state
 
         return (
             _.isEmpty(concerned_note) ? null : <>
@@ -87,6 +128,14 @@ class NoteVerdict extends Component {
                             </Col>
                             <Col
                             >
+                                <blockquote className="col-xs-12 mx-1 px-1">
+                                    <p className="blockquote blockquote-primary">
+                                        {suggestions}
+                                        <br />
+                                        <Button disabled={suggestions_loading} onClick={this.handle_generate} className="btn btn-link" block style={{ wordWrap: "break-word" }}>{suggestions_success && !suggestions_failure ? "Try another one?" : "Generate Description"}</Button>
+                                        {suggestions_success && <Button disabled={suggestions_loading} onClick={this.handle_apply_suggestion} block className="btn btn-link" style={{ wordWrap: "break-word" }}>{"Apply Suggestions"}</Button>}
+                                    </p>
+                                </blockquote>
                                 {/* <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_message"])}</p>
                                 <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_comment"])}</p> */}
                                 {/* {_.isEmpty(concerned_note["current_verdict"]["note_verdict_history"]) ? <p className="text-success">{system_comment_text_constants.first_validation}</p> : null} */}

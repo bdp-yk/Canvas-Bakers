@@ -13,6 +13,7 @@ from .url_constants import _url
 import time
 from ..featured.pusher_config import _Pusher
 from ..featured.constants import verdict_status_enum
+from ..featured.utils import standarize_field_name
 import random
 import requests as API_REQ
 import logger
@@ -197,3 +198,21 @@ def _LOAD_CANVAS_REQUESTED_VERDICTS_api():
 # validate verdict
 
 # notify verdict
+
+
+@app.route(_url.GET_SUGGESTIONS, methods=["POST"])
+def GET_SUGGESTIONS_api():
+    try:
+        canvas_field = request.get_json()
+        canvas_field = canvas_field["canvas_field"]
+        canvas_field = standarize_field_name(canvas_field)
+        res = API_REQ.post(_url.AI_GET_SUGGESTION, json={"canvas_field": canvas_field})
+        _response = res.json()
+        _response = _response["response"]
+
+    except Exception as ex:
+        _response = "No suggestion could be provided."
+        LOG.debug(ex)
+    finally:
+        return jsonify({"suggestions": _response})
+

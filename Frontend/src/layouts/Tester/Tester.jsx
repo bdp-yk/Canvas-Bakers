@@ -15,8 +15,9 @@ import { TesterSideBar } from "../../components/Sidebar";
 import { mapDispatchToProps } from "../../utils";
 import { testerActions } from "../../redux/_actions";
 import { Dashboard } from "../../views/canvas";
-import { _workspace_route, _dashboard_route } from "../../constants";
+import { _workspace_route, _dashboard_route, _settings_route } from "../../constants";
 import { CanvasDefaultLayout } from "../Canvas/CanvasDefaultLayout";
+import { UserProfile } from "../../views/canvas";
 
 // import logo from "assets/img/brand-logo.png";
 
@@ -26,6 +27,7 @@ class Tester extends React.Component {
   constructor(props) {
     super(props);
     props.assert_tester(JSON.parse(localStorage.getItem("tester")));
+    
     this.state = {
       backgroundColor: "blue",
       sidebarOpened:
@@ -91,6 +93,7 @@ class Tester extends React.Component {
 
             <Route path={_dashboard_route()} component={Dashboard} />
             <Route path={_workspace_route()} component={CanvasDefaultLayout} />
+            <Route path={_settings_route()} component={UserProfile} />
             <Route path="/" exact component={Dashboard} />
             {/* <Redirect from="/" exact to={_dashboard_route()} /> */}
           {/* </div>

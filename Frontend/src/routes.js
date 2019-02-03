@@ -5,10 +5,10 @@
 // } from "views/admin/";
 
 // canvas routes
-import Assets from "views/canvas/UserProfile.jsx";
-import UserProfile from "views/canvas/UserProfile.jsx";
+// import Assets from "views/canvas/UserProfile.jsx";
 import * as DS from "views/canvas/UserProfile.jsx";
 import * as ADMIN from "./views/admin";
+import { UserProfile } from "./views/canvas";
 
 
 var routes = [{
@@ -30,13 +30,6 @@ var routes = [{
     name: "Dashboard",
     icon: "tim-icons icon-vector",
     component: DS,
-    layout: "/canvas"
-  },
-  {
-    path: "/assets",
-    name: "Assets Work",
-    icon: "tim-icons icon-components",
-    component: Assets,
     layout: "/canvas"
   },
   {

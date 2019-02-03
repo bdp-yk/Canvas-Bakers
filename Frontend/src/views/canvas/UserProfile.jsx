@@ -43,7 +43,7 @@ class UserProfile extends React.Component {
   }
   handle_submit = event => {
     const { _user } = this.state
-    if (_user.confirm_new_password !== _user.new_password || _.isEmpty(_user.new_password)) {
+    if (_user.plan_type != "tester" && (_user.confirm_new_password !== _user.new_password || _.isEmpty(_user.new_password))) {
       this.setState({
         match_error: true,
       })

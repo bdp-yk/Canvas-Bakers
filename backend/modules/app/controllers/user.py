@@ -195,6 +195,7 @@ def _USER_UPDATE():
                 }
             },
         )
+        del (user["password"])
     elif user["plan_type"] == "tester":
         mongo.db.testers.update_one(
             {"email": user["email"]},
@@ -230,7 +231,7 @@ def _USER_UPDATE():
                 }
             },
         )
-    del (user["password"])
+        del (user["password"])
     return jsonify({"ok": True, "user": user}), 200
 
 

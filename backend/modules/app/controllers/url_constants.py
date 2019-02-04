@@ -30,6 +30,7 @@ class _url:
     GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/"
     GET_All_GROUPS = TESTER_AUTH_URL + "get_groups/"
     ADD_GROUP = TESTER_AUTH_URL + "add_group/"
+    DELETE_GROUP = TESTER_AUTH_URL + "delete_group/"
 
     # canvas urls
     CANVAS_ENTRY_URL = API_URL + "canvas/"

@@ -53,4 +53,4 @@ app.json_encoder = JSONEncoder
 
 # Seeding items
 if len(list(mongo.db.groups.find({}))) == 0:
-    mongo.db.groups.insert_many([{"group_name": a} for a in groups_enum])
+    mongo.db.groups.insert_many([{"group_name": a.upper()} for a in groups_enum])

@@ -99,7 +99,7 @@ class TesterNavBar extends React.Component {
   getTesterGroupInfo = () => {
     let name = "User", _user = who_am_i();
     if (!_.isEmpty(_user)) {
-      name = _.isEmpty(_user.group) ? _user.plan_type : 'Tester Group:'+_user.group
+      name = _.isEmpty(_user.group) ? _user.plan_type : (_user.group.toLowerCase()==="individual"?"Assigned as: ":'Tester Group: ')+_user.group
     }
     return name
   }

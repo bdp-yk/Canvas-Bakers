@@ -98,7 +98,7 @@ class TesterSignInView extends React.Component {
                                     {available_groups.map(
                                         (e, key) => {
                                             return <DropdownItem key={key} name={e} onClick={this.launchTest}>
-                                                Group {e}
+                                                {e.toLowerCase() === "individual" ? "" : "Group "}{e}
                                             </DropdownItem>
                                         }
                                     )}

@@ -185,6 +185,6 @@ def GET_All_GROUPS_api():
 def ADD_GROUP_api():
     group_name = request.get_json()
     group_name = group_name["group_name"]
-    mongo.db.groups.insert_one({"group_name": group_name})
+    mongo.db.groups.insert_one({"group_name": group_name.upper()})
     return jsonify({"ok": True})
 

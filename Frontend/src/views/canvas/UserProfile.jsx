@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 import { mapDispatchToProps, who_am_i, createOption } from "../../utils";
 import { userActions } from "../../redux/_actions";
-import { testerServices } from "../../redux/_services";
+import { testerServices, userService } from "../../redux/_services";
 // import Axios from "axios";
 // import { GET_All_GROUPS } from "../../redux/_services";
 // const ag = get_available_groups();
@@ -39,11 +39,12 @@ class UserProfile extends React.Component {
     this.handle_change_group = this.handle_change_group.bind(this)
     this.handle_change = this.handle_change.bind(this)
     this.handle_submit = this.handle_submit.bind(this)
+    this.handle_delete_group = this.handle_delete_group.bind(this)
     this.handle_create_option = this.handle_create_option.bind(this)
   }
   handle_submit = event => {
     const { _user } = this.state
-    if (_user.plan_type != "tester" && (_user.confirm_new_password !== _user.new_password || _.isEmpty(_user.new_password))) {
+    if (_user.plan_type !== "tester" && (_user.confirm_new_password !== _user.new_password || _.isEmpty(_user.new_password))) {
       this.setState({
         match_error: true,
       })
@@ -73,11 +74,34 @@ class UserProfile extends React.Component {
       }
     })
   }
+  handle_delete_group = () => {
+    const { group } = this.state._user;
+    let { available_groups } = this.state;
+    available_groups.splice(available_groups.indexOf(group), 1)
+    userService.delete_group_service(group).then(
+      response => {
+        this.setState({
+          available_groups,
+          _user: {
+            ...this.state._user,
+            group: this.state.available_groups[0]
+          }
+        })
+      }
+    )
+  }
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps.tester.available_groups, this.props.tester.available_groups);
+
     if (!_.isEqual(nextProps.tester.available_groups, this.props.tester.available_groups))
       this.setState({
         available_groups: nextProps.tester.available_groups
       })
+  }
+  componentDidMount() {
+    this.setState({
+      available_groups: this.props.tester.available_groups
+    })
   }
   handle_change = event => {
     if (_.isEmpty(event)) return
@@ -92,6 +116,7 @@ class UserProfile extends React.Component {
   render() {
     let { available_groups, match_error, old_password_error } = this.state
     const { email, group, plan_type, old_password, new_password, confirm_new_password, firstName, lastName } = this.state._user
+    let is_deletable_group = _.isEmpty(group) ? false : "individualabcdef".indexOf(group.toLowerCase()) > -1
     return (
       <>
         <div className="content">
@@ -153,27 +178,41 @@ class UserProfile extends React.Component {
                           />
                         </FormGroup>
                       </Col>
-                      {plan_type === "tester" ? <Col className="pl-md-1" md="2">
-                        <FormGroup>
-                          <label>Group {group}</label>
-                          {/* <Input
+
+                    </Row>
+                    {plan_type === "tester" ?
+                      <Row>
+                        <Col md="3">
+                          <FormGroup>
+                            <label>Group {group}</label>
+                            {/* <Input
                             value={group}
                             name="group"
                             onChange={this.handle_change}
                             type="text"
                           /> */}
-                          <CreatableSelect
-                            isClearable
-                            value={createOption(group)}
-                            // isDisabled={isLoading}
-                            // isLoading={isLoading}
-                            onChange={this.handle_change_group}
-                            onCreateOption={this.handle_create_option}
-                            options={_.isEmpty(available_groups) ? [] : available_groups.map(createOption)}
-                          />
-                        </FormGroup>
-                      </Col> : null}
-                    </Row>
+                            <CreatableSelect
+                              isClearable
+                              value={createOption(group)}
+                              // isDisabled={isLoading}
+                              // isLoading={isLoading}
+                              onChange={this.handle_change_group}
+                              onCreateOption={this.handle_create_option}
+                              options={_.isEmpty(available_groups) ? [] : available_groups.map(createOption)}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md="3">
+                          <FormGroup>
+                            <label>{" "}</label>
+                            <Button onClick={this.handle_delete_group} disabled={is_deletable_group} className="btn-fill" color="danger">
+                              {"Delete This Group!"}
+                            </Button>
+                          </FormGroup>
+                        </Col>
+
+                      </Row>
+                      : null}
 
                     {plan_type !== "tester" ? <Row>
                       <Col className="pr-md-1" md="4">

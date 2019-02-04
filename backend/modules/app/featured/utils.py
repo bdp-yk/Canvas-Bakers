@@ -21,12 +21,12 @@ prototype_fields_names = {
     "key-activites":"BMC Key Activities",
     "key-partners":"BMC Key Partnerships",
     "cost-structure":"BMC Cost Structure",  
-    "problem":"Problem",  
-    "cost-structure":"Key Metrics", 
-    "solution":"Solution",
-    "unique-value-propositions":"Unique Value Proposition",
-    "revenue":"Unfair Advantage",
+    "problem":"LMC Problem",  
+    "cost-structure":"LMC Cost Structure", 
+    "solution":"LMC Solution",
+    "unique-value-propositions":"LMC Unique Value Proposition",
+    "revenue":"LMC Revenue Stream",
 }
 
 def standarize_field_name(field_name):
-   return prototype_fields_names.get(field_name,"Problem")
+   return prototype_fields_names.get(field_name,"LMC Problem")

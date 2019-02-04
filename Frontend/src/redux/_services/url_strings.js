@@ -30,6 +30,7 @@ export const GET_ALL_USERS = USER_AUTH_URL + "get_all/";
 export const GET_ALL_TESTERS = TESTER_AUTH_URL + "get_all/";
 
 export const GET_All_GROUPS = TESTER_AUTH_URL + "get_groups/";
+export const DELETE_GROUP = TESTER_AUTH_URL + "delete_group/";
 export const ADD_GROUP = TESTER_AUTH_URL + "add_group/";
 
 

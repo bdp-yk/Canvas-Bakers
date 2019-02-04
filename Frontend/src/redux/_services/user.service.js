@@ -10,7 +10,8 @@ import {
     USER_UPDATE_URL,
     USER_DELETE_URL,
     USER_LOGOUT_URL,
-    GET_ALL_TESTERS
+    GET_ALL_TESTERS,
+    DELETE_GROUP
 } from './url_strings';
 // import {
 //     handleError
@@ -24,7 +25,8 @@ export const userService = {
     user_update_service,
     user_delete_service,
     user_logout_service,
-    get_all_testers_service
+    get_all_testers_service,
+    delete_group_service
 };
 // USER_AUTH_URL
 // USER_AUTH
@@ -110,6 +112,20 @@ function get_all_testers_service() {
     // .catch(handleError)
 }
 
+function delete_group_service(group_name) {
+    console.log(group_name)
+    let rO = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            group_name
+        })
+    }
+    return fetch(DELETE_GROUP, rO).then(handleResponse)
+
+}
 
 
 

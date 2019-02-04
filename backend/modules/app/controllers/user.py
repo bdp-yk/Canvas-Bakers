@@ -12,6 +12,7 @@ from app import app, mongo, flask_bcrypt, jwt
 from app.schemas import validate_user
 import logger
 from .url_constants import _url
+from app.featured.constants import groups_enum
 
 ROOT_PATH = os.environ.get("ROOT_PATH")
 LOG = logger.get_root_logger(__name__, filename=os.path.join(ROOT_PATH, "output.log"))
@@ -21,6 +22,14 @@ LOG = logger.get_root_logger(__name__, filename=os.path.join(ROOT_PATH, "output.
 def hf():
     mongo.db.users.update_many({}, {"$rename": {"class": "plan_type"}})
     mongo.db.testers.update_many({}, {"$rename": {"class": "plan_type"}})
+
+    return ("done", 200)
+
+
+@app.route("/hotfix_for_groups", methods=["GET"])
+def hffg():
+    mongo.db.groups.delete_many({})
+    mongo.db.groups.insert_many([{"group_name": a.upper()} for a in groups_enum])
 
     return ("done", 200)
 
@@ -82,6 +91,15 @@ def hf():
 
 @app.route(_url.USER_AUTH_URL, methods=["POST"])
 def _USER_AUTH():
+    return jsonify({"ok": True}), 200
+
+
+@app.route(_url.DELETE_GROUP, methods=["POST"])
+def _delete_group():
+    group_name = request.get_json()
+    group_name = group_name["group_name"]
+    # LOG.debug()
+    mongo.db.groups.delete_one({"group_name": group_name.upper()})
     return jsonify({"ok": True}), 200
 
 

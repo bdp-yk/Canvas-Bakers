@@ -21,21 +21,39 @@ ROOT_PATH = os.environ.get("ROOT_PATH")
 LOG = logger.get_root_logger(__name__, filename=os.path.join(ROOT_PATH, "output.log"))
 
 
-# @app.route("/boom", methods=["GET"])
-# def boom_():
-#     return jsonify(
-#         {
-#             "canvas": list(
-#                 mongo.db.canvas.find({}, {"_id": 0}).sort("canvas_version_stamp", -1)
-#             )
-#         }
-#     )
+@app.route("/display_all_canvas", methods=["GET"])
+def boom_():
+    most_recent_versions = mongo.db.canvas.aggregate(
+        [
+            {"$match": {}},
+            {
+                "$group": {
+                    "_id": "$canvas_id",
+                    "canvas_id": {"$first": "$$ROOT.canvas_id"},
+                    "canvas_name": {"$first": "$$ROOT.canvas_name"},
+                    "canvas_users": {"$first": "$$ROOT.canvas_team"},
+                    # "canvas_notes":{
+                    #     "$first":"$$ROOT.canvas_notes"
+                    # }
+                }
+            },
+        ]
+    )
+    return jsonify({"All_Canvas": list(most_recent_versions)}), 200
 
-
-# @app.route("/vroom", methods=["GET"])
-# def vroom():
-#     return jsonify({"canvas": list(mongo.db.canvas.remove({}))})
-
+@app.route("/show_me_users",methods=["Get"])
+def shubacka():
+    my_users = mongo.db.users.find({},{"_id":0,"password":0})
+    my_testers = mongo.db.testers.find({},{"_id":0})
+    my_admins = mongo.db.admins.find({},{"_id":0})
+    return jsonify(
+        {
+            "my_users":list(my_users),
+            "my_testers":list(my_testers),
+            "my_admins":list(my_admins),
+        }
+        
+    ), 200
 
 @app.route(_url.LIST_OF_USER_CANVAS_URL, methods=["POST"])
 def _LIST_OF_USER_CANVAS_URL():

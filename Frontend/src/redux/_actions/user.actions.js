@@ -44,7 +44,7 @@ function user_auth_action(user) {
 function user_login_action(user) {
     return dispatch => {
         userService.user_login_service(user).then(response => {
-            console.log(response.ok);
+            // console.log(response.ok);
 
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(response.user))

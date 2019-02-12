@@ -270,7 +270,7 @@ class CanvasDefaultLayout extends React.Component {
     this.props.clear_default_notes()
   }
   componentDidCatch(err) {
-    console.log(err);
+    // console.log(err);
     window.location.reload();
 
   }

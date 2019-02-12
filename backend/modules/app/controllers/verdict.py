@@ -21,7 +21,7 @@ import logger
 ROOT_PATH = os.environ.get("ROOT_PATH")
 LOG = logger.get_root_logger(__name__, filename=os.path.join(ROOT_PATH, "output.log"))
 
-_pusher = _Pusher(os.environ.get("ENV", "development"))
+_pusher = _Pusher(os.environ.get("ENV", "production"))
 
 # request verdict
 @app.route(_url.VERDICT_ENTRY_URL, methods=["GET"])

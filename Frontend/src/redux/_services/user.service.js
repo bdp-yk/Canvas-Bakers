@@ -113,7 +113,7 @@ function get_all_testers_service() {
 }
 
 function delete_group_service(group_name) {
-    console.log(group_name)
+    // console.log(group_name)
     let rO = {
         method: 'POST',
         headers: {

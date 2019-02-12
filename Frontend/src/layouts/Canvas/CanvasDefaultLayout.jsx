@@ -269,6 +269,11 @@ class CanvasDefaultLayout extends React.Component {
   handleClearDefaultNotes = () => {
     this.props.clear_default_notes()
   }
+  componentDidCatch(err) {
+    console.log(err);
+    window.location.reload();
+
+  }
   render() {
 
     const { detailed_note, share_dropdown_open, is_share, _canvas_team, delete_dropdown_open } = this.state
@@ -296,7 +301,14 @@ class CanvasDefaultLayout extends React.Component {
           <NoteVerdict readonly={readonly} />
           {readonly ? null : <>
             {load_canvas_success && <>
-              <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `}</h4>
+              <Row  >
+                <Col>
+                  <h4 className="py-0 my-0"> {`Canvas: ${canvas_schema.canvas_name} `} </h4>
+                </Col>
+                <div className="ml-auto">
+                  <CanvasSummary className="ml-auto" />
+                </div>
+              </Row>
               <span className="text-muted px-3" >
                 {canvas_schema.canvas_version_provider.email ? `Changes made by ${canvas_schema.canvas_version_provider.email} ` : canvas_schema.canvas_version_provider}
                 <TimeAgo datetime={canvas_schema.canvas_version_stamp} />
@@ -313,8 +325,7 @@ class CanvasDefaultLayout extends React.Component {
                 <Button onClick={this.commit_canvas_schema} disabled={!(this.props.canvas.update_canvas_schema_success) || (this.props.canvas.upload_canvas_request) || _.isEmpty(this.props.canvas.canvas_undo_list)} size="sm">&#10004;</Button>
 
                 </ButtonGroup>
-                {(!is_share) && <ButtonGroup className="px-3 ml-auto">
-                  <CanvasSummary />
+                {(!is_share) && <><ButtonGroup className="px-3 ml-auto">
                   <Button onClick={this.toggle_detailed_note}>Toggle Note Details</Button>
                   <ButtonDropdown isOpen={share_dropdown_open} toggle={this.toggle_share_dropdown_open}>
                     <DropdownToggle caret>
@@ -342,7 +353,7 @@ class CanvasDefaultLayout extends React.Component {
                   </>
 
                   }
-                </ButtonGroup>}
+                </ButtonGroup></>}
               </Row> :
               "Loading Canvas..."}
           </>}

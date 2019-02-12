@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Table,
-    Button,
+    Button, UncontrolledTooltip,
     Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import { multipleActionsMapDispatchToProps } from '../../utils';
@@ -46,16 +46,27 @@ class CanvasSummary extends React.Component {
                 }
             }
             for (let i = 0; i < get_canvas_design.length; i++) {
-                if (canvas_schema.canvas_notes[get_canvas_design[i].category].length)
+                if (canvas_schema.canvas_notes[get_canvas_design[i].category].length) {
+                    // console.log(get_canvas_design[i].category, ">>", canvas_schema.canvas_notes[get_canvas_design[i].category]);
                     get_canvas_design[i]["meanBy"] = _.meanBy(canvas_schema.canvas_notes[get_canvas_design[i].category], function (o) {
-                        return isNaN(o.note_current_verdict.note_verdict_value) ? 0 : o.note_current_verdict.note_verdict_value.toFixed(2)
+                        let _v = o.note_current_verdict.note_verdict_value;
+                        // console.log(` note_current_verdict.note_verdict_value ${_v}`);
+
+                        return isNaN(_v) ? 0 : _v.toFixed(2)
                     });
+                }
                 else
-                    get_canvas_design[i]["meanBy"]= 0
-                get_sum += get_canvas_design[i]["meanBy"]
+                    get_canvas_design[i]["meanBy"] = 0
+                get_sum += isNaN(get_canvas_design[i]["meanBy"]) ? 0 : get_canvas_design[i]["meanBy"]
+                // console.log(`get_sum${i}`, get_sum);
+
+                console.log(get_canvas_design[i].category,'["meanBy"]', get_canvas_design[i]["meanBy"]);
             }
+
+            // console.log("get_canvas_design", get_canvas_design.length, get_canvas_design);
+
             get_sum /= get_canvas_design.length;
-            get_sum=get_sum.toFixed(2)
+            get_sum = get_sum.toFixed(2)
         }
         this.setState({
             get_canvas_design,
@@ -68,14 +79,20 @@ class CanvasSummary extends React.Component {
         });
         this.start_summary();
     }
-
+    componentDidMount() {
+        this.start_summary()
+    }
     render() {
         const { canvas_schema, load_canvas_success, load_canvas_request } = this.props.canvas;
         const { get_canvas_design, get_sum } = this.state
 
         return (
             <div>
-                <Button color="info" onClick={this.toggle}>Get Canvas Summary</Button>
+                <span id="global_note" className="text-center">{`Current Canvas Global Note `}{`${get_sum}/100 `}</span>
+                <UncontrolledTooltip placement="right" target="global_note">
+                    {"Consider Updating your Notes after you edit them!"}
+                </UncontrolledTooltip>
+                <Button size="sm" className="btn-icon btn-round" outline color="info" onClick={this.toggle}>?</Button>
                 <Modal size={"lg"} isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>Canvas Summary <span className="text-muted">Make sure to make evaluations for your notes</span></ModalHeader>
                     <ModalBody>
@@ -104,7 +121,7 @@ class CanvasSummary extends React.Component {
                                             <thead className={`bg-${get_bg_color(index)} `}>
                                                 <tr>
                                                     <th colSpan={3}>{e.name}</th>
-                                                    <th>{e.meanBy}</th>
+                                                    <th>{isNaN(e.meanBy) ? "N/A" : e.meanBy}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -125,7 +142,7 @@ class CanvasSummary extends React.Component {
                         }
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
+                        <Button color="primary" onClick={this.start_summary}>Do Refresh</Button>{' '}
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>

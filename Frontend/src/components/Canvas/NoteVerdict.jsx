@@ -58,7 +58,7 @@ class NoteVerdict extends Component {
     }
     handle_apply_suggestion = () => {
         let { concerned_note } = this.props.canvas;
-        
+
         concerned_note.note_description = this.state.suggestions
         // console.log(concerned_note);
         this.props.update_note_action(concerned_note);
@@ -128,14 +128,14 @@ class NoteVerdict extends Component {
                             </Col>
                             <Col
                             >
-                                <blockquote className="col-xs-12 mx-1 px-1">
+                                {concerned_note.note_id !== "default_note" && <blockquote className="col-xs-12 mx-1 px-1">
                                     <p className="blockquote blockquote-primary">
                                         {suggestions}
                                         <br />
                                         <Button disabled={suggestions_loading} onClick={this.handle_generate} className="btn btn-link" block style={{ wordWrap: "break-word" }}>{suggestions_success && !suggestions_failure ? "Try another one?" : "Generate Description"}</Button>
                                         {suggestions_success && <Button disabled={suggestions_loading} onClick={this.handle_apply_suggestion} block className="btn btn-link" style={{ wordWrap: "break-word" }}>{"Apply Suggestions"}</Button>}
                                     </p>
-                                </blockquote>
+                                </blockquote>}
                                 {/* <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_message"])}</p>
                                 <p className="text-success">{(concerned_note["note_current_verdict"]["note_verdict_comment"])}</p> */}
                                 {/* {_.isEmpty(concerned_note["current_verdict"]["note_verdict_history"]) ? <p className="text-success">{system_comment_text_constants.first_validation}</p> : null} */}

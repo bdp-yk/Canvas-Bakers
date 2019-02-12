@@ -60,7 +60,7 @@ class CanvasSummary extends React.Component {
                 get_sum += isNaN(get_canvas_design[i]["meanBy"]) ? 0 : get_canvas_design[i]["meanBy"]
                 // console.log(`get_sum${i}`, get_sum);
 
-                console.log(get_canvas_design[i].category,'["meanBy"]', get_canvas_design[i]["meanBy"]);
+                // console.log(get_canvas_design[i].category,'["meanBy"]', get_canvas_design[i]["meanBy"]);
             }
 
             // console.log("get_canvas_design", get_canvas_design.length, get_canvas_design);

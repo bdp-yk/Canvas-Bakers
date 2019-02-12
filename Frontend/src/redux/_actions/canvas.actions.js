@@ -310,7 +310,7 @@ function commit_canvas_schema_action(payload) {
     return dispatch => {
         dispatch(request());
         let canvas_schema = Object.assign({}, payload);
-        console.log(">commit_canvas_schema_action team", canvas_schema.canvas_team);
+        // console.log(">commit_canvas_schema_action team", canvas_schema.canvas_team);
         canvas_schema.canvas_base_version = canvas_schema.canvas_version_stamp;
         canvas_schema.canvas_version_stamp = Date.now();
         canvas_schema.canvas_version_provider = who_am_i();

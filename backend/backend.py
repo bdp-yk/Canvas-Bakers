@@ -13,6 +13,7 @@ PUBLIC_PATH = os.path.join(ROOT_PATH, "public")
 import modules.logger as logger  # noqa
 from modules.app import app  # noqa
 from modules.app.controllers import *  # pylint: disable=W0401,C0413
+
 # from OpenSSL import SSL
 
 # context = SSL.Context(SSL.SSLv23_METHOD)
@@ -45,5 +46,6 @@ def dummy_endpoint_2():
 if __name__ == "__main__":
     LOG.info("running environment: %s", os.environ.get("ENV", "development"))
     # app.run(host='0.0.0.0', port=int(PORT))
-    app.run(host="127.0.0.1", port=int(PORT), ssl_context='adhoc')
+    # app.run(host="127.0.0.1", port=int(PORT), ssl_context='adhoc')
+    app.run(host="127.0.0.1", port=int(PORT))
 

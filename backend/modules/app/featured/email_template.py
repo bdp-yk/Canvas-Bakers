@@ -4,10 +4,10 @@ def make_email(sender, canvas, canvas_id):
         + sender
         + """ to join their Working Space of their Canvas """
         + canvas
-        + """</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary"> <tbody> <tr> <td align="left"> <table role="presentation" border="0" cellpadding="0" cellspacing="0"> <tbody> <tr> <td> <a href="http://h2793844.stratoserver.net/preview/"""
+        + """</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary"> <tbody> <tr> <td align="left"> <table role="presentation" border="0" cellpadding="0" cellspacing="0"> <tbody> <tr> <td> <a href="http://trysmartcanvas.de/preview/"""
         + canvas_id
         + """ " target="_blank">Join the wokring Space</a> </td></tr></tbody> </table> </td></tr></tbody> </table> </td></tr></table> </td></tr></table> <div class="footer"> <table role="presentation" border="0" cellpadding="0" cellspacing="0"> <tr> <td class="content-block"> <span class="apple-link">Smart Canvas &copy; 2019</a>. </td></tr><tr> <td class="content-block powered-by"> Made with &hearts; by Smart Canvas Team. </td></tr></table> </div></div></td><td>&nbsp;</td></tr></table></body></html>"""
     )
 
 def safe_mail (s,c,c_id):
-    return "{0} invited you to join his {1} click this <a href=\"http://h2793844.stratoserver.net/preview/{2}\">link</a>".format(s,c,c_id)
+    return "{0} invited you to join his {1} click this <a href=\"http://trysmartcanvas.de/preview/{2}\">link</a>".format(s,c,c_id)

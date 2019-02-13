@@ -25,3 +25,4 @@ dictdiffer==0.7.1
 flask-socketio==3.1.2
 pusher==2.1.2
 deepmerge
+pyopenssl
